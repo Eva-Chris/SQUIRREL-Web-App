@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <meta charset="UTF-8">
+    <title>SQUIRREL</title>
+</head>
+
+<body>
+    <body>
+        <div class="content">
+            <h1 id="title">SQUIRREL</h1>
+
+            <div class="topnav">
+                <ul>
+                    {% for item in nav.top %}
+                    <li class="{{ 'active' if item.is_active else '' }}">
+                        <a href="{{ item.url }}">{{ item.label }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+
+
+    </body>
+
+</html>
