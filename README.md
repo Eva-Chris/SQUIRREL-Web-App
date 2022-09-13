@@ -11,3 +11,11 @@ ppo.json: The policy that the rnn follows. Change it if it is nedded.
 4_1GroupsTrain: the groups used for training
 
 4_1GroupsTest: the groups used for testing
+
+static/css: contains the css file
+
+templates: contains the html files
+
+REQUIREMENTS: modules' versions and how to run the program
+
+app.py: the main python flask application
