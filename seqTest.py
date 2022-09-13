@@ -21,7 +21,7 @@ def getTopK(k, id, items, lfm):
 #path: change as needed: the full path of the folder containing the file of the groups
 #return: A list of Strings of the form: "groupId    groupSim" of all groups in the file
 """
-def readGroups(file,path='C:/Users/jarim/Documents/work/rnn/data/'):
+def readGroups(file,path='/home/edens-reject/squirrel/SQUIRREL-Web-Interface/'):
     groupIds = []
     with open(path+file) as f:
         for line in f:
@@ -206,7 +206,7 @@ groupsIds = readGroups('4_1GroupsTrain.txt')
 
 print('Start training')
 environment = Environment.create(
-    environment=ThermostatEnvironment,
+    environment=SQUIRRELEnvironment,
     max_episode_timesteps=15)
 #agent = Agent.create(
 #    agent='tensorforce', environment=environment, update=2,
@@ -226,7 +226,7 @@ for gr in groupsIds:
     grIn = gr.split("\t")
     print('Training Group ' + " (" + str(j) + ")\t" + grIn[0] )
     #groupInfo: the pre-calculated single recommendations for all group members and all rounds of recommendations
-    groupInfo = getPredictions("C:/Users/jarim/Documents/work/ephemeral/rnn/groupPredictions/allGroups/"+grIn[0].strip())
+    groupInfo = getPredictions("/home/edens-reject/squirrel/SQUIRREL-Web-Interface/4_1/"+grIn[0].strip())
 
     #group: a list of all group member
     group = getMembers(gr)
@@ -281,7 +281,7 @@ j = 1
 actionsChoosen  = [0] * 6
 for groups in groupsIds:
     grIn = groups.split("\t")
-    groupInfo = getPredictions("C:/Users/jarim/Documents/work/ephemeral/rnn/groupPredictions/allGroups/"+grIn[0].strip())
+    groupInfo = getPredictions("/home/edens-reject/squirrel/SQUIRREL-Web-Interface/4_1/"+grIn[0].strip())
     print('Training Group ' + " (" + str(j) + ")\t" + grIn[0] )
     group = getMembers(groups)
     i = 0

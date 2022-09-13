@@ -1,0 +1,6 @@
+Python Version: 3.8.10
+NumPy Version: 1.19.5
+Tensorforce Version: 0.6.5
+gym Version: 0.26.0
+Ubuntu Version: 20.04.5
+IDE: Visual Studio Code
