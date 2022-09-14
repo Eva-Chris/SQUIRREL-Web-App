@@ -11,73 +11,82 @@
     <div class="content">
         <h1 id="title">SQUIRREL</h1>
 
-        <div class="topnav">
-            <ul>
-                {% for item in nav.top %}
-                <li class="{{ 'active' if item.is_active else '' }}">
-                    <a href="{{ item.url }}">{{ item.label }}</a>
-                </li>
-                {% endfor %}
-            </ul>
+        <div class="topnav" id="myTopnav">
+            <a href="#home" class="active">Home</a>
+            <a href="{{url_for('about')}}">About</a>
+            <a href="#contact">Contact</a>
         </div>
 
         <br>
 
-        <!--buttons-->
+        <b>File in use:</b> {{ value }}
+
+        <!--buttons
         <form method="post" action="/">
-            <input type="submit" value="Overall Satisfaction" name="ov_sat" />
-            <input type="submit" value="MaxMin" name="max_min" />
-            <input type="submit" value="ndcg" name="ndcg" />
-            <input type="submit" value="dfh" name="dfh" />
-            <input type="submit" value="f_score" name="f_score" />
+            <input id="button" type="submit" value="Overall Satisfaction" name="ov_sat" />
+            <input id="button" type="submit" value="MaxMin" name="max_min" />
+            <input id="button" type="submit" value="ndcg" name="ndcg" />
+            <input id="button" type="submit" value="dfh" name="dfh" />
+            <input id="button" type="submit" value="f_score" name="f_score" />
         </form>
+        -->
 
         <!--tables-->
-        <table>
-            <h1>
-                {% for value in table %}
-                <h2>{{titles[loop.index]}}</h2>
-                {{ value|safe }}
-                {% endfor %}
-            </h1>
-        </table>
+        <div class="row">
+            <div class="column">
+                <table>
+                    <h1>
+                        {% for value in table %}
+                        <h2>{{titles[loop.index]}}</h2>
+                        {{ value|safe }}
+                        {% endfor %}
+                    </h1>
+                </table>
+            </div>
 
-        <table>
-            <h1>
-                {% for value in table2 %}
-                <h2>{{titles2[loop.index]}}</h2>
-                {{ value|safe }}
-                {% endfor %}
-            </h1>
-        </table>
+            <div class="column">
+                <table>
+                    <h1>
+                        {% for value in table2 %}
+                        <h2>{{titles2[loop.index]}}</h2>
+                        {{ value|safe }}
+                        {% endfor %}
+                    </h1>
+                </table>
+            </div>
 
-        <table>
-            <h1>
-                {% for value in table3 %}
-                <h2>{{titles3[loop.index]}}</h2>
-                {{ value|safe }}
-                {% endfor %}
-            </h1>
-        </table>
+            <div class="column">
+                <table>
+                    <h1>
+                        {% for value in table3 %}
+                        <h2>{{titles3[loop.index]}}</h2>
+                        {{ value|safe }}
+                        {% endfor %}
+                    </h1>
+                </table>
+            </div>
 
-        <table>
-            <h1>
-                {% for value in table4 %}
-                <h2>{{titles4[loop.index]}}</h2>
-                {{ value|safe }}
-                {% endfor %}
-            </h1>
-        </table>
+            <div class="column">
+                <table>
+                    <h1>
+                        {% for value in table4 %}
+                        <h2>{{titles4[loop.index]}}</h2>
+                        {{ value|safe }}
+                        {% endfor %}
+                    </h1>
+                </table>
+            </div>
 
-        <table>
-            <h1>
-                {% for value in table5 %}
-                <h2>{{titles5[loop.index]}}</h2>
-                {{ value|safe }}
-                {% endfor %}
-            </h1>
-        </table>
-
-    </div>
+            <div class="column">
+                <table>
+                    <h1>
+                        {% for value in table5 %}
+                        <h2>{{titles5[loop.index]}}</h2>
+                        {{ value|safe }}
+                        {% endfor %}
+                    </h1>
+                </table>
+            </div>
+        </div>
 
 </body>
