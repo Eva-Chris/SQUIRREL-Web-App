@@ -1,3 +1,4 @@
+---VERSIONS---
 Python Version: 3.8.10
 NumPy Version: 1.19.5
 Tensorforce Version: 0.6.5
@@ -12,7 +13,6 @@ If env folder is not available type: python3 -m venv env
 To activate the virtual environment type: source env/bin/activate
 
 If flask is not installed type: pip3 install flask-sqlalchemy
-If flask navigation is not installed type: pip install Flask-Navigation
 
 ---OPENING THE WEBSITE---
 Type: python3 app.py
