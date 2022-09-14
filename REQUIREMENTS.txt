@@ -4,3 +4,17 @@ Tensorforce Version: 0.6.5
 gym Version: 0.26.0
 Ubuntu Version: 20.04.5
 IDE: Visual Studio Code
+Flask Version: 2.2.2
+
+---ACTIVATING VIRTUAL ENVIRONMENT---
+If env folder is not available type: python3 -m venv env
+
+To activate the virtual environment type: source env/bin/activate
+
+If flask is not installed type: pip3 install flask-sqlalchemy
+If flask navigation is not installed type: pip install Flask-Navigation
+
+---OPENING THE WEBSITE---
+Type: python3 app.py
+
+The server starts on: http://127.0.0.1:5000 or localhost:5000
