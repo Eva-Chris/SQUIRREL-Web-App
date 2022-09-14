@@ -47,36 +47,14 @@ tr:nth-child(even) {
 
 #title {
     text-align: center;
-}
-
-.topnav {
-    overflow: hidden;
-    background-color: #333;
-}
-
-.topnav a {
-    float: left;
-    color: #FFFFFF;
-    text-align: center;
-    padding: 10px 16px;
-    text-decoration: none;
-}
-
-.topnav a:hover {
-    background-color: #555;
-    color: FFFFFF;
-}
-
-.topnav a.active {
-    background-color: #e3081e;
-    color: #FFFFFF;
+    
 }
 
 .content {
     margin-top: 50px;
     margin-bottom: 100px;
     margin-right: 80px;
-    margin-left: 80px;
+    margin-left: 220px;
 }
 
 /*#button {
@@ -101,3 +79,47 @@ tr:nth-child(even) {
     background-color: #e3081e;
     color: white;
 }*/
+
+.nav_bar{
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: black;
+  padding: 6px 14px;
+  width: 180px;
+}
+
+.nav_bar i{
+  color: #FFFFFF;
+  height: 60px;
+  min-width: 50px;
+  font-size: 28px;
+  text-align: center;
+  line-height: 60px;
+}
+.nav_bar .nav_content{
+  margin-top: 20px;
+  height: 100%;
+}
+
+.nav_bar li a{
+  display: flex;
+  border-radius: 12px;
+  align-items: center;
+  text-decoration: none;
+  background: black;
+}
+.nav_bar li a:hover{
+  background: #FFF;
+}
+
+.nav_page{
+  color: #fff;
+}
+
+.nav_bar li a:hover .nav_page,
+.nav_bar li a:hover i{
+  color: black;
+}
+
