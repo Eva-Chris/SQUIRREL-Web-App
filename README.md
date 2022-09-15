@@ -12,6 +12,8 @@ ppo.json: The policy that the rnn follows. Change it if it is nedded.
 
 4_1GroupsTest: the groups used for testing
 
+screenshots: contains screenshots of the website (it will be deleted)
+
 static/css: contains the css file
 
 templates: contains the html files
