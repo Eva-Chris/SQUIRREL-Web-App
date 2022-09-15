@@ -4,13 +4,7 @@ ul {
     padding: 0;
 }
 
-* {
-    box-sizing: border-box;
-}
-
 .row {
-    margin-left: -5px;
-    margin-right: -5px;
     display: flex;
 }
 
@@ -22,15 +16,8 @@ ul {
     overflow: auto;
 }
 
-.row::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
 table {
     border-collapse: collapse;
-    border-spacing: 0;
     width: 100%;
     border: 1px solid #ddd;
 }
@@ -38,7 +25,7 @@ table {
 th,
 td {
     text-align: left;
-    padding: 16px;
+    padding: 15px;
 }
 
 tr:nth-child(even) {
@@ -47,7 +34,6 @@ tr:nth-child(even) {
 
 #title {
     text-align: center;
-    
 }
 
 .content {
@@ -98,9 +84,14 @@ tr:nth-child(even) {
   text-align: center;
   line-height: 60px;
 }
+
 .nav_bar .nav_content{
   margin-top: 20px;
   height: 100%;
+}
+
+.nav_bar li{
+  margin: 10px 0px;
 }
 
 .nav_bar li a{
@@ -108,10 +99,19 @@ tr:nth-child(even) {
   border-radius: 12px;
   align-items: center;
   text-decoration: none;
-  background: black;
 }
+
 .nav_bar li a:hover{
   background: #FFF;
+}
+
+.nav_bar li a.active{
+  background: #FFF;
+}
+
+.nav_bar li a.active .nav_page,
+.nav_bar li a.active i{
+  color: black;
 }
 
 .nav_page{
