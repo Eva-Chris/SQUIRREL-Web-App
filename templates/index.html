@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 
-    <script src="{{url_for('static', filename='js/javascript.js')}}"></script>
+    <!--<script src="{{url_for('static', filename='js/javascript.js')}}"></script>-->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -19,6 +19,7 @@
     <div class="content">
         <h1 id="title">SQUIRREL</h1>
 
+        <!-- navigation bar -->
         <div class="nav_bar">
             <ul class="nav_content">
                 <li>
@@ -46,10 +47,10 @@
 
         <b>File in use:</b> {{ value }}
 
-        <!--tables-->
+        <!-- tables with charts -->
         <div class="row">
             <div class="column">
-                <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column">
+                <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column" data-graph-color-1="#005EAD">
                     <thead>
                         <th>Round</th>
                         <th>{{ov_sat[0]}}</th>
@@ -63,10 +64,11 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div id="graphcontainer"></div>
             </div>
 
             <div class="column">
-                <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column">
+                <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column" data-graph-color-1="#005EAD">
                     <thead>
                         <th>Round</th>
                         <th>{{max_min[0]}}</th>
@@ -76,15 +78,15 @@
                         <tr>
                             <td>{{ loop.index0 }}</td>
                             <td>{{'%0.3f'|format(item|float)}}</td>
-
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                <div id="graphcontainer2"></div>
             </div>
 
             <div class="column">
-                <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column">
+                <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column" data-graph-color-1="#005EAD">
                     <thead>
                         <th>Round</th>
                         <th>{{ndcg[0]}}</th>
@@ -94,15 +96,15 @@
                         <tr>
                             <td>{{ loop.index0 }}</td>
                             <td>{{'%0.3f'|format(item|float)}}</td>
-
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                <div id="graphcontainer3"></div>
             </div>
 
             <div class="column">
-                <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column">
+                <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column" data-graph-color-1="#005EAD">
                     <thead>
                         <th>Round</th>
                         <th>{{dfh[0]}}</th>
@@ -112,15 +114,15 @@
                         <tr>
                             <td>{{ loop.index0 }}</td>
                             <td>{{'%0.3f'|format(item|float)}}</td>
-
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                <div id="graphcontainer4"></div>
             </div>
 
             <div class="column">
-                <table class="highchart5" data-graph-container="#graphcontainer5" data-graph-type="column">
+                <table class="highchart5" data-graph-container="#graphcontainer5" data-graph-type="column" data-graph-color-1="#005EAD">
                     <thead>
                         <th>Round</th>
                         <th>{{f_score[0]}}</th>
@@ -130,30 +132,21 @@
                         <tr>
                             <td>{{ loop.index0 }}</td>
                             <td>{{'%0.3f'|format(item|float)}}</td>
-
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                <div id="graphcontainer5"></div>
             </div>
         </div>
 
-        <div>
-            <div id="graphcontainer"></div>
-            <div id="graphcontainer2"></div>
-            <div id="graphcontainer3"></div>
-            <div id="graphcontainer4"></div>
-            <div id="graphcontainer5"></div>
-        </div>
-
+        <!-- create charts from tables using highcharts -->
         <script>
             $('table.highchart').highchartTable();
             $('table.highchart2').highchartTable();
             $('table.highchart3').highchartTable();
             $('table.highchart4').highchartTable();
             $('table.highchart5').highchartTable();
-
         </script>
-
 
 </body>
