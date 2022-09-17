@@ -4,6 +4,13 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+    <script src="{{url_for('static', filename='js/javascript.js')}}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="{{url_for('static', filename='js/highchartTable.js')}}" type="text/javascript"></script>
+
     <meta charset="UTF-8">
     <title>SQUIRREL</title>
 </head>
@@ -15,23 +22,23 @@
         <div class="nav_bar">
             <ul class="nav_content">
                 <li>
-                    <a href="#home" class="active">
-                        <i class='bx bxs-home' ></i>
+                    <a class="active" href="#home">
+                        <i class='bx bxs-home'></i>
                         <span class="nav_page">Home</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{url_for('about')}}">
-                        <i class='bx bxs-info-square' ></i>
+                        <i class='bx bxs-info-square'></i>
                         <span class="nav_page">About</span>
                     </a>
                 </li>
                 <li>
                     <a href="#contact">
-                        <i class='bx bxs-envelope' ></i>
+                        <i class='bx bxs-envelope'></i>
                         <span class="nav_page">Contact</span>
                     </a>
-                </li>  
+                </li>
             </ul>
         </div>
 
@@ -39,72 +46,114 @@
 
         <b>File in use:</b> {{ value }}
 
-        <!--buttons
-        <form method="post" action="/">
-            <input id="button" type="submit" value="Overall Satisfaction" name="ov_sat" />
-            <input id="button" type="submit" value="MaxMin" name="max_min" />
-            <input id="button" type="submit" value="ndcg" name="ndcg" />
-            <input id="button" type="submit" value="dfh" name="dfh" />
-            <input id="button" type="submit" value="f_score" name="f_score" />
-        </form>
-        -->
-
         <!--tables-->
         <div class="row">
             <div class="column">
-                <table>
-                    <h1>
-                        {% for value in table %}
-                        <h2>{{titles[loop.index]}}</h2>
-                        {{ value|safe }}
+                <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column">
+                    <thead>
+                        <th>Round</th>
+                        <th>{{ov_sat[0]}}</th>
+                    </thead>
+                    <tbody>
+                        {% for item in ov_sat[1:] %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+                        </tr>
                         {% endfor %}
-                    </h1>
+                    </tbody>
                 </table>
             </div>
 
             <div class="column">
-                <table>
-                    <h1>
-                        {% for value in table2 %}
-                        <h2>{{titles2[loop.index]}}</h2>
-                        {{ value|safe }}
+                <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column">
+                    <thead>
+                        <th>Round</th>
+                        <th>{{max_min[0]}}</th>
+                    </thead>
+                    <tbody>
+                        {% for item in max_min[1:] %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+
+                        </tr>
                         {% endfor %}
-                    </h1>
+                    </tbody>
                 </table>
             </div>
 
             <div class="column">
-                <table>
-                    <h1>
-                        {% for value in table3 %}
-                        <h2>{{titles3[loop.index]}}</h2>
-                        {{ value|safe }}
+                <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column">
+                    <thead>
+                        <th>Round</th>
+                        <th>{{ndcg[0]}}</th>
+                    </thead>
+                    <tbody>
+                        {% for item in ndcg[1:] %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+
+                        </tr>
                         {% endfor %}
-                    </h1>
+                    </tbody>
                 </table>
             </div>
 
             <div class="column">
-                <table>
-                    <h1>
-                        {% for value in table4 %}
-                        <h2>{{titles4[loop.index]}}</h2>
-                        {{ value|safe }}
+                <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column">
+                    <thead>
+                        <th>Round</th>
+                        <th>{{dfh[0]}}</th>
+                    </thead>
+                    <tbody>
+                        {% for item in dfh[1:] %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+
+                        </tr>
                         {% endfor %}
-                    </h1>
+                    </tbody>
                 </table>
             </div>
 
             <div class="column">
-                <table>
-                    <h1>
-                        {% for value in table5 %}
-                        <h2>{{titles5[loop.index]}}</h2>
-                        {{ value|safe }}
+                <table class="highchart5" data-graph-container="#graphcontainer5" data-graph-type="column">
+                    <thead>
+                        <th>Round</th>
+                        <th>{{f_score[0]}}</th>
+                    </thead>
+                    <tbody>
+                        {% for item in f_score[1:] %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+
+                        </tr>
                         {% endfor %}
-                    </h1>
+                    </tbody>
                 </table>
             </div>
         </div>
+
+        <div>
+            <div id="graphcontainer"></div>
+            <div id="graphcontainer2"></div>
+            <div id="graphcontainer3"></div>
+            <div id="graphcontainer4"></div>
+            <div id="graphcontainer5"></div>
+        </div>
+
+        <script>
+            $('table.highchart').highchartTable();
+            $('table.highchart2').highchartTable();
+            $('table.highchart3').highchartTable();
+            $('table.highchart4').highchartTable();
+            $('table.highchart5').highchartTable();
+
+        </script>
+
 
 </body>
