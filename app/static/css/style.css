@@ -103,3 +103,63 @@ tr:nth-child(even) {
     margin-right: 80px;
     margin-left: 220px;
 }
+
+/* about page */
+.about{
+  background: url(/static/images/squirrel_model.png) no-repeat left;
+  background-size: 50%;
+  background-color: #FFF;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.about_container{
+  width: 50%;
+  float: right;
+  background-color: #FFF;
+  padding: 10px;
+}
+
+.text{
+  font-size: 15px;
+  line-height: 25px;
+  text-align: justify;
+}
+
+/* contact page */
+form label {
+  font-weight: bold;
+  display: block;
+  padding: 10px 0;
+}
+ 
+form input#name,
+form input#email,
+form input#subject {
+  width: 500px;
+  background-color: #fafafa;
+  border: 1px solid #cccccc;
+  padding: 10px;
+}
+ 
+form textarea#message {
+  width: 500px;
+  height: 100px;
+  background-color: #fafafa;
+  border: 1px solid #cccccc;
+  padding: 10px;
+}
+ 
+form input#submit {
+  margin-top: 10px;
+  display: block;
+  border:1px solid #cccccc;
+  padding: 10px; 
+  font-weight:bold; 
+  background-color: #fafafa;
+}
+ 
+form input#submit:hover{
+  cursor: pointer;
+  background-color: #dbdbdb;
+}
