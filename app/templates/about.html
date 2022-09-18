@@ -3,24 +3,81 @@
 
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <meta charset="UTF-8">
     <title>SQUIRREL</title>
+    <!--favicon taken from flaticon.com -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename= 'images/squirrel.ico') }}">
 </head>
 
 <body>
-
-    <body>
         <div class="content">
             <h1 id="title">SQUIRREL</h1>
 
-            <div class="topnav" id="myTopnav">
-                <a href="{{url_for('index')}}">Home</a>
-                <a href="#about" class="active">About</a>
-                <a href="#contact">Contact</a>
+            <!-- navigation bar -->
+            <div class="nav_bar">
+                <ul class="nav_content">
+                    <li>
+                        <a href="{{url_for('index')}}">
+                            <i class='bx bxs-home'></i>
+                            <span class="nav_page">Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="active" href="#about">
+                            <i class='bx bxs-info-square'></i>
+                            <span class="nav_page">About</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('contact')}}">
+                            <i class='bx bxs-envelope'></i>
+                            <span class="nav_page">Contact</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-        </div>
+            <div class="about">
+                <div class="about_container">
+                    <h3>A little bit about the SQUIRREL model</h3>
 
+                    <p class="text">Nowadays, sequential recommendations are becoming more prevalent. A
+                        user expects the system to remember past interactions and not conduct each
+                        recommendation round as a stand-alone process. Additionally, group recom-
+                        mendation systems are more prominent since more and more people are able
+                        to form groups for activities. Subsequently, the data that a group recom-
+                        mendation system needs to consider becomes more complicated – historical
+                        data and feedback for each user, the items recommended and ultimately
+                        selected to and by the group, etc. This makes the selection of a group rec-
+                        ommendation algorithm to be even more complex. In this work, we propose
+                        the SQUIRREL framework – SeQUentIal Recommendations with ReinforcE-
+                        ment Learning, a model that relies on reinforcement learning techniques to
+                        select the most appropriate group recommendation algorithm based on the
+                        current state of the group. At each round of recommendations, we calcu-
+                        late the satisfaction of each group member, how relevant each item in the
+                        group recommendation list is for each user, and based on this the model se-
+                        lects an action, that is, a recommendation algorithm out of a predefined set
+                        that will produce the maximum reward. We present a sample of methods
+                        that can be used; however, the model is able to be further configured with
+                        additional actions, different definitions of rewards or states. We perform
+                        experiments on three real world datasets, 20M MovieLens, GoodReads and
+                        Amazon, and show that SQUIRREL is able to outperform all the individual
+                        recommendation methods used in the action set, by correctly identifying the
+                        recommendation algorithm that maximizes the reward function utilized.</p>
+
+                    <p class="text" style="text-align: right;"><i>Abstract from paper</i></p>
+                    <h3>Want to learn more?</h3>
+                    <p class="text">Read the complete paper <a href="{{ url_for('static', filename='paper/SQUIRREL.pdf')}}">here</a>.
+                    </p>
+
+                    <!-- in case we need to embed the file -->
+                    <!-- <object data="{{ url_for('static', filename='paper/SQUIRREL.pdf')}}" type="application/pdf" style="min-height:100vh;width:100%"></object> -->
+                </div>
+            </div>
+
+
+        </div>
     </body>
 
 </html>
