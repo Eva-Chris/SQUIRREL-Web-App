@@ -19,49 +19,55 @@ app.config["MAIL_USERNAME"] = 'chrisostomaki.eva@gmail.com'
 #app.config["MAIL_PASSWORD"] = os.environ['MAIL_PASSWORD']
 mail.init_app(app)
 
+# function to find the score given by each member to the
+# recommended movies in the file
+
+
 def find_movie(file, movies):
     groupRec = {}
     rec = {}
-    iter = 0
+    iter = -1
     count = 0
-    change_rec = -1
+    mov_scores = []
 
     with open(file+".txt") as f:
         for l in f:
             if "Iteration" in l:
                 groupRec = {}
                 count = 0
-                change_rec+=1
+                iter += 1
                 continue
+
             count = count + 1
 
             rec = {}
             firstSplit = l.split("[")
             id = firstSplit[0]
-            allRecs = firstSplit[1].replace("]","")
-            
-            allRecs = allRecs.replace("\n","")
-            
+            allRecs = firstSplit[1].replace("]", "")
+
+            allRecs = allRecs.replace("\n", "")
+
             secondSplit = allRecs.split(",")
-            
+
             for r in secondSplit:
                 itm = r.split(":")
                 rec[itm[0]] = itm[1]
-            
+
             if count <= 5:
                 groupRec[id] = rec
-                if groupRec[id].get(movies[change_rec]) == None:
-                    print("Not Present")
-                    
+                if groupRec[id].get(movies[iter]) == None:
+                    mov_scores.append("Not Present")
+                    #print("Not Present")
+
                 else:
-                    print(groupRec[id][movies[change_rec]])
-                
-                print(movies[change_rec])
-                iter = iter + 1
-                
-    return groupRec[id]
+                    # print(groupRec[id][movies[iter]])
+                    mov_scores.append(groupRec[id][movies[iter]])
+
+    return mov_scores
 
 # index page
+
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -72,7 +78,6 @@ def index():
     ndcg = []
     dfh = []
     f_score = []
-    test = []
 
     with open('MovieLens_AllScores.txt') as all_scores:
         count = 1
@@ -90,29 +95,44 @@ def index():
 
             count += 1
 
-    with open('4_1GroupsTest.txt') as test_file:
-        for line in test_file:
-            test.append(line.split()[0])
+    # read groups for testing
+    test = open("4_1GroupsTest.txt", 'r').read().splitlines()
 
+    # read recommended movies for these groups
+    recs = open("Recommended_Movies.txt", 'r').read().splitlines()
 
-    
+    # find invividual scores for the recommended movies
+    mov_scores = []
+    mov_scores = find_movie("4_1/"+test[0].split("\t", 1)[0], recs)
+    # print("\n".join(mov_scores))
 
-    recs = open("Recommended_Movies.txt",'r').read().splitlines() 
+    # create a dictionary to store invividual scores  and recommended movies
+    items = []
+    m = 0
+    s = 0
+    for i in range(0, 15):
+        i = str(i)
 
-    find_movie("4_1/"+test[0], recs)
- 
-
+        an_item = dict(movie=recs[m], round=i, m1_score=mov_scores[s], m2_score=mov_scores[s+1],
+                       m3_score=mov_scores[s+2], m4_score=mov_scores[s+3], m5_score=mov_scores[s+4])
+        items.append(an_item)
+        s += 5
+        m += 1
 
     return render_template('index.html', used_file="MovieLens_AllScores",
                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score,
-                           recs=recs, test=test[0])
+                           test=test[0].split("\t", 1)[0], items=items)
 
 # about page
+
+
 @app.route('/about')
 def about():
     return render_template('about.html')
 
 # contact page
+
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
