@@ -102,22 +102,31 @@ def index():
     recs = open("Recommended_Movies.txt", 'r').read().splitlines()
 
     # find invividual scores for the recommended movies
-    mov_scores = []
-    mov_scores = find_movie("4_1/"+test[0].split("\t", 1)[0], recs)
-    # print("\n".join(mov_scores))
-
-    # create a dictionary to store invividual scores  and recommended movies
-    items = []
+    mov_scores = {}
+    t = 0
     m = 0
-    s = 0
-    for i in range(0, 15):
-        i = str(i)
+    items = []
+    start = 0 
+    end = 15
+    while t <= 1:  # CHANGE HERE TO CHECK EVERY FILE
+        
+        mov_scores = find_movie("4_1/"+test[t].split("\t", 1)[0], recs[start:end])
+        
+        # create a dictionary to store invividual scores and recommended movies
+        s = 0
+        for i in range(0, 15):
+            i = str(i)
 
-        an_item = dict(movie=recs[m], round=i, m1_score=mov_scores[s], m2_score=mov_scores[s+1],
-                       m3_score=mov_scores[s+2], m4_score=mov_scores[s+3], m5_score=mov_scores[s+4])
-        items.append(an_item)
-        s += 5
-        m += 1
+            an_item = dict(movie=recs[m], round=i, m1_score=mov_scores[s], m2_score=mov_scores[s+1],
+                           m3_score=mov_scores[s+2], m4_score=mov_scores[s+3], m5_score=mov_scores[s+4])
+            items.append(an_item)
+            s += 5
+            m += 1
+
+        t += 1
+        start+=15
+        end+=15
+        # print("\n".join(mov_scores))
 
     return render_template('index.html', used_file="MovieLens_AllScores",
                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score,
