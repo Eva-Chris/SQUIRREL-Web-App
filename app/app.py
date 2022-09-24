@@ -68,8 +68,8 @@ def find_movie(file, movies):
 # index page
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
 
     # arrays to store each score
@@ -101,36 +101,55 @@ def index():
     # read recommended movies for these groups
     recs = open("Recommended_Movies.txt", 'r').read().splitlines()
 
-    # find invividual scores for the recommended movies
     mov_scores = {}
-    t = 0
-    m = 0
     items = []
-    start = 0 
-    end = 15
-    while t <= 1:  # CHANGE HERE TO CHECK EVERY FILE
-        
-        mov_scores = find_movie("4_1/"+test[t].split("\t", 1)[0], recs[start:end])
-        
+
+    t = 0  # index for group file
+    m = 0  # index for recommended movie
+    start = 0  # starting index for recommended movies
+    end = 15  # final index for recommended movies
+
+    for t in range(0, len(test)):
+
+        # find invividual scores for the recommended movies
+        mov_scores = find_movie(
+            "4_1/"+test[t].split("\t", 1)[0], recs[start:end])
+
         # create a dictionary to store invividual scores and recommended movies
         s = 0
         for i in range(0, 15):
             i = str(i)
 
-            an_item = dict(movie=recs[m], round=i, m1_score=mov_scores[s], m2_score=mov_scores[s+1],
+            an_item = dict(id=test[t].split("\t", 1)[0], movie=recs[m], round=i, m1_score=mov_scores[s], m2_score=mov_scores[s+1],
                            m3_score=mov_scores[s+2], m4_score=mov_scores[s+3], m5_score=mov_scores[s+4])
             items.append(an_item)
+
             s += 5
             m += 1
 
         t += 1
-        start+=15
-        end+=15
-        # print("\n".join(mov_scores))
+        start += 15
+        end += 15
+
+    # send results based on button clicked
+    if request.method == 'POST':
+        # iterate through every test file
+        for i in range(0, len(test)):
+            # check if that file is the one selected on the table
+            if request.form.get(test[i].split("\t", 1)[0]) == test[i].split("\t", 1)[0]:
+                # create new list with the movie recommendations and individual scores
+                # of that specific group
+                new_list = list(
+                    filter(lambda id: id.get('id') ==
+                           test[i].split("\t", 1)[0], items)
+                )
+                return render_template('index.html', items=new_list, used_file="MovieLens_AllScores",
+                                       ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score,
+                                       test=test, test_file="Recommended_Movies")
 
     return render_template('index.html', used_file="MovieLens_AllScores",
                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score,
-                           test=test[0].split("\t", 1)[0], items=items)
+                           test=test, test_file="Recommended_Movies")
 
 # about page
 
@@ -154,6 +173,11 @@ def contact():
         return 'Form sent.'
     elif request.method == 'GET':
         return render_template('contact.html', form=form)
+
+
+@app.route("/yourform/getinfo")
+def show_sorted_info():
+    return render_template("results.html")
 
 
 if __name__ == "__main__":
