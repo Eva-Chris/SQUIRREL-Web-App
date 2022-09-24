@@ -14,10 +14,10 @@ ppo.json: The policy that the rnn follows. Change it if it is nedded.
 
 screenshots: contains screenshots of the website (it will be deleted)
 
-static/css: contains the css file
+app: contains css, js, html files as well as the main python flask application
 
-templates: contains the html files
+MovieLens_AllScores: all scores (overall satisfaction, min max etc)
+
+Recommended_Movies: movie recommendations for groups contained in 4_1GroupsTest
 
 REQUIREMENTS: modules' versions and how to run the program
-
-app.py: the main python flask application
