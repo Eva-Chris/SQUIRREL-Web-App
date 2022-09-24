@@ -5,14 +5,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 
-    <!--<script src="{{url_for('static', filename='js/javascript.js')}}"></script>-->
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="{{url_for('static', filename='js/highchartTable.js')}}" type="text/javascript"></script>
 
     <meta charset="UTF-8">
+    <meta name="description" content="Home page with tables and charts">
+    <meta name="keywords" content="html, home">
+    <meta name="author" content="Eva Chrysostomaki">
+
     <title>SQUIRREL</title>
+
     <!--favicon taken from flaticon.com -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename= 'images/squirrel.ico') }}">
 </head>
@@ -46,9 +49,30 @@
         </div>
 
         <br>
+        <b>File in use:</b> {{ test_file }}
+
+        <!-- table with groups -->
+        <table>
+            <thead>
+                <th>Group</th>
+                <th>Show Results</th>
+            </thead>
+            <tbody>
+
+                {% for test in test %}
+                <tr>
+                    <td>{{test.split('\t', 1)[0]}}</td>
+                    <form method="post" action="/">
+                        <td><input id="button" type="submit" value="{{test.split('\t', 1)[0]}}"
+                                name="{{test.split('\t', 1)[0]}}" />
+                        </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
         <!-- table with recommended movies and individual scores -->
-        <b>File in use:</b> {{ test }}
         <table>
             <thead>
                 <th>Round</th>
@@ -60,6 +84,7 @@
                 <th>M5 Score</th>
             </thead>
             <tbody>
+
                 {% for item in items %}
                 <tr>
                     <td>{{item.round}}</td>
@@ -175,6 +200,7 @@
             </div>
         </div>
     </div>
+
     <!-- create charts from tables using highcharts -->
     <script>
         $('table.highchart').highchartTable();
