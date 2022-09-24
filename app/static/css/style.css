@@ -1,11 +1,11 @@
 /* navigation bar */
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
-.nav_bar{
+.nav_bar {
   position: fixed;
   left: 0;
   top: 0;
@@ -15,7 +15,7 @@ ul {
   width: 180px;
 }
 
-.nav_bar i{
+.nav_bar i {
   color: #FFFFFF;
   height: 60px;
   min-width: 50px;
@@ -24,88 +24,104 @@ ul {
   line-height: 60px;
 }
 
-.nav_bar .nav_content{
+.nav_bar .nav_content {
   margin-top: 20px;
   height: 100%;
 }
 
-.nav_bar li{
+.nav_bar li {
   margin: 10px 0px;
 }
 
-.nav_bar li a{
+.nav_bar li a {
   display: flex;
   border-radius: 12px;
   align-items: center;
   text-decoration: none;
 }
 
-.nav_bar li a:hover{
+.nav_bar li a:hover {
   background: #FFF;
 }
 
-.nav_bar li a.active{
+.nav_bar li a.active {
   background: #FFF;
 }
 
 .nav_bar li a.active .nav_page,
-.nav_bar li a.active i{
+.nav_bar li a.active i {
   color: black;
 }
 
-.nav_page{
+.nav_page {
   color: #fff;
 }
 
 .nav_bar li a:hover .nav_page,
-.nav_bar li a:hover i{
+.nav_bar li a:hover i {
   color: black;
 }
 
 /* table and charts */
-.row {
-    display: flex;
+
+.row1 {
+  display: flex;
 }
 
 .column {
-    float: left;
-    width: 15%;
-    padding: 15px;
-    flex: 1;
-    overflow: auto;
+  float: left;
+  width: 15%;
+  padding: 15px;
+  flex: 1;
+  overflow: auto;
 }
 
 table {
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid #ddd;
+  border-collapse: collapse;
+  margin: 25px 0;
+  width: 100%;
+  font-family: sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+}
+
+th {
+  font-size: 15px;
+  text-align: left;
+  padding: 20px 20px 20px 20px;
 }
 
 th,
 td {
-    text-align: left;
-    padding: 15px;
+  text-align: left;
+  padding: 15px;
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
+}
+
+tr:not(:first-child):hover {
+  background-color: rgba(117, 110, 212, 0.2);
 }
 
 /* page title */
 #title {
-    text-align: center;
+  text-align: center;
 }
 
 /* page content */
 .content {
-    margin-top: 50px;
-    margin-bottom: 100px;
-    margin-right: 80px;
-    margin-left: 220px;
+  margin-top: 50px;
+  margin-bottom: 100px;
+  margin-right: 80px;
+  margin-left: 220px;
 }
 
 /* about page */
-.about{
+.about {
   background: url(/static/images/squirrel_model.png) no-repeat left;
   background-size: 50%;
   background-color: #FFF;
@@ -113,14 +129,14 @@ tr:nth-child(even) {
   padding: 10px 0;
 }
 
-.about_container{
+.about_container {
   width: 50%;
   float: right;
   background-color: #FFF;
   padding: 10px;
 }
 
-.text{
+.text {
   font-size: 15px;
   line-height: 25px;
   text-align: justify;
@@ -132,7 +148,7 @@ form label {
   display: block;
   padding: 10px 0;
 }
- 
+
 form input#name,
 form input#email,
 form input#subject {
@@ -141,7 +157,7 @@ form input#subject {
   border: 1px solid #cccccc;
   padding: 10px;
 }
- 
+
 form textarea#message {
   width: 500px;
   height: 100px;
@@ -149,17 +165,17 @@ form textarea#message {
   border: 1px solid #cccccc;
   padding: 10px;
 }
- 
+
 form input#submit {
   margin-top: 10px;
   display: block;
-  border:1px solid #cccccc;
-  padding: 10px; 
-  font-weight:bold; 
+  border: 1px solid #cccccc;
+  padding: 10px;
+  font-weight: bold;
   background-color: #fafafa;
 }
- 
-form input#submit:hover{
+
+form input#submit:hover {
   cursor: pointer;
   background-color: #dbdbdb;
 }
