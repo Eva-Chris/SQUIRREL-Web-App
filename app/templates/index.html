@@ -63,7 +63,7 @@
                 <tr>
                     <td>{{test.split('\t', 1)[0]}}</td>
                     <form method="post" action="/">
-                        <td><input id="button" type="submit" value="{{test.split('\t', 1)[0]}}"
+                        <td><input class="button" type="submit" value="{{test.split('\t', 1)[0]}}"
                                 name="{{test.split('\t', 1)[0]}}" />
                         </td>
                     </form>
@@ -73,6 +73,11 @@
         </table>
 
         <!-- table with recommended movies and individual scores -->
+        {% for item in items %}
+        {% if loop.first %}
+        <b>Group: </b> {{item.id}}
+        {% endif %}
+        {% endfor %}
         <table>
             <thead>
                 <th>Round</th>
