@@ -100,11 +100,30 @@ td {
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: rgba(209, 213, 216, 0.2);
 }
 
-tr:not(:first-child):hover {
-  background-color: rgba(117, 110, 212, 0.2);
+tr:hover {
+  background-color: rgba(173, 210, 237, 0.2);
+}
+
+/* table buttons customization */
+.button {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 12px;
+  font-family: sans-serif;
+  font-weight: 500;
+  color: #000000;
+  width: 300px;
+  text-align: center;
+  background-color: rgba(186, 186, 186, 0.2)
+}
+
+.button:hover {
+  color: #000000;
+  background-color: #FFFFFF;
 }
 
 /* page title */
