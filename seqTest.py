@@ -21,7 +21,7 @@ def getTopK(k, id, items, lfm):
 #path: change as needed: the full path of the folder containing the file of the groups
 #return: A list of Strings of the form: "groupId    groupSim" of all groups in the file
 """
-def readGroups(file,path='/home/edens-reject/squirrel/SQUIRREL-Web-Interface/'):
+def readGroups(file,path='/home/edens-reject/squirrel/SQUIRREL-Web-App/'):
     groupIds = []
     with open(path+file) as f:
         for line in f:
@@ -226,7 +226,7 @@ for gr in groupsIds:
     grIn = gr.split("\t")
     print('Training Group ' + " (" + str(j) + ")\t" + grIn[0] )
     #groupInfo: the pre-calculated single recommendations for all group members and all rounds of recommendations
-    groupInfo = getPredictions("/home/edens-reject/squirrel/SQUIRREL-Web-Interface/4_1/"+grIn[0].strip())
+    groupInfo = getPredictions("/home/edens-reject/squirrel/SQUIRREL-Web-App/4_1/"+grIn[0].strip())
 
     #group: a list of all group member
     group = getMembers(gr)
@@ -278,10 +278,11 @@ fScore = {}
 ndcg = {}
 dfh = {}
 j = 1
+file = open('Recommended_Movies.txt', 'w')
 actionsChoosen  = [0] * 6
 for groups in groupsIds:
     grIn = groups.split("\t")
-    groupInfo = getPredictions("/home/edens-reject/squirrel/SQUIRREL-Web-Interface/4_1/"+grIn[0].strip())
+    groupInfo = getPredictions("/home/edens-reject/squirrel/SQUIRREL-Web-App/4_1/"+grIn[0].strip())
     print('Training Group ' + " (" + str(j) + ")\t" + grIn[0] )
     group = getMembers(groups)
     i = 0
@@ -302,6 +303,10 @@ for groups in groupsIds:
         actionsChoosen[actions] = actionsChoosen[actions] + 1
         for k in rec:
             recommentedMovies.append(k)
+
+
+        file.write(str(recommentedMovies[i]) + '\n')
+
         (sum,var,fScoreV) = calcStats(states)
         ndcgV = 0.0
         nn = 0
@@ -354,7 +359,17 @@ for groups in groupsIds:
     fl = environment.flagEmpty
     if fl:
         print("Has empty values >>>>>>>>>>" + str(grIn[0]))
-with open('AllGroups_Goodreads_FScore.txt', 'w') as f:
+    
+     
+file.close()
+
+#file = open('Recommended_Movies.txt', 'w')
+#for mov in recommentedMovies:
+#     file.write(str(mov) + '\n')
+#file.close() 
+
+
+with open('MovieLens_AllScores.txt', 'w') as f:
     f.write('Overall Satisfaction\n')
 
     for i in range(15):
