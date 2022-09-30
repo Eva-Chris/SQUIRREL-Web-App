@@ -4,8 +4,14 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    
     <meta charset="UTF-8">
+    <meta name="description" content="About page with paper abstract and link to the whole paper">
+    <meta name="keywords" content="html, about">
+    <meta name="author" content="Eva Chrysostomaki">
+
     <title>SQUIRREL</title>
+
     <!--favicon taken from flaticon.com -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename= 'images/squirrel.ico') }}">
 </head>
@@ -21,6 +27,12 @@
                         <a href="{{url_for('index')}}">
                             <i class='bx bxs-home'></i>
                             <span class="nav_page">Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('watch_next')}}">
+                            <i class='bx bxs-movie-play' ></i>
+                            <span class="nav_page">Watch Next</span>
                         </a>
                     </li>
                     <li>
