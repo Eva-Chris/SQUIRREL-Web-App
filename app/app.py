@@ -65,6 +65,44 @@ def find_movie(file, movies):
 
     return mov_scores
 
+# function to get individual scores
+# and create a dictionary to store them
+
+
+def individual_scores(test, recs):
+    mov_scores = {}
+    items = []
+
+    t = 0  # index for group file
+    m = 0  # index for recommended movie
+    start = 0  # starting index for recommended movies
+    end = 15  # final index for recommended movies
+
+    for t in range(0, len(test)):
+
+        # find invividual scores for the recommended movies
+        mov_scores = find_movie(
+            "4_1/"+test[t].split("\t", 1)[0], recs[start:end])
+
+        # create a dictionary to store invividual scores and recommended movies
+        s = 0
+        for i in range(0, 15):
+            i = str(i)
+
+            an_item = dict(id=test[t].split("\t", 1)[0], movie=recs[m], round=i, m1_score=mov_scores[s], m2_score=mov_scores[s+1],
+                           m3_score=mov_scores[s+2], m4_score=mov_scores[s+3], m5_score=mov_scores[s+4])
+            items.append(an_item)
+
+            s += 5
+            m += 1
+
+        t += 1
+        start += 15
+        end += 15
+
+    return items
+
+
 # index page
 
 
@@ -101,35 +139,8 @@ def index():
     # read recommended movies for these groups
     recs = open("Recommended_Movies.txt", 'r').read().splitlines()
 
-    mov_scores = {}
-    items = []
-
-    t = 0  # index for group file
-    m = 0  # index for recommended movie
-    start = 0  # starting index for recommended movies
-    end = 15  # final index for recommended movies
-
-    for t in range(0, len(test)):
-
-        # find invividual scores for the recommended movies
-        mov_scores = find_movie(
-            "4_1/"+test[t].split("\t", 1)[0], recs[start:end])
-
-        # create a dictionary to store invividual scores and recommended movies
-        s = 0
-        for i in range(0, 15):
-            i = str(i)
-
-            an_item = dict(id=test[t].split("\t", 1)[0], movie=recs[m], round=i, m1_score=mov_scores[s], m2_score=mov_scores[s+1],
-                           m3_score=mov_scores[s+2], m4_score=mov_scores[s+3], m5_score=mov_scores[s+4])
-            items.append(an_item)
-
-            s += 5
-            m += 1
-
-        t += 1
-        start += 15
-        end += 15
+    # get individual scores
+    items = individual_scores(test, recs)
 
     # send results based on button clicked
     if request.method == 'POST':
@@ -145,11 +156,53 @@ def index():
                 )
                 return render_template('index.html', items=new_list, used_file="MovieLens_AllScores",
                                        ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score,
-                                       test=test, test_file="Recommended_Movies")
+                                       test=test, test_file="4_1GroupsTest")
 
     return render_template('index.html', used_file="MovieLens_AllScores",
                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score,
-                           test=test, test_file="Recommended_Movies")
+                           test=test, test_file="4_1GroupsTest")
+
+
+# watch_next page
+
+
+@app.route('/watch_next', methods=['GET', 'POST'])
+def watch_next():
+    # read groups for testing
+    test = open("4_1GroupsTest.txt", 'r').read().splitlines()
+
+    # read recommended movies for these groups
+    recs = open("Recommended_Movies.txt", 'r').read().splitlines()
+
+    # get individual scores
+    items = individual_scores(test, recs)
+
+    #file to save current round of each group
+    open("Current_Round.txt", "a")
+
+    # send results based on button clicked
+    if request.method == 'POST':
+        for i in range(0, len(test)):
+            group = request.form.get(test[i].split("\t", 1)[0])
+            # check if that file is the one which button was pressed
+            if group == test[i].split("\t", 1)[0]:
+                # create new list with the movie recommendations and individual scores
+                # of that specific group
+                new_list = list(
+                    filter(lambda id: id.get('id') ==
+                           test[i].split("\t", 1)[0], items)
+                )
+                
+                # check if group exists in the file
+                with open('Current_Round.txt', 'r+') as f:
+                    if group in f.read():
+                        print("true")
+                    else:
+                        f.write(str(group) + " " + "0" '\n')
+
+                return render_template('watch_next.html', items=new_list, test=test)
+
+    return render_template('watch_next.html', test=test)
 
 # about page
 
