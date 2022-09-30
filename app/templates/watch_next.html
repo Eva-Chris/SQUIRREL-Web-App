@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Watch next page that shows next round of recommendations">
+    <meta name="keywords" content="html, watch_next">
+    <meta name="author" content="Eva Chrysostomaki">
+
+    <title>SQUIRREL</title>
+
+    <!--favicon taken from flaticon.com -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename= 'images/squirrel.ico') }}">
+</head>
+
+<body>
+    <div class="content">
+        <h1 id="title">SQUIRREL</h1>
+
+        <!-- navigation bar -->
+        <div class="nav_bar">
+            <ul class="nav_content">
+                <li>
+                    <a href="{{url_for('index')}}">
+                        <i class='bx bxs-home'></i>
+                        <span class="nav_page">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="active" href="#watch_next">
+                        <i class='bx bxs-movie-play'></i>
+                        <span class="nav_page">Watch Next</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('about')}}">
+                        <i class='bx bxs-info-square'></i>
+                        <span class="nav_page">About</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('contact')}}">
+                        <i class='bx bxs-envelope'></i>
+                        <span class="nav_page">Contact</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <b>Select a group: </b>
+        <br>
+
+        {% for test in test %}
+        <form method="post" action="/watch_next">
+            <input class="button" type="submit" value="{{test.split('\t', 1)[0]}}" name="{{test.split('\t', 1)[0]}}" />
+        </form>
+        {% endfor %}
+        
+        <br>
+
+        <!-- table with recommended movies and individual scores -->
+        {% for item in items %}
+        {% if loop.first %}
+        <b>Group: </b> {{item.id}}
+        {% endif %}
+        {% endfor %}
+        <table>
+            <thead>
+                <th>Round</th>
+                <th>Recommended Movie</th>
+                <th>M1 Score</th>
+                <th>M2 Score</th>
+                <th>M3 Score</th>
+                <th>M4 Score</th>
+                <th>M5 Score</th>
+            </thead>
+            <tbody>
+
+                {% for item in items %}
+                <tr>
+                    <td>{{item.round}}</td>
+                    <td>{{item.movie}}</td>
+                    <td>{{item.m1_score}}</td>
+                    <td>{{item.m2_score}}</td>
+                    <td>{{item.m3_score}}</td>
+                    <td>{{item.m4_score}}</td>
+                    <td>{{item.m5_score}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</body>
+
+</html>
