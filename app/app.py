@@ -1,5 +1,4 @@
 # necessary imports
-from fileinput import filename
 from flask import Flask, request, render_template, redirect
 from forms import ContactForm
 from flask_mail import Message, Mail
@@ -102,7 +101,6 @@ def individual_scores(test, recs):
 
     return items
 
-
 # index page
 
 
@@ -117,7 +115,7 @@ def index():
     dfh = []
     f_score = []
 
-    with open('MovieLens_AllScores.txt') as all_scores:
+    with open('files/MovieLens_AllScores.txt') as all_scores:
         count = 1
         for line in all_scores:
             if count <= 16:
@@ -134,10 +132,10 @@ def index():
             count += 1
 
     # read groups for testing
-    test = open("4_1GroupsTest.txt", 'r').read().splitlines()
+    test = open("files/4_1GroupsTest.txt", 'r').read().splitlines()
 
     # read recommended movies for these groups
-    recs = open("Recommended_Movies.txt", 'r').read().splitlines()
+    recs = open("files/Recommended_Movies.txt", 'r').read().splitlines()
 
     # get individual scores
     items = individual_scores(test, recs)
@@ -169,16 +167,16 @@ def index():
 @app.route('/watch_next', methods=['GET', 'POST'])
 def watch_next():
     # read groups for testing
-    test = open("4_1GroupsTest.txt", 'r').read().splitlines()
+    test = open("files/4_1GroupsTest.txt", 'r').read().splitlines()
 
     # read recommended movies for these groups
-    recs = open("Recommended_Movies.txt", 'r').read().splitlines()
+    recs = open("files/Recommended_Movies.txt", 'r').read().splitlines()
 
     # get individual scores
     items = individual_scores(test, recs)
 
     #file to save current round of each group
-    open("Current_Round.txt", "a")
+    open("files/Current_Round.txt", "a")
 
     # send results based on button clicked
     if request.method == 'POST':
@@ -193,14 +191,31 @@ def watch_next():
                            test[i].split("\t", 1)[0], items)
                 )
                 
-                # check if group exists in the file
-                with open('Current_Round.txt', 'r+') as f:
-                    if group in f.read():
-                        print("true")
-                    else:
-                        f.write(str(group) + " " + "0" '\n')
+                # read file to get the current round
+                with open('files/Current_Round.txt', 'r') as fp:
+                    lines = fp.readlines()
+                    for line in lines:
+                        if line.find(str(group)) != -1:
+                            round = (line[-3:-1])
 
-                return render_template('watch_next.html', items=new_list, test=test)
+                if int(round) != 15:                      
+                    # replace previous round with current round
+                    with open('files/Current_Round.txt', 'r') as file :
+                        filedata = file.read()
+
+                    filedata = filedata.replace(str(group) + " " + str(round), str(group) + " " + str("{0:0=2d}".format(int(round)+1)))
+
+                    with open('files/Current_Round.txt', 'w') as file:
+                        file.write(filedata)
+                            
+                    # show only the recommendation of the current round
+                    new_list = list(
+                                filter(lambda index: index.get('round') == str("{0:0=1d}".format(int(round))), new_list)
+                            )
+                    return render_template('watch_next.html', items=new_list, test=test)
+                            
+
+                
 
     return render_template('watch_next.html', test=test)
 
