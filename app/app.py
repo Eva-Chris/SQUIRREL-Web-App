@@ -148,11 +148,11 @@ def index():
             if request.form.get(test[i].split("\t", 1)[0]) == test[i].split("\t", 1)[0]:
                 # create new list with the movie recommendations and individual scores
                 # of that specific group
-                new_list = list(
+                recs_scores = list(
                     filter(lambda id: id.get('id') ==
                            test[i].split("\t", 1)[0], items)
                 )
-                return render_template('index.html', items=new_list, used_file="MovieLens_AllScores",
+                return render_template('index.html', items=recs_scores, used_file="MovieLens_AllScores",
                                        ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score,
                                        test=test, test_file="4_1GroupsTest")
 
@@ -186,7 +186,7 @@ def watch_next():
             if group == test[i].split("\t", 1)[0]:
                 # create new list with the movie recommendations and individual scores
                 # of that specific group
-                new_list = list(
+                recs_scores = list(
                     filter(lambda id: id.get('id') ==
                            test[i].split("\t", 1)[0], items)
                 )
@@ -207,15 +207,21 @@ def watch_next():
 
                     with open('files/Current_Round.txt', 'w') as file:
                         file.write(filedata)
-                            
-                    # show only the recommendation of the current round
-                    new_list = list(
-                                filter(lambda index: index.get('round') == str("{0:0=1d}".format(int(round))), new_list)
-                            )
-                    return render_template('watch_next.html', items=new_list, test=test)
-                            
 
-                
+                    # store all the previous scores
+                    previous_scores = []
+                    
+                    for entry in recs_scores:
+                        if(int(entry['round'])<= int(round)-1):
+                            previous_scores.append(entry)
+
+                    # show only the recommendation of the current round
+                    recs_scores = list(
+                                filter(lambda index: index.get('round') == str("{0:0=1d}".format(int(round))), recs_scores)
+                            )
+
+                    return render_template('watch_next.html', items=recs_scores, test=test, previous_scores=previous_scores)
+                                          
 
     return render_template('watch_next.html', test=test)
 
@@ -241,12 +247,6 @@ def contact():
         return 'Form sent.'
     elif request.method == 'GET':
         return render_template('contact.html', form=form)
-
-
-@app.route("/yourform/getinfo")
-def show_sorted_info():
-    return render_template("results.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True)
