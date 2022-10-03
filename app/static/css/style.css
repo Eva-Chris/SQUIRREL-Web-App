@@ -64,7 +64,7 @@ ul {
 
 /* table and charts */
 
-.row1 {
+.row {
   display: flex;
 }
 
@@ -124,6 +124,12 @@ tr:hover {
 .button:hover {
   color: #000000;
   background-color: #FFFFFF;
+  cursor: pointer;
+}
+
+/* form buttons to be displayed side by side in watch_next */
+form {
+  display: inline;
 }
 
 /* page title */
