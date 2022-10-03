@@ -51,6 +51,8 @@
         </div>
 
         <b>Select a group: </b>
+        
+        <br>
         <br>
 
         {% for test in test %}
@@ -60,13 +62,19 @@
         {% endfor %}
         
         <br>
+        <br>
 
-        <!-- table with recommended movies and individual scores -->
+        <!-- table with recommended movies and individual scores for current round -->
         {% for item in items %}
         {% if loop.first %}
         <b>Group: </b> {{item.id}}
         {% endif %}
         {% endfor %}
+
+        <br>
+        <br>
+        
+        <b><u>Current Round </u></b> 
         <table>
             <thead>
                 <th>Round</th>
@@ -80,6 +88,34 @@
             <tbody>
 
                 {% for item in items %}
+                <tr>
+                    <td>{{item.round}}</td>
+                    <td>{{item.movie}}</td>
+                    <td>{{item.m1_score}}</td>
+                    <td>{{item.m2_score}}</td>
+                    <td>{{item.m3_score}}</td>
+                    <td>{{item.m4_score}}</td>
+                    <td>{{item.m5_score}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- table with recommended movies and individual scores for previous rounds -->
+        <b><u> Previous Rounds</u></b> 
+        <table>
+            <thead>
+                <th>Round</th>
+                <th>Recommended Movie</th>
+                <th>M1 Score</th>
+                <th>M2 Score</th>
+                <th>M3 Score</th>
+                <th>M4 Score</th>
+                <th>M5 Score</th>
+            </thead>
+            <tbody>
+
+                {% for item in previous_scores %}
                 <tr>
                     <td>{{item.round}}</td>
                     <td>{{item.movie}}</td>
