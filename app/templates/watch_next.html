@@ -90,7 +90,7 @@
                 {% for item in items %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td>{{item.movie}}</td>
+                    <td><img src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}" ></td>
                     <td>{{item.m1_score}}</td>
                     <td>{{item.m2_score}}</td>
                     <td>{{item.m3_score}}</td>
@@ -118,7 +118,7 @@
                 {% for item in previous_scores %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td>{{item.movie}}</td>
+                    <td><img src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}" ></td>
                     <td>{{item.m1_score}}</td>
                     <td>{{item.m2_score}}</td>
                     <td>{{item.m3_score}}</td>
