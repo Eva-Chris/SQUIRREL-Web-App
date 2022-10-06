@@ -51,18 +51,53 @@
         </div>
 
         <b>Select a group: </b>
-        
-        <br>
-        <br>
 
-        {% for test in test %}
-        <form method="post" action="/watch_next">
-            <input class="button" type="submit" value="{{test.split('\t', 1)[0]}}" name="{{test.split('\t', 1)[0]}}" />
-        </form>
-        {% endfor %}
-        
-        <br>
-        <br>
+        <!-- tables with groups -->
+        <div class="row">
+            <div class="column">
+                <table>
+                    <thead>
+                        <th>Group</th>
+                        <th>Show Results</th>
+                    </thead>
+                    <tbody>
+
+                        {% for test in test[:10] %}
+                        <tr>
+                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
+                            <form method="post" action="/watch_next">
+                                <td><input class="button" type="submit" value="{{test.split('\t', 1)[0]}}"
+                                        name="{{test.split('\t', 1)[0]}}" />
+                                </td>
+                            </form>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column">
+                <table>
+                    <thead>
+                        <th>Group</th>
+                        <th>Show Results</th>
+                    </thead>
+                    <tbody>
+
+                        {% for test in test[10:] %}
+                        <tr>
+                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
+                            <form method="post" action="/watch_next">
+                                <td><input class="button" type="submit" value="{{test.split('\t', 1)[0]}}"
+                                        name="{{test.split('\t', 1)[0]}}" />
+                                </td>
+                            </form>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <!-- table with recommended movies and individual scores for current round -->
         {% for item in items %}
@@ -73,8 +108,9 @@
 
         <br>
         <br>
-        
-        <b><u>Current Round </u></b> 
+
+        {% if items %}
+        <b><u>Current Round </u></b>
         <table>
             <thead>
                 <th>Round</th>
@@ -90,7 +126,7 @@
                 {% for item in items %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td><img src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}" ></td>
+                    <td><img src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
                     <td>{{item.m1_score}}</td>
                     <td>{{item.m2_score}}</td>
                     <td>{{item.m3_score}}</td>
@@ -100,9 +136,11 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% endif %}
 
         <!-- table with recommended movies and individual scores for previous rounds -->
-        <b><u> Previous Rounds</u></b> 
+        {% if items %}
+        <b><u> Previous Rounds</u></b>
         <table>
             <thead>
                 <th>Round</th>
@@ -118,7 +156,7 @@
                 {% for item in previous_scores %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td><img src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}" ></td>
+                    <td><img src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
                     <td>{{item.m1_score}}</td>
                     <td>{{item.m2_score}}</td>
                     <td>{{item.m3_score}}</td>
@@ -128,6 +166,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% endif %}
 
     </div>
 </body>
