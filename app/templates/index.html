@@ -54,29 +54,54 @@
             </ul>
         </div>
 
-        <br>
-        <b>File in use:</b> {{ test_file }}
+        <b>Select a group: </b>
 
-        <!-- table with groups -->
-        <table>
-            <thead>
-                <th>Group</th>
-                <th>Show Results</th>
-            </thead>
-            <tbody>
+        <!-- tables with groups -->
+        <div class="row">
+            <div class="column">
+                <table>
+                    <thead>
+                        <th>Group</th>
+                        <th>Show Results</th>
+                    </thead>
+                    <tbody>
 
-                {% for test in test %}
-                <tr>
-                    <td>{{test.split('\t', 1)[0]}}</td>
-                    <form method="post" action="/">
-                        <td><input class="button" type="submit" value="{{test.split('\t', 1)[0]}}"
-                                name="{{test.split('\t', 1)[0]}}" />
-                        </td>
-                    </form>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        {% for test in test[:10] %}
+                        <tr>
+                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
+                            <form method="post" action="/">
+                                <td><input class="button" type="submit" value="{{test.split('\t', 1)[0]}}"
+                                        name="{{test.split('\t', 1)[0]}}" />
+                                </td>
+                            </form>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column">
+                <table>
+                    <thead>
+                        <th>Group</th>
+                        <th>Show Results</th>
+                    </thead>
+                    <tbody>
+
+                        {% for test in test[10:] %}
+                        <tr>
+                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
+                            <form method="post" action="/">
+                                <td><input class="button" type="submit" value="{{test.split('\t', 1)[0]}}"
+                                        name="{{test.split('\t', 1)[0]}}" />
+                                </td>
+                            </form>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
 
         <!-- table with recommended movies and individual scores -->
@@ -86,6 +111,7 @@
         {% endif %}
         {% endfor %}
         <table>
+            {% if items %}
             <thead>
                 <th>Round</th>
                 <th>Recommended Movie</th>
@@ -109,12 +135,11 @@
                 </tr>
                 {% endfor %}
             </tbody>
+            {% endif %}
         </table>
 
-        <br>
-
         <!-- tables with scores and charts -->
-        <b>File in use:</b> {{ used_file }}
+        <b>All Scores:</b>
         <div class="row">
             <div class="column">
                 <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
