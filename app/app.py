@@ -1,5 +1,5 @@
 # necessary imports
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template
 from forms import ContactForm
 from flask_mail import Message, Mail
 import pandas as pd
@@ -101,6 +101,14 @@ def individual_scores(test, recs):
 
     return items
 
+def parse(d):
+    dictionary = dict()
+    pairs = d.strip('{}').split(', ')
+    for i in pairs:
+        pair = i.split(': ')
+        dictionary[pair[0].strip('\'\'\"\"')] = pair[1].strip('\'\'\"\"')
+    return dictionary
+
 # index page
 
 
@@ -152,13 +160,12 @@ def index():
                     filter(lambda id: id.get('id') ==
                            test[i].split("\t", 1)[0], items)
                 )
-                return render_template('index.html', items=recs_scores, used_file="MovieLens_AllScores",
-                                       ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score,
-                                       test=test, test_file="4_1GroupsTest")
 
-    return render_template('index.html', used_file="MovieLens_AllScores",
-                           ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score,
-                           test=test, test_file="4_1GroupsTest")
+                return render_template('index.html', items=recs_scores, test=test,
+                                       ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score)
+
+    return render_template('index.html',test=test,
+                           ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score)
 
 
 # watch_next page
@@ -175,11 +182,18 @@ def watch_next():
     # get individual scores
     items = individual_scores(test, recs)
 
-    #file to save current round of each group
+    # file to save current round of each group
     open("files/Current_Round.txt", "a")
+
+    # get scores per round
+    iter_scores = open('files/Scores_Per_Round.txt', 'rt')
+    lines = iter_scores.read().split('\n')
+    
 
     # send results based on button clicked
     if request.method == 'POST':
+        
+
         for i in range(0, len(test)):
             group = request.form.get(test[i].split("\t", 1)[0])
             # check if that file is the one which button was pressed
@@ -190,6 +204,12 @@ def watch_next():
                     filter(lambda id: id.get('id') ==
                            test[i].split("\t", 1)[0], items)
                 )
+
+                for l in lines:
+                    if l != '':
+                        dictionary = parse(l)
+                        if(dictionary['group'] == group):
+                            print(dictionary['ov_sat'])
                 
                 # read file to get the current round
                 with open('files/Current_Round.txt', 'r') as fp:
@@ -222,7 +242,7 @@ def watch_next():
 
                     return render_template('watch_next.html', items=recs_scores, test=test, previous_scores=previous_scores)
                                           
-
+    iter_scores.close()
     return render_template('watch_next.html', test=test)
 
 # about page
