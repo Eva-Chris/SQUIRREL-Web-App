@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="{{url_for('static', filename='js/highchartTable.js')}}" type="text/javascript"></script>
+
     <meta charset="UTF-8">
     <meta name="description" content="Watch next page that shows next round of recommendations">
     <meta name="keywords" content="html, watch_next">
@@ -138,6 +142,35 @@
         </table>
         {% endif %}
 
+        <br>
+        <br>
+
+        <!-- table with scores for current round -->
+        {% if cur_round is defined %}
+        <b>Current Round Scores:</b>
+        <table>
+            <thead>
+                <th>Overall Satisfaction</th>
+                <th>MaxMin</th>
+                <th>NDCG</th>
+                <th>DFH</th>
+                <th>FScore</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{'%0.3f'|format(cur_round[0]|float)}}</td>
+                    <td>{{'%0.3f'|format(cur_round[1]|float)}}</td>
+                    <td>{{'%0.3f'|format(cur_round[2]|float)}}</td>
+                    <td>{{'%0.3f'|format(cur_round[3]|float)}}</td>
+                    <td>{{'%0.3f'|format(cur_round[4]|float)}}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
+
+        <br>
+        <br>
+
         <!-- table with recommended movies and individual scores for previous rounds -->
         {% if items %}
         <b><u> Previous Rounds</u></b>
@@ -168,7 +201,119 @@
         </table>
         {% endif %}
 
+
+        <!-- tables with scores and charts -->
+        {% if ov_sat is defined %}
+        <b>All Scores:</b>
+        <div class="row">
+            <div class="column">
+                <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
+                    data-graph-color-1="#005EAD">
+                    <thead>
+                        <th>Round</th>
+                        <th>Overall Satisfaction</th>
+                    </thead>
+                    <tbody>
+                        {% for item in ov_sat %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div id="graphcontainer"></div>
+            </div>
+
+            <div class="column">
+                <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
+                    data-graph-color-1="#005EAD">
+                    <thead>
+                        <th>Round</th>
+                        <th>MaxMin</th>
+                    </thead>
+                    <tbody>
+                        {% for item in max_min %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div id="graphcontainer2"></div>
+            </div>
+
+            <div class="column">
+                <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
+                    data-graph-color-1="#005EAD">
+                    <thead>
+                        <th>Round</th>
+                        <th>NDCG</th>
+                    </thead>
+                    <tbody>
+                        {% for item in ndcg %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div id="graphcontainer3"></div>
+            </div>
+
+            <div class="column">
+                <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
+                    data-graph-color-1="#005EAD">
+                    <thead>
+                        <th>Round</th>
+                        <th>DFH</th>
+                    </thead>
+                    <tbody>
+                        {% for item in dfh %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div id="graphcontainer4"></div>
+            </div>
+
+            <div class="column">
+                <table class="highchart5" data-graph-container="#graphcontainer5" data-graph-type="column"
+                    data-graph-color-1="#005EAD">
+                    <thead>
+                        <th>Round</th>
+                        <th>FScore</th>
+                    </thead>
+                    <tbody>
+                        {% for item in f_score %}
+                        <tr>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div id="graphcontainer5"></div>
+            </div>
+        </div>
+        {% endif %}
     </div>
+
+    <!-- create charts from tables using highcharts -->
+    <script>
+        $('table.highchart').highchartTable();
+        $('table.highchart2').highchartTable();
+        $('table.highchart3').highchartTable();
+        $('table.highchart4').highchartTable();
+        $('table.highchart5').highchartTable();
+    </script>
+
+
 </body>
 
 </html>
