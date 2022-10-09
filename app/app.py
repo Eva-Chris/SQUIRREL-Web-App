@@ -101,6 +101,9 @@ def individual_scores(test, recs):
 
     return items
 
+# read dictionary from file
+
+
 def parse(d):
     dictionary = dict()
     pairs = d.strip('{}').split(', ')
@@ -187,30 +190,31 @@ def watch_next():
 
     # get scores per round
     iter_scores = open('files/Scores_Per_Round.txt', 'rt')
-    lines = iter_scores.read().split('\n')
-    
+    score_lines = iter_scores.read().split('\n')
 
     # send results based on button clicked
     if request.method == 'POST':
         
+        # arrays to store each score
+        ov_sat = []
+        max_min = []
+        ndcg = []
+        dfh = []
+        f_score = []
+        cur_round = []
 
         for i in range(0, len(test)):
             group = request.form.get(test[i].split("\t", 1)[0])
             # check if that file is the one which button was pressed
             if group == test[i].split("\t", 1)[0]:
+
                 # create new list with the movie recommendations and individual scores
                 # of that specific group
                 recs_scores = list(
                     filter(lambda id: id.get('id') ==
                            test[i].split("\t", 1)[0], items)
-                )
-
-                for l in lines:
-                    if l != '':
-                        dictionary = parse(l)
-                        if(dictionary['group'] == group):
-                            print(dictionary['ov_sat'])
-                
+                )                
+                    
                 # read file to get the current round
                 with open('files/Current_Round.txt', 'r') as fp:
                     lines = fp.readlines()
@@ -240,7 +244,22 @@ def watch_next():
                                 filter(lambda index: index.get('round') == str("{0:0=1d}".format(int(round))), recs_scores)
                             )
 
-                    return render_template('watch_next.html', items=recs_scores, test=test, previous_scores=previous_scores)
+                    # get scores for each round of that specific group
+                    for l in score_lines:
+                        if l != '':
+                            dictionary = parse(l)
+                            if(dictionary['group'] == group):
+                                if(int(dictionary['round']) <= int(round)-1):
+                                    ov_sat.append(dictionary['ov_sat'])
+                                    max_min.append(dictionary['max_min'])
+                                    ndcg.append(dictionary['ndcg'])
+                                    dfh.append(dictionary['dfh'])
+                                    f_score.append(dictionary['f_score'])
+                                if(int(dictionary['round']) == int(round)):
+                                    cur_round.extend((dictionary['ov_sat'],dictionary['max_min'],dictionary['ndcg'],dictionary['dfh'],dictionary['f_score']))
+
+                    return render_template('watch_next.html', items=recs_scores, test=test, previous_scores=previous_scores,
+                                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score, cur_round = cur_round)
                                           
     iter_scores.close()
     return render_template('watch_next.html', test=test)
