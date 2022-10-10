@@ -7,7 +7,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="{{url_for('static', filename='js/highchartTable.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/highchartTable.js')}}"></script>
 
     <meta charset="UTF-8">
     <meta name="description" content="Home page with tables and charts">
@@ -54,6 +54,7 @@
             </ul>
         </div>
 
+        {% if test %}
         <b>Select a group: </b>
 
         <!-- tables with groups -->
@@ -102,7 +103,7 @@
                 </table>
             </div>
         </div>
-
+        {% endif %}
 
         <!-- table with recommended movies and individual scores -->
         {% for item in items %}
@@ -236,6 +237,11 @@
                 <div id="graphcontainer5"></div>
             </div>
         </div>
+
+        {% if items is defined %}
+        <input type="button" class="button" value="Go back" onclick="history.back()">
+        {% endif %}
+
     </div>
 
     <!-- create charts from tables using highcharts -->
