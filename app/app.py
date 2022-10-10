@@ -164,7 +164,7 @@ def index():
                            test[i].split("\t", 1)[0], items)
                 )
 
-                return render_template('index.html', items=recs_scores, test=test,
+                return render_template('index.html', items=recs_scores,
                                        ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score)
 
     return render_template('index.html',test=test,
@@ -249,18 +249,20 @@ def watch_next():
                         if l != '':
                             dictionary = parse(l)
                             if(dictionary['group'] == group):
-                                if(int(dictionary['round']) <= int(round)-1):
+                                if(int(dictionary['round']) == int(round)):
+                                    cur_round.extend((dictionary['ov_sat'],dictionary['max_min'],dictionary['ndcg'],dictionary['dfh'],dictionary['f_score']))
+                                elif(int(dictionary['round']) <= int(round)-1):
                                     ov_sat.append(dictionary['ov_sat'])
                                     max_min.append(dictionary['max_min'])
                                     ndcg.append(dictionary['ndcg'])
                                     dfh.append(dictionary['dfh'])
                                     f_score.append(dictionary['f_score'])
-                                if(int(dictionary['round']) == int(round)):
-                                    cur_round.extend((dictionary['ov_sat'],dictionary['max_min'],dictionary['ndcg'],dictionary['dfh'],dictionary['f_score']))
+                                
 
-                    return render_template('watch_next.html', items=recs_scores, test=test, previous_scores=previous_scores,
+                    return render_template('watch_next.html', items=recs_scores, previous_scores=previous_scores,
                                             ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score, cur_round = cur_round)
-                                          
+
+
     iter_scores.close()
     return render_template('watch_next.html', test=test)
 
