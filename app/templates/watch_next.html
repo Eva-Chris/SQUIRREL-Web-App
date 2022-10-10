@@ -7,7 +7,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="{{url_for('static', filename='js/highchartTable.js')}}" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/highchartTable.js')}}"></script>
 
     <meta charset="UTF-8">
     <meta name="description" content="Watch next page that shows next round of recommendations">
@@ -54,6 +54,7 @@
             </ul>
         </div>
 
+        {% if test %}
         <b>Select a group: </b>
 
         <!-- tables with groups -->
@@ -102,6 +103,7 @@
                 </table>
             </div>
         </div>
+        {% endif %}
 
         <!-- table with recommended movies and individual scores for current round -->
         {% for item in items %}
@@ -172,7 +174,7 @@
         <br>
 
         <!-- table with recommended movies and individual scores for previous rounds -->
-        {% if items %}
+        {% if previous_scores %}
         <b><u> Previous Rounds</u></b>
         <table>
             <thead>
@@ -203,8 +205,17 @@
 
 
         <!-- tables with scores and charts -->
-        {% if ov_sat is defined %}
+        {% if ov_sat is defined and ov_sat|length > 0 %}
+
         <b>All Scores:</b>
+
+        <br>
+
+        <!--
+            <input type="button" class ="button" value="Display All Scores" onclick='show_hide_table();'>
+            <br>
+            id="displaytable" style="display: none;"-->
+
         <div class="row">
             <div class="column">
                 <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
@@ -302,7 +313,14 @@
             </div>
         </div>
         {% endif %}
+
+        {% if cur_round is defined %}
+        <input type="button" class="button" value="Go back" onclick="history.back()">
+        {% endif %}
+
     </div>
+
+
 
     <!-- create charts from tables using highcharts -->
     <script>
@@ -311,6 +329,13 @@
         $('table.highchart3').highchartTable();
         $('table.highchart4').highchartTable();
         $('table.highchart5').highchartTable();
+
+        /*function show_hide_table() {
+            if (document.getElementById("displaytable").style.display === "none")
+                document.getElementById("displaytable").style.display = "flex";
+            else
+                document.getElementById("displaytable").style.display = "none";
+        }*/
     </script>
 
 
