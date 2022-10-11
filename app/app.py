@@ -262,6 +262,31 @@ def watch_next():
                     return render_template('watch_next.html', items=recs_scores, previous_scores=previous_scores,
                                             ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score, cur_round = cur_round)
 
+                # show all recommendations
+                elif int(round) == 15:
+                    # create new list with the movie recommendations and individual scores
+                    # of that specific group
+                    recs_scores = list(
+                        filter(lambda id: id.get('id') ==
+                            test[i].split("\t", 1)[0], items)
+                    )
+
+                    # get scores for every round of that specific group
+                    for l in score_lines:
+                        if l != '':
+                            dictionary = parse(l)
+                            if(dictionary['group'] == group):
+                                ov_sat.append(dictionary['ov_sat'])
+                                max_min.append(dictionary['max_min'])
+                                ndcg.append(dictionary['ndcg'])
+                                dfh.append(dictionary['dfh'])
+                                f_score.append(dictionary['f_score'])
+
+                    return render_template('watch_next.html', previous_scores=recs_scores, 
+                                            message="Maximum number of rounds has been reached. See all previous rounds here: ",
+                                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score)
+
+
 
     iter_scores.close()
     return render_template('watch_next.html', test=test)
