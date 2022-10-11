@@ -173,6 +173,13 @@
         <br>
         <br>
 
+        {% if message is defined %}
+        {{ message }}
+        {% endif %}
+
+        <br>
+        <br>
+
         <!-- table with recommended movies and individual scores for previous rounds -->
         {% if previous_scores %}
         <b><u> Previous Rounds</u></b>
@@ -314,7 +321,7 @@
         </div>
         {% endif %}
 
-        {% if cur_round is defined %}
+        {% if cur_round is defined or previous_scores is defined %}
         <input type="button" class="button" value="Go back" onclick="history.back()">
         {% endif %}
 
