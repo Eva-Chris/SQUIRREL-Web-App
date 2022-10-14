@@ -168,6 +168,27 @@
                 </tr>
             </tbody>
         </table>
+
+
+        <form method="post" action="/watch_next">
+            <label>Wondering why a certain movie wasn't recommended? Type its id here:</label>
+            <br>
+            {% for item in items %}
+            {% if loop.first %}
+            <input type="hidden" name="group" value={{item.id}} />
+            {% endif %}
+            {% endfor %}
+            <input type="number" id="movie_id" name="movie_id" pattern="[0-9]{4}" required>
+            <input class="button" type="submit" name="Tell me why" value="Tell me why">
+        </form>
+        {% endif %}
+
+        {% if movie_id is defined %}
+        <b>Group: </b> {{group}}
+        <br>
+        <b>Movie Id: </b> {{movie_id}}
+        <br>
+        <b>Scores: </b> {{movie_scores}}
         {% endif %}
 
         <br>
@@ -195,7 +216,7 @@
             </thead>
             <tbody>
 
-                {% for item in previous_scores %}
+                {% for item in previous_scores[::-1] %}
                 <tr>
                     <td>{{item.round}}</td>
                     <td><img src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
@@ -217,11 +238,6 @@
         <b>All Scores:</b>
 
         <br>
-
-        <!--
-            <input type="button" class ="button" value="Display All Scores" onclick='show_hide_table();'>
-            <br>
-            id="displaytable" style="display: none;"-->
 
         <div class="row">
             <div class="column">
@@ -321,7 +337,7 @@
         </div>
         {% endif %}
 
-        {% if cur_round is defined or previous_scores is defined %}
+        {% if cur_round is defined or previous_scores is defined  or movie_id is defined %}
         <input type="button" class="button" value="Go back" onclick="history.back()">
         {% endif %}
 
@@ -336,13 +352,6 @@
         $('table.highchart3').highchartTable();
         $('table.highchart4').highchartTable();
         $('table.highchart5').highchartTable();
-
-        /*function show_hide_table() {
-            if (document.getElementById("displaytable").style.display === "none")
-                document.getElementById("displaytable").style.display = "flex";
-            else
-                document.getElementById("displaytable").style.display = "none";
-        }*/
     </script>
 
 
