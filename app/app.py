@@ -56,10 +56,8 @@ def find_movie(file, movies):
                 groupRec[id] = rec
                 if groupRec[id].get(movies[iter]) == None:
                     mov_scores.append("Not Present")
-                    #print("Not Present")
 
                 else:
-                    # print(groupRec[id][movies[iter]])
                     mov_scores.append(groupRec[id][movies[iter]])
 
     return mov_scores
@@ -100,6 +98,58 @@ def individual_scores(test, recs):
         end += 15
 
     return items
+
+
+# function to find the score given by each member to the
+# movie that was not recommended
+
+def find_why_not_movie(file, movie_id, round):
+    groupRec = {}
+    rec = {}
+    count = 0
+    mov_scores = []
+
+    with open(file+".txt") as f:
+        for l in f:
+            if "Iteration " + str(round) in l:
+                continue
+            elif "Iteration " + str(round+1) in l:
+                break
+
+            count = count + 1
+
+            rec = {}
+            firstSplit = l.split("[")
+            id = firstSplit[0]
+            allRecs = firstSplit[1].replace("]", "")
+
+            allRecs = allRecs.replace("\n", "")
+
+            secondSplit = allRecs.split(",")
+
+            for r in secondSplit:
+                itm = r.split(":")
+                rec[itm[0]] = itm[1]
+
+            if count <= 5:
+                groupRec[id] = rec
+                if groupRec[id].get(movie_id) == None:
+                    mov_scores.append("Not Present")
+
+                else:
+                    mov_scores.append(groupRec[id][movie_id])
+
+    return mov_scores
+
+
+# function to get individual scores
+# for movie that was not recommended
+
+def why_not_movie(group, movie_id):
+    mov_scores = find_why_not_movie(
+            "4_1/"+group, movie_id, 0)
+
+    return mov_scores
 
 # read dictionary from file
 
@@ -203,6 +253,13 @@ def watch_next():
         f_score = []
         cur_round = []
 
+        movie_id = request.form.get('movie_id')
+
+        if(movie_id != None):
+            group = request.form.get("group")
+            movie_scores = why_not_movie(group, movie_id)
+            return render_template('watch_next.html', group = group, movie_id = movie_id, movie_scores = list(movie_scores))
+
         for i in range(0, len(test)):
             group = request.form.get(test[i].split("\t", 1)[0])
             # check if that file is the one which button was pressed
@@ -240,7 +297,7 @@ def watch_next():
                             previous_scores.append(entry)
 
                     # show only the recommendation of the current round
-                    recs_scores = list(
+                    cur_round_scores = list(
                                 filter(lambda index: index.get('round') == str("{0:0=1d}".format(int(round))), recs_scores)
                             )
 
@@ -259,17 +316,11 @@ def watch_next():
                                     f_score.append(dictionary['f_score'])
                                 
 
-                    return render_template('watch_next.html', items=recs_scores, previous_scores=previous_scores,
+                    return render_template('watch_next.html', items=cur_round_scores, previous_scores=previous_scores,
                                             ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score, cur_round = cur_round)
 
                 # show all recommendations
                 elif int(round) == 15:
-                    # create new list with the movie recommendations and individual scores
-                    # of that specific group
-                    recs_scores = list(
-                        filter(lambda id: id.get('id') ==
-                            test[i].split("\t", 1)[0], items)
-                    )
 
                     # get scores for every round of that specific group
                     for l in score_lines:
