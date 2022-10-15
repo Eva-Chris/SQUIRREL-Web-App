@@ -106,16 +106,9 @@
         {% endif %}
 
         <!-- table with recommended movies and individual scores for current round -->
-        {% for item in items %}
-        {% if loop.first %}
-        <b>Group: </b> {{item.id}}
-        {% endif %}
-        {% endfor %}
-
-        <br>
-        <br>
-
         {% if items %}
+        <b>Group: </b> {{item[0].id}}
+        <br>
         <b><u>Current Round </u></b>
         <table>
             <thead>
@@ -169,26 +162,44 @@
             </tbody>
         </table>
 
-
+        <!-- why not query -->
         <form method="post" action="/watch_next">
             <label>Wondering why a certain movie wasn't recommended? Type its id here:</label>
             <br>
-            {% for item in items %}
-            {% if loop.first %}
-            <input type="hidden" name="group" value={{item.id}} />
-            {% endif %}
-            {% endfor %}
+            <input type="hidden" name="group_id" value={{item[0].id}} />
+            <input type="hidden" name="round_id" value={{items[0].round}} />
             <input type="number" id="movie_id" name="movie_id" pattern="[0-9]{4}" required>
             <input class="button" type="submit" name="Tell me why" value="Tell me why">
         </form>
         {% endif %}
 
+        <!-- why not results -->
         {% if movie_id is defined %}
         <b>Group: </b> {{group}}
         <br>
         <b>Movie Id: </b> {{movie_id}}
         <br>
-        <b>Scores: </b> {{movie_scores}}
+        <br>
+        <b>Scores: </b>
+        <br>
+        <table>
+            <thead>
+                <th>M1 Score</th>
+                <th>M2 Score</th>
+                <th>M3 Score</th>
+                <th>M4 Score</th>
+                <th>M5 Score</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{movie_scores[0]}}</td>
+                    <td>{{movie_scores[1]}}</td>
+                    <td>{{movie_scores[2]}}</td>
+                    <td>{{movie_scores[3]}}</td>
+                    <td>{{movie_scores[4]}}</td>
+                </tr>
+            </tbody>
+        </table>
         {% endif %}
 
         <br>
@@ -230,7 +241,6 @@
             </tbody>
         </table>
         {% endif %}
-
 
         <!-- tables with scores and charts -->
         {% if ov_sat is defined and ov_sat|length > 0 %}
@@ -337,13 +347,11 @@
         </div>
         {% endif %}
 
-        {% if cur_round is defined or previous_scores is defined  or movie_id is defined %}
+        {% if cur_round is defined or previous_scores is defined or movie_id is defined %}
         <input type="button" class="button" value="Go back" onclick="history.back()">
         {% endif %}
 
     </div>
-
-
 
     <!-- create charts from tables using highcharts -->
     <script>
@@ -353,7 +361,6 @@
         $('table.highchart4').highchartTable();
         $('table.highchart5').highchartTable();
     </script>
-
 
 </body>
 
