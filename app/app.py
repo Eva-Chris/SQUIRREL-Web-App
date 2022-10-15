@@ -108,36 +108,41 @@ def find_why_not_movie(file, movie_id, round):
     rec = {}
     count = 0
     mov_scores = []
+    iter = 0
 
     with open(file+".txt") as f:
         for l in f:
-            if "Iteration " + str(round) in l:
+            if "Iteration " + round in l:
+                iter = 1
                 continue
-            elif "Iteration " + str(round+1) in l:
+            elif "Iteration " + str(int(round)+1) in l:
                 break
+            elif "Iteration" in l:
+                continue
 
-            count = count + 1
+            if iter == 1:
+                count = count + 1
 
-            rec = {}
-            firstSplit = l.split("[")
-            id = firstSplit[0]
-            allRecs = firstSplit[1].replace("]", "")
+                rec = {}
+                firstSplit = l.split("[")
+                id = firstSplit[0]
+                allRecs = firstSplit[1].replace("]", "")
 
-            allRecs = allRecs.replace("\n", "")
+                allRecs = allRecs.replace("\n", "")
 
-            secondSplit = allRecs.split(",")
+                secondSplit = allRecs.split(",")
 
-            for r in secondSplit:
-                itm = r.split(":")
-                rec[itm[0]] = itm[1]
+                for r in secondSplit:
+                    itm = r.split(":")
+                    rec[itm[0]] = itm[1]
 
-            if count <= 5:
-                groupRec[id] = rec
-                if groupRec[id].get(movie_id) == None:
-                    mov_scores.append("Not Present")
+                if count <= 5:
+                    groupRec[id] = rec
+                    if groupRec[id].get(movie_id) == None:
+                        mov_scores.append("Not Present")
 
-                else:
-                    mov_scores.append(groupRec[id][movie_id])
+                    else:
+                        mov_scores.append(groupRec[id][movie_id])
 
     return mov_scores
 
@@ -145,9 +150,9 @@ def find_why_not_movie(file, movie_id, round):
 # function to get individual scores
 # for movie that was not recommended
 
-def why_not_movie(group, movie_id):
+def why_not_movie(group, movie_id, round_id):
     mov_scores = find_why_not_movie(
-            "4_1/"+group, movie_id, 0)
+            "4_1/"+group, movie_id, round_id)
 
     return mov_scores
 
@@ -255,9 +260,11 @@ def watch_next():
 
         movie_id = request.form.get('movie_id')
 
+        # check if why not query was requested
         if(movie_id != None):
-            group = request.form.get("group")
-            movie_scores = why_not_movie(group, movie_id)
+            group = request.form.get("group_id")
+            round = request.form.get("round_id")
+            movie_scores = why_not_movie(group, movie_id, round)
             return render_template('watch_next.html', group = group, movie_id = movie_id, movie_scores = list(movie_scores))
 
         for i in range(0, len(test)):
