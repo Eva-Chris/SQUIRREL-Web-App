@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Login page">
+    <meta name="keywords" content="html, login">
+    <meta name="author" content="Eva Chrysostomaki">
+
+    <title>SQUIRREL</title>
+
+    <!--favicon taken from flaticon.com -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename= 'images/squirrel.ico') }}">
+</head>
+
+<body>
+    <div class="content">
+        <h1 id="title">SQUIRREL</h1>
+
+        <!-- navigation bar -->
+        <div class="nav_bar">
+            <ul class="nav_content">
+                <li>
+                    <a href="{{url_for('index')}}">
+                        <i class='bx bxs-home'></i>
+                        <span class="nav_page">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="active" href="#login">
+                        <i class='bx bxs-movie-play'></i>
+                        <span class="nav_page">Watch Next</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('about')}}">
+                        <i class='bx bxs-info-square'></i>
+                        <span class="nav_page">About</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url_for('contact')}}">
+                        <i class='bx bxs-envelope'></i>
+                        <span class="nav_page">Contact</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+      <h2>Please login</h2>
+      <form action="" method="post">
+        <input type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
+        <br>
+        <input type="password" placeholder="Password" name="password" value="{{ request.form.password }}">
+        <br>
+        <br>
+        <input class="button" type="submit" value="Login">
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+    </div>
+  </body>
+</html>
