@@ -1,5 +1,7 @@
 # necessary imports
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, session
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 from forms import ContactForm
 from flask_mail import Message, Mail
 import pandas as pd
@@ -7,6 +9,20 @@ import os
 
 mail = Mail()
 app = Flask(__name__, static_folder='static')
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] =\
+        'sqlite:///' + os.path.join(basedir, 'database.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100))
+
+    def __repr__(self):
+        return f'<User {self.name}>'
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
@@ -221,7 +237,7 @@ def index():
 
                 return render_template('index.html', items=recs_scores,
                                        ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score)
-
+    
     return render_template('index.html',test=test,
                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score)
 
@@ -347,7 +363,9 @@ def watch_next():
 
 
     iter_scores.close()
-    return render_template('watch_next.html', test=test)
+    name = request.args['name']  # counterpart for url_for()
+    name = session['name']  
+    return render_template('watch_next.html', test=test, user = name)
 
 # about page
 
@@ -374,15 +392,18 @@ def contact():
 
 # login page
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
+        user = User.query.filter_by(name=request.form['username'], password=request.form['password']).first()
+        if user!= None:
+            name = user.name
+            session['name'] = name
+            return redirect(url_for('watch_next', name = name))
         else:
-            return redirect(url_for('watch_next'))
+             error = 'Invalid Credentials. Please try again.'
+            
     return render_template('login.html', error=error)
 
 
