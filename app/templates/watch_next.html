@@ -82,13 +82,13 @@
             </div>
 
             <div class="column">
+                {% if test[10:] %}
                 <table>
                     <thead>
                         <th>Group</th>
                         <th>Show Results</th>
                     </thead>
                     <tbody>
-
                         {% for test in test[10:] %}
                         <tr>
                             <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
@@ -101,13 +101,14 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% endif %}
             </div>
         </div>
         {% endif %}
 
         <!-- table with recommended movies and individual scores for current round -->
         {% if items %}
-        <b>Group: </b> {{item[0].id}}
+        <b>Group: </b> {{items[0].id}}
         <br>
         <b><u>Current Round </u></b>
         <table>
@@ -166,7 +167,7 @@
         <form method="post" action="/watch_next">
             <label>Wondering why a certain movie wasn't recommended? Type its id here:</label>
             <br>
-            <input type="hidden" name="group_id" value={{item[0].id}} />
+            <input type="hidden" name="group_id" value={{items[0].id}} />
             <input type="hidden" name="round_id" value={{items[0].round}} />
             <input type="number" id="movie_id" name="movie_id" pattern="[0-9]{4}" required>
             <input class="button" type="submit" name="Tell me why" value="Tell me why">
@@ -347,9 +348,9 @@
         </div>
         {% endif %}
 
-        {% if cur_round is defined or previous_scores is defined or movie_id is defined %}
         <input type="button" class="button" value="Go back" onclick="history.back()">
-        {% endif %}
+        <br>
+        <input type="button" class="button" value="Logout" onclick="window.location.href='login'">
 
     </div>
 
