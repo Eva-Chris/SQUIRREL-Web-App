@@ -10,6 +10,7 @@ import os
 mail = Mail()
 app = Flask(__name__, static_folder='static')
 
+# SQL
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] =\
         'sqlite:///' + os.path.join(basedir, 'database.db')
@@ -23,7 +24,8 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {self.name}>'
-
+    
+# MAIL
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
@@ -247,6 +249,7 @@ def index():
 
 @app.route('/watch_next', methods=['GET', 'POST'])
 def watch_next():
+    
     # read groups for testing
     test = open("files/4_1GroupsTest.txt", 'r').read().splitlines()
 
@@ -363,9 +366,18 @@ def watch_next():
 
 
     iter_scores.close()
-    name = request.args['name']  # counterpart for url_for()
+    name = request.args['name']
     name = session['name']  
-    return render_template('watch_next.html', test=test, user = name)
+    user_groups = []
+
+    if name == 'admin':
+        return render_template('watch_next.html', test=test)
+    else:
+        for i in range(0, len(test)):
+            if name in test[i].split("\t", 1)[0]:
+                user_groups.append(test[i].split("\t", 1)[0])
+        
+        return render_template('watch_next.html', test=user_groups)
 
 # about page
 
@@ -405,6 +417,15 @@ def login():
              error = 'Invalid Credentials. Please try again.'
             
     return render_template('login.html', error=error)
+
+
+# logout page
+
+
+@app.route('/logout')
+def logout():
+    session.pop('name',None)
+    return redirect(url_for('login'))
 
 
 if __name__ == "__main__":
