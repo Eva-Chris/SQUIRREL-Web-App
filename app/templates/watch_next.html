@@ -34,7 +34,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="active" href="#watch_next">
+                    <a class="active" href="{{url_for('watch_next')}}">
                         <i class='bx bxs-movie-play'></i>
                         <span class="nav_page">Watch Next</span>
                     </a>
@@ -126,7 +126,7 @@
                 {% for item in items %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td><img src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
+                    <td><img id="poster_cur" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
                     <td>{{item.m1_score}}</td>
                     <td>{{item.m2_score}}</td>
                     <td>{{item.m3_score}}</td>
@@ -163,6 +163,12 @@
             </tbody>
         </table>
 
+        <!-- next round -->
+        <form method="post" action="/watch_next">
+            <input type="hidden" name="group_id" value={{items[0].id}} />
+            <input class="button" type="submit" name="Next Round" value="Next Round">
+        </form>
+
         <!-- why not query -->
         <form method="post" action="/watch_next">
             <label>Wondering why a certain movie wasn't recommended? Type its id here:</label>
@@ -176,12 +182,7 @@
 
         <!-- why not results -->
         {% if movie_id is defined %}
-        <b>Group: </b> {{group}}
-        <br>
-        <b>Movie Id: </b> {{movie_id}}
-        <br>
-        <br>
-        <b>Scores: </b>
+        <b>Scores for movie: </b> {{movie_id}}
         <br>
         <table>
             <thead>
@@ -231,7 +232,7 @@
                 {% for item in previous_scores[::-1] %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td><img src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
+                    <td><img id="poster" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
                     <td>{{item.m1_score}}</td>
                     <td>{{item.m2_score}}</td>
                     <td>{{item.m3_score}}</td>
@@ -348,9 +349,11 @@
         </div>
         {% endif %}
 
+        {% if movie_id is defined  %}
         <input type="button" class="button" value="Go back" onclick="history.back()">
-        <br>
-        <input type="button" class="button" value="Logout" onclick="window.location.href='login'">
+        {% elif  cur_round is defined or previous_scores is defined %}
+        <a href="watch_next" type="button" class="button" style="text-decoration: none">Go back to group list</a> 
+        {% endif %}
 
     </div>
 
