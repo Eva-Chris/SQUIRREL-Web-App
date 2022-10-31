@@ -1,7 +1,5 @@
 # necessary imports
-from flask import Flask, request, render_template, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import func
+from flask import Flask, request, render_template
 from forms import ContactForm
 from flask_mail import Message, Mail
 import pandas as pd
@@ -9,21 +7,6 @@ import os
 
 mail = Mail()
 app = Flask(__name__, static_folder='static')
-
-# SQL
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-        'sqlite:///' + os.path.join(basedir, 'database.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(100))
-
-    def __repr__(self):
-        return f'<User {self.name}>'
     
 # MAIL
 SECRET_KEY = os.urandom(32)
@@ -73,7 +56,7 @@ def find_movie(file, movies):
             if count <= 5:
                 groupRec[id] = rec
                 if groupRec[id].get(movies[iter]) == None:
-                    mov_scores.append("Not Present")
+                    mov_scores.append("Not enough data")
 
                 else:
                     mov_scores.append(groupRec[id][movies[iter]])
@@ -157,7 +140,7 @@ def find_why_not_movie(file, movie_id, round):
                 if count <= 5:
                     groupRec[id] = rec
                     if groupRec[id].get(movie_id) == None:
-                        mov_scores.append("Not Present")
+                        mov_scores.append("Not enough data")
 
                     else:
                         mov_scores.append(groupRec[id][movie_id])
@@ -284,10 +267,24 @@ def watch_next():
             group = request.form.get("group_id")
             round = request.form.get("round_id")
             movie_scores = why_not_movie(group, movie_id, round)
-            return render_template('watch_next.html', group = group, movie_id = movie_id, movie_scores = list(movie_scores))
+            
+
+            recs_scores = list(
+                    filter(lambda id: id.get('id') == group, items)   
+                ) 
+            cur_round_scores = list(
+                        filter(lambda index: index.get('round') == str("{0:0=1d}".format(int(round))), recs_scores)
+                    )
+
+
+            return render_template('watch_next.html', movie_id = movie_id, movie_scores = list(movie_scores),items=cur_round_scores)
 
         for i in range(0, len(test)):
-            group = request.form.get(test[i].split("\t", 1)[0])
+            if(request.form.get("group_id") != None):
+                group = request.form.get("group_id")
+            else:
+                group = request.form.get(test[i].split("\t", 1)[0])
+            
             # check if that file is the one which button was pressed
             if group == test[i].split("\t", 1)[0]:
 
@@ -366,18 +363,7 @@ def watch_next():
 
 
     iter_scores.close()
-    name = request.args['name']
-    name = session['name']  
-    user_groups = []
-
-    if name == 'admin':
-        return render_template('watch_next.html', test=test)
-    else:
-        for i in range(0, len(test)):
-            if name in test[i].split("\t", 1)[0]:
-                user_groups.append(test[i].split("\t", 1)[0])
-        
-        return render_template('watch_next.html', test=user_groups)
+    return render_template('watch_next.html', test=test)
 
 # about page
 
@@ -401,31 +387,6 @@ def contact():
         return 'Form sent.'
     elif request.method == 'GET':
         return render_template('contact.html', form=form)
-
-# login page
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        user = User.query.filter_by(name=request.form['username'], password=request.form['password']).first()
-        if user!= None:
-            name = user.name
-            session['name'] = name
-            return redirect(url_for('watch_next', name = name))
-        else:
-             error = 'Invalid Credentials. Please try again.'
-            
-    return render_template('login.html', error=error)
-
-
-# logout page
-
-
-@app.route('/logout')
-def logout():
-    session.pop('name',None)
-    return redirect(url_for('login'))
 
 
 if __name__ == "__main__":
