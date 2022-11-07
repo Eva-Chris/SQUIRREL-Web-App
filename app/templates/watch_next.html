@@ -217,10 +217,11 @@
         <!-- table with recommended movies and individual scores for previous rounds -->
         {% if previous_scores %}
         <b><u> Previous Rounds</u></b>
-        <table>
+        <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
+        data-graph-color-1="#005EAD">
             <thead>
                 <th>Round</th>
-                <th>Recommended Movie</th>
+                <th data-graph-skip="1">Recommended Movie</th>
                 <th>M1 Score</th>
                 <th>M2 Score</th>
                 <th>M3 Score</th>
@@ -242,6 +243,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div id="graphcontainerprev"></div>
         {% endif %}
 
         <!-- tables with scores and charts -->
@@ -364,6 +366,7 @@
         $('table.highchart3').highchartTable();
         $('table.highchart4').highchartTable();
         $('table.highchart5').highchartTable();
+        $('table.highchartprev').highchartTable();
     </script>
 
 </body>
