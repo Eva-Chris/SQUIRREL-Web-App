@@ -56,7 +56,7 @@ def find_movie(file, movies):
             if count <= 5:
                 groupRec[id] = rec
                 if groupRec[id].get(movies[iter]) == None:
-                    mov_scores.append("Not enough data")
+                    mov_scores.append("No data available")
 
                 else:
                     mov_scores.append(groupRec[id][movies[iter]])
@@ -140,7 +140,7 @@ def find_why_not_movie(file, movie_id, round):
                 if count <= 5:
                     groupRec[id] = rec
                     if groupRec[id].get(movie_id) == None:
-                        mov_scores.append("Not enough data")
+                        mov_scores.append("No data available")
 
                     else:
                         mov_scores.append(groupRec[id][movie_id])
@@ -202,7 +202,14 @@ def index():
     test = open("files/4_1GroupsTest.txt", 'r').read().splitlines()
 
     # read recommended movies for these groups
-    recs = open("files/Recommended_Movies.txt", 'r').read().splitlines()
+    recs = open("files/Recommended_Movies.txt", 'rt')
+    recs_lines = recs.read().split('\n')
+    recs = []
+
+    for l in recs_lines:
+        if l != '':
+            dictionary = parse(l)
+            recs.append(dictionary['movie'])
 
     # get individual scores
     items = individual_scores(test, recs)
@@ -237,7 +244,14 @@ def watch_next():
     test = open("files/4_1GroupsTest.txt", 'r').read().splitlines()
 
     # read recommended movies for these groups
-    recs = open("files/Recommended_Movies.txt", 'r').read().splitlines()
+    recs = open("files/Recommended_Movies.txt", 'rt')
+    recs_lines = recs.read().split('\n')
+    recs = []
+
+    for l in recs_lines:
+        if l != '':
+            dictionary = parse(l)
+            recs.append(dictionary['movie'])
 
     # get individual scores
     items = individual_scores(test, recs)
@@ -337,10 +351,46 @@ def watch_next():
                                     ndcg.append(dictionary['ndcg'])
                                     dfh.append(dictionary['dfh'])
                                     f_score.append(dictionary['f_score'])
+
+                    # actions
+                    for l in recs_lines:
+                        if l != '':
+                            dictionary = parse(l)
+                            if(dictionary['group'] == group):
+                                if(int(dictionary['round']) == int(round)):
+                                    action = int(dictionary['action'])
+                    
+                    if action == 0:      
+                        action = """Average. It is the classic Average Aggregation method, where the group
+                                    predicted score for an item is the average across all predicted scores for that
+                                    item across all group members. In this case, all the predicted scores of an
+                                    item for the group members are considered to be of equal importance."""  
+                    elif action == 1:
+                        action = """SDAA. The Sequential Dynamic Adaptation Aggregation method, dynamically
+                                    computes a weight w, which is defined as the difference in the satisfaction 
+                                    scores in the previous round of recommendations
+                                    between the most satisfied and the least satisfied group member"""
+                    elif action == 2:
+                        action = """SIAA. The Sequential Individual Adaptation
+                                    Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
+                                    member individually. For each member, it calculates a weight based on
+                                    their overall satisfaction and the user disagreement of the previous iteration."""
+                    elif action == 3:
+                        action = """Average Plus. Avg+ aggregation
+                                    method consists of two phases. In the first phase, we employ an average
+                                    aggregation. Then, in the second phase, we iteratively populate the group
+                                    recommendation list, with items that generate the minimum possible group
+                                    disagreement score."""
+                    elif action == 4:
+                        action = "Pareto"
+                    elif action == 5:
+                        action = "Sihem"
+                    else:
+                        print("ERROR---ERROR")         
                                 
 
                     return render_template('watch_next.html', items=cur_round_scores, previous_scores=previous_scores,
-                                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score, cur_round = cur_round)
+                                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score, cur_round = cur_round, action = action)
 
                 # show all recommendations
                 elif int(round) == 15:
