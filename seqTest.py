@@ -1,3 +1,4 @@
+from re import I
 import numpy as np
 import scipy.sparse as sp
 import math
@@ -201,7 +202,7 @@ files.append("chunks14.csv")
 """
 
 #Read all the groups in the file
-groupsIds = readGroups('4_1GroupsTrain.txt')
+groupsIds = readGroups('files/4_1GroupsTrain.txt')
 
 
 print('Start training')
@@ -271,14 +272,17 @@ terminal = False
 
 ### Run an episode
 
-groupsIds = readGroups('4_1GroupsTest.txt')
+groupsIds = readGroups('files/4_1GroupsTest.txt')
 satO = {}
 maxMin = {}
 fScore = {}
 ndcg = {}
 dfh = {}
 j = 1
-file = open('Recommended_Movies.txt', 'w')
+
+file = open('files/Recommended_Movies.txt', 'w')
+iter_scores = open('files/Scores_Per_Round.txt', 'w')
+
 actionsChoosen  = [0] * 6
 for groups in groupsIds:
     grIn = groups.split("\t")
@@ -305,7 +309,8 @@ for groups in groupsIds:
             recommentedMovies.append(k)
 
 
-        file.write(str(recommentedMovies[i]) + '\n')
+        item = dict(group=grIn[0], round=str(i), movie=str(recommentedMovies[i]), action=str(actions))
+        file.write(str(item) + '\n')
 
         (sum,var,fScoreV) = calcStats(states)
         ndcgV = 0.0
@@ -331,18 +336,28 @@ for groups in groupsIds:
             satOV = []
             satOV.append(sum)
             satO[str(i)] = satOV
+
             mm = []
             mm.append(var)
             maxMin[str(i)] = mm
+
             fs = []
             fs.append(fScoreV)
             fScore[str(i)] = fs
+
             nn = []
             nn.append(ndcgV)
             ndcg[str(i)] = nn
+
             dd = []
             dd.append(dfhV)
             dfh[str(i)] = dd
+
+            an_item = dict(group=grIn[0], round=str(i), ov_sat=str(sum), max_min=str(var), 
+                           f_score=str(fScoreV), ndcg=str(ndcgV), dfh=str(dfhV))
+           
+            
+
         else:
             satOV = satO[str(i)]
             satOV.append(sum)
@@ -354,22 +369,24 @@ for groups in groupsIds:
             nn.append(ndcgV)
             dd = dfh[str(i)]
             dd.append(dfhV)
+
+            an_item = dict(group=grIn[0], round=str(i), ov_sat=str(sum), max_min=str(var), 
+                           f_score=str(fScoreV), ndcg=str(ndcgV), dfh=str(dfhV))
+           
+
+        
+        iter_scores.write(str(an_item) + '\n')
+
         i = i + 1
     j = j + 1
     fl = environment.flagEmpty
     if fl:
         print("Has empty values >>>>>>>>>>" + str(grIn[0]))
-    
      
 file.close()
+iter_scores.close()
 
-#file = open('Recommended_Movies.txt', 'w')
-#for mov in recommentedMovies:
-#     file.write(str(mov) + '\n')
-#file.close() 
-
-
-with open('MovieLens_AllScores.txt', 'w') as f:
+with open('files/MovieLens_AllScores.txt', 'w') as f:
     f.write('Overall Satisfaction\n')
 
     for i in range(15):
