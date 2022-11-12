@@ -126,7 +126,8 @@
                 {% for item in items %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td><img id="poster_cur" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
+                    <td><img id="poster_cur" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
+                    </td>
                     <td>{{item.m1_score}}</td>
                     <td>{{item.m2_score}}</td>
                     <td>{{item.m3_score}}</td>
@@ -163,7 +164,43 @@
             </tbody>
         </table>
 
+        <!-- action explanations -->
         <b>Action:</b> {{ action }}
+
+        {% if action == "Average" %}
+        <p class="action_expl">It is the classic Average Aggregation method,
+                                where the group predicted score for an item is the average across 
+                                all predicted scores for that item across all group members. In this case, 
+                                all the predicted scores of an item for the group members are considered 
+                                to be of equal importance.</p>
+        {% elif action == "SDAA" %}
+        <p class="action_expl">The Sequential Dynamic Adaptation Aggregation method, dynamically
+                                computes a weight w, which is defined as the difference in the satisfaction 
+                                scores in the previous round of recommendations
+                                between the most satisfied and the least satisfied group member.</p>
+        {% elif action == "SIAA" %}
+        <p class="action_expl">The Sequential Individual Adaptation
+                                Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
+                                member individually. For each member, it calculates a weight based on
+                                their overall satisfaction and the user disagreement of the previous iteration.</p>
+        {% elif action == "Average Plus" %}
+        <p class="action_expl">Avg+ aggregation
+                                method consists of two phases. In the first phase, we employ an average
+                                aggregation. Then, in the second phase, we iteratively populate the group
+                                recommendation list, with items that generate the minimum possible group
+                                disagreement score.</p>
+        {% elif action == "Pareto" %}
+        <p class="action_expl">This method generates a group recommendation list by incrementally adding to it 
+                                items that have the best combination of Social Welfare
+                                and Fairness scores. The Social Welfare of an item is the average satisfaction of all 
+                                members for that item.</p>
+        {% elif action == "RP80" %}
+        <p class="action_expl">This method combines group relevance and group disagreement scores. All the group 
+                                members' predicted scores about an item
+                                are considered of equal importance and additionally, the method takes into
+                                account the group's disagreement about that item.</p>
+        {% endif %}
+
         <br>
 
         <!-- next round -->
@@ -221,7 +258,7 @@
         {% if previous_scores %}
         <b><u> Previous Rounds</u></b>
         <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
-        data-graph-color-1="#005EAD">
+            data-graph-color-1="#005EAD">
             <thead>
                 <th>Round</th>
                 <th data-graph-skip="1">Recommended Movie</th>
@@ -354,10 +391,10 @@
         </div>
         {% endif %}
 
-        {% if movie_id is defined  %}
+        {% if movie_id is defined %}
         <input type="button" class="button" value="Go back" onclick="history.back()">
-        {% elif  cur_round is defined or previous_scores is defined %}
-        <a href="watch_next" type="button" class="button" style="text-decoration: none">Go back to group list</a> 
+        {% elif cur_round is defined or previous_scores is defined %}
+        <a href="watch_next" type="button" class="button" style="text-decoration: none">Go back to group list</a>
         {% endif %}
 
     </div>
