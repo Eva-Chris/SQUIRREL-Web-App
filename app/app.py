@@ -361,30 +361,17 @@ def watch_next():
                                     action = int(dictionary['action'])
                     
                     if action == 0:      
-                        action = """Average. It is the classic Average Aggregation method, where the group
-                                    predicted score for an item is the average across all predicted scores for that
-                                    item across all group members. In this case, all the predicted scores of an
-                                    item for the group members are considered to be of equal importance."""  
+                        action = "Average"  
                     elif action == 1:
-                        action = """SDAA. The Sequential Dynamic Adaptation Aggregation method, dynamically
-                                    computes a weight w, which is defined as the difference in the satisfaction 
-                                    scores in the previous round of recommendations
-                                    between the most satisfied and the least satisfied group member"""
+                        action = "SDAA"
                     elif action == 2:
-                        action = """SIAA. The Sequential Individual Adaptation
-                                    Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
-                                    member individually. For each member, it calculates a weight based on
-                                    their overall satisfaction and the user disagreement of the previous iteration."""
+                        action = "SIAA"
                     elif action == 3:
-                        action = """Average Plus. Avg+ aggregation
-                                    method consists of two phases. In the first phase, we employ an average
-                                    aggregation. Then, in the second phase, we iteratively populate the group
-                                    recommendation list, with items that generate the minimum possible group
-                                    disagreement score."""
+                        action = "Average Plus"
                     elif action == 4:
                         action = "Pareto"
                     elif action == 5:
-                        action = "Sihem"
+                        action = "RP80"
                     else:
                         print("ERROR---ERROR")         
                                 
