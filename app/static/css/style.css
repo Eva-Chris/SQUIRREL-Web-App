@@ -132,6 +132,13 @@ form {
   display: inline;
 }
 
+input {
+  width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
 /* page title */
 #title {
   text-align: center;
@@ -148,7 +155,7 @@ form {
 /* about page */
 .about {
   background: url(/static/images/squirrel_model.png) no-repeat left;
-  background-size: 50%;
+  background-size: 48%;
   background-color: #FFF;
   overflow: hidden;
   padding: 10px 0;
@@ -203,4 +210,28 @@ form input#submit {
 form input#submit:hover {
   cursor: pointer;
   background-color: #dbdbdb;
+}
+
+/* watch next page */
+#poster_cur{
+  width: 30%;
+  height: auto;
+}
+
+#poster {
+  width: 20%;
+  height: auto;
+}
+
+.action_expl {
+  width: 700px; 
+  padding: 20px; 
+  background: rgba(173, 210, 237, 0.2);
+  text-align: justify;
+}
+
+@media screen and (max-width:3000px) {
+  .text {
+    font-size: 20px;
+  }
 }
