@@ -359,6 +359,15 @@
         xAxisLabelStyle.fontSize = xAxisLabelFontSize; 
       }
 
+      var getXaxisAttr = function($table, xAxisNum, name) {
+        var oldConvention = $table.data('graph-xaxis-' + xAxisNum + '-' + name);
+        if (typeof oldConvention != 'undefined') {
+            return oldConvention;
+        }
+
+        return $table.data('graph-xaxis' + xAxisNum + '-' + name);
+      };
+
       var highChartConfig = {
         colors: colors,
         chart: {
@@ -389,7 +398,7 @@
         xAxis: {
           categories:             ($table.data('graph-xaxis-type') != 'datetime') ? xValues : undefined,
           type:                   ($table.data('graph-xaxis-type') == 'datetime') ? 'datetime' :  undefined,
-          reversed:               $table.data('graph-xaxis-reversed') == '1',
+          reversed:               getXaxisAttr($table, 1, 'reversed') == '1',
           opposite:               $table.data('graph-xaxis-opposite') == '1',
           showLastLabel:          typeof $table.data('graph-xaxis-show-last-label') != 'undefined' ? $table.data('graph-xaxis-show-last-label') : true,
           tickInterval:           $table.data('graph-xaxis-tick-interval') || null,
