@@ -168,33 +168,49 @@
         <b>Action:</b> {{ action }}
 
         {% if action == "Average" %}
+        <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by the all group members. <br>
+            Average satisfaction: {{'%0.3f'|format(cur_round[0]|float)}}</p>
         <p class="action_expl">It is the classic Average Aggregation method,
                                 where the group predicted score for an item is the average across 
                                 all predicted scores for that item across all group members. In this case, 
                                 all the predicted scores of an item for the group members are considered 
                                 to be of equal importance.</p>
+
         {% elif action == "SDAA" %}
-        <p class="action_expl">The Sequential Dynamic Adaptation Aggregation method, dynamically
-                                computes a weight w, which is defined as the difference in the satisfaction 
-                                scores in the previous round of recommendations
-                                between the most satisfied and the least satisfied group member.</p>
+        <p>We recommended this movie for this round taking into account the past satisfaction of the group members.</p> <br>
+        <p class="action_expl">The Sequential Dynamic Adaptation Aggregation method takes into account the past satisfaction of
+                                the group members to calculate a weight. This weight balances the average
+                                predicted score of an item for the group and the least satisfied member's
+                                predicted score for that item.</p>
+
         {% elif action == "SIAA" %}
+        <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by the member who was the least satisfied in the previous round.</p> <br>
         <p class="action_expl">The Sequential Individual Adaptation
                                 Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
                                 member individually. For each member, it calculates a weight based on
                                 their overall satisfaction and the user disagreement of the previous iteration.</p>
+
         {% elif action == "Average Plus" %}
+        <p>We recommended this movie for this round, since it is the movie that has the minimum disagreement score. <br>
+            Average satisfaction: {{'%0.3f'|format(cur_round[0]|float)}}</p>
         <p class="action_expl">Avg+ aggregation
                                 method consists of two phases. In the first phase, we employ an average
                                 aggregation. Then, in the second phase, we iteratively populate the group
                                 recommendation list, with items that generate the minimum possible group
                                 disagreement score.</p>
+
         {% elif action == "Pareto" %}
+        <p>We recommended this movie for this round, since it is the most fair result for all group members. <br>
+            Fairness score: {{'%0.3f'|format(cur_round[4]|float)}}</p>
         <p class="action_expl">This method generates a group recommendation list by incrementally adding to it 
                                 items that have the best combination of Social Welfare
-                                and Fairness scores. The Social Welfare of an item is the average satisfaction of all 
-                                members for that item.</p>
+                                and Fairness scores. It takes into account
+                                the average satisfaction that an item produces for the group members and
+                                balances it with the variance of the group members' satisfaction for that
+                                item.</p>
+
         {% elif action == "RP80" %}
+        <p>We recommended this movie for this round, based on the group's disagreement.</p> <br>
         <p class="action_expl">This method combines group relevance and group disagreement scores. All the group 
                                 members' predicted scores about an item
                                 are considered of equal importance and additionally, the method takes into
@@ -258,7 +274,7 @@
         {% if previous_scores %}
         <b><u> Previous Rounds</u></b>
         <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
-            data-graph-color-1="#005EAD">
+            data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1">
             <thead>
                 <th>Round</th>
                 <th data-graph-skip="1">Recommended Movie</th>
