@@ -177,14 +177,32 @@
                                 to be of equal importance.</p>
 
         {% elif action == "SDAA" %}
-        <p>We recommended this movie for this round taking into account the past satisfaction of the group members.</p> <br>
+        <p>We recommended this movie for this round taking into account the past satisfaction of the group members.<br>
+            Group satisfaction: {{'%0.3f'|format(cur_round[0]|float)}} </p> 
         <p class="action_expl">The Sequential Dynamic Adaptation Aggregation method takes into account the past satisfaction of
                                 the group members to calculate a weight. This weight balances the average
                                 predicted score of an item for the group and the least satisfied member's
                                 predicted score for that item.</p>
 
         {% elif action == "SIAA" %}
-        <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by the member who was the least satisfied in the previous round.</p> <br>
+        <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by the member who was the least satisfied in the previous round. <br>
+            {% set member_prev_scores = [previous_scores[-1].m1_score, previous_scores[-1].m2_score, previous_scores[-1].m3_score, previous_scores[-1].m4_score, previous_scores[-1].m5_score] %}
+            {% set min_score = [previous_scores[-1].m1_score, previous_scores[-1].m2_score, previous_scores[-1].m3_score, previous_scores[-1].m4_score, previous_scores[-1].m5_score] | min %}
+            {% set x = member_prev_scores.index(min_score) %}
+            
+            Least satisfied member in previous round: 
+            {% if x == 0 %}
+            Member 1 
+            {% elif x == 1 %}
+            Member 2
+            {% elif x == 2 %}
+            Member 3
+            {% elif x == 3 %}
+            Member 4
+            {% elif x == 4 %}
+            Member 5
+            {% endif %}
+        </p>
         <p class="action_expl">The Sequential Individual Adaptation
                                 Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
                                 member individually. For each member, it calculates a weight based on
@@ -192,7 +210,7 @@
 
         {% elif action == "Average Plus" %}
         <p>We recommended this movie for this round, since it is the movie that has the minimum disagreement score. <br>
-            Average satisfaction: {{'%0.3f'|format(cur_round[0]|float)}}</p>
+            Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}</p>
         <p class="action_expl">Avg+ aggregation
                                 method consists of two phases. In the first phase, we employ an average
                                 aggregation. Then, in the second phase, we iteratively populate the group
@@ -210,7 +228,9 @@
                                 item.</p>
 
         {% elif action == "RP80" %}
-        <p>We recommended this movie for this round, based on the group's disagreement.</p> <br>
+        <p>We recommended this movie for this round, based on the group relevance and the disagreement scores.<br>
+            Relevance score: {{'%0.3f'|format(cur_round[3]|float)}}</p> 
+
         <p class="action_expl">This method combines group relevance and group disagreement scores. All the group 
                                 members' predicted scores about an item
                                 are considered of equal importance and additionally, the method takes into
@@ -273,8 +293,13 @@
         <!-- table with recommended movies and individual scores for previous rounds -->
         {% if previous_scores %}
         <b><u> Previous Rounds</u></b>
+        <!-- don't show the line chart if the table contains only one item -->
+        {% if previous_scores | length == 1 %}
+        <table>
+        {% else %}
         <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
             data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1">
+        {% endif %}
             <thead>
                 <th>Round</th>
                 <th data-graph-skip="1">Recommended Movie</th>
