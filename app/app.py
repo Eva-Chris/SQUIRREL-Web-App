@@ -4,6 +4,7 @@ from forms import ContactForm
 from flask_mail import Message, Mail
 import pandas as pd
 import os
+import json
 
 mail = Mail()
 app = Flask(__name__, static_folder='static')
@@ -201,16 +202,24 @@ def index():
     # read groups for testing
     test = open("files/4_1GroupsTest.txt", 'r').read().splitlines()
 
+    """ make necessary changes to transform file to json format
+    with open('files/Recommended_Movies.txt', 'r') as file:
+        data = file.read()
+        data = data.replace('"', "")
+        data = data.replace("'", '"')
+  
+    with open('files/Recommended_Movies.txt', 'w') as file:
+        file.write(data)"""
+
     # read recommended movies for these groups
-    recs = open("files/Recommended_Movies.txt", 'rt')
-    recs_lines = recs.read().split('\n')
+    rec_mov_json = []
+    for line in open('files/Recommended_Movies.txt', 'r'):
+        rec_mov_json.append(json.loads(line))
+    
     recs = []
-
-    for l in recs_lines:
-        if l != '':
-            dictionary = parse(l)
-            recs.append(dictionary['movie'])
-
+    for x in rec_mov_json:
+        recs.append(x['movie'][0]) # check the first movie
+    
     # get individual scores
     items = individual_scores(test, recs)
 
@@ -244,14 +253,13 @@ def watch_next():
     test = open("files/4_1GroupsTest.txt", 'r').read().splitlines()
 
     # read recommended movies for these groups
-    recs = open("files/Recommended_Movies.txt", 'rt')
-    recs_lines = recs.read().split('\n')
+    rec_mov_json = []
+    for line in open('files/Recommended_Movies.txt', 'r'):
+        rec_mov_json.append(json.loads(line))
+    
     recs = []
-
-    for l in recs_lines:
-        if l != '':
-            dictionary = parse(l)
-            recs.append(dictionary['movie'])
+    for x in rec_mov_json:
+        recs.append(x['movie'][0]) # check the first movie
 
     # get individual scores
     items = individual_scores(test, recs)
@@ -353,12 +361,10 @@ def watch_next():
                                     f_score.append(dictionary['f_score'])
 
                     # actions
-                    for l in recs_lines:
-                        if l != '':
-                            dictionary = parse(l)
-                            if(dictionary['group'] == group):
-                                if(int(dictionary['round']) == int(round)):
-                                    action = int(dictionary['action'])
+                    for x in rec_mov_json:
+                        if (x['group'] == group):
+                            if int(x['round']) ==  int(round):
+                                action = int(x['action'])
                     
                     if action == 0:      
                         action = "Average"  
