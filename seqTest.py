@@ -309,7 +309,7 @@ for groups in groupsIds:
             recommentedMovies.append(k)
 
 
-        item = dict(group=grIn[0], round=str(i), movie=str(recommentedMovies[i]), action=str(actions))
+        item = dict(group=grIn[0], round=str(i), movie=str(rec), action=str(actions))
         file.write(str(item) + '\n')
 
         (sum,var,fScoreV) = calcStats(states)
