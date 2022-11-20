@@ -245,6 +245,7 @@ def index():
 
 # watch_next page
 
+i = 1
 
 @app.route('/watch_next', methods=['GET', 'POST'])
 def watch_next():
@@ -301,6 +302,29 @@ def watch_next():
 
             return render_template('watch_next.html', movie_id = movie_id, movie_scores = list(movie_scores),items=cur_round_scores)
 
+        # check if another rec for current round was requested
+
+        movie = request.form.get('movie')
+        stay = 0
+
+        if(movie != None):
+            group = request.form.get("group_id")
+            round = request.form.get("round_id")
+            stay = 1 # flag to stay in the same round
+
+            # get the next rec for the same round
+            recs = []
+            m = 0
+            for x in rec_mov_json:
+                for i in range(0,4):
+                    if x['group'] == group and x['round'] == round and x['movie'][i] == movie:
+                        m = i + 1
+                        break
+                recs.append(x['movie'][m])
+
+            # get individual scores
+            items = individual_scores(test, recs)
+
         for i in range(0, len(test)):
             if(request.form.get("group_id") != None):
                 group = request.form.get("group_id")
@@ -316,23 +340,25 @@ def watch_next():
                     filter(lambda id: id.get('id') ==
                            test[i].split("\t", 1)[0], items)
                 )                
-                    
+                
                 # read file to get the current round
-                with open('files/Current_Round.txt', 'r') as fp:
-                    lines = fp.readlines()
-                    for line in lines:
-                        if line.find(str(group)) != -1:
-                            round = (line[-3:-1])
+                if(stay != 1):
+                    with open('files/Current_Round.txt', 'r') as fp:
+                        lines = fp.readlines()
+                        for line in lines:
+                            if line.find(str(group)) != -1:
+                                round = (line[-3:-1])
 
                 if int(round) != 15:                      
                     # replace previous round with current round
-                    with open('files/Current_Round.txt', 'r') as file :
-                        filedata = file.read()
+                    if(stay != 1):
+                        with open('files/Current_Round.txt', 'r') as file :
+                            filedata = file.read()
 
-                    filedata = filedata.replace(str(group) + " " + str(round), str(group) + " " + str("{0:0=2d}".format(int(round)+1)))
+                        filedata = filedata.replace(str(group) + " " + str(round), str(group) + " " + str("{0:0=2d}".format(int(round)+1)))
 
-                    with open('files/Current_Round.txt', 'w') as file:
-                        file.write(filedata)
+                        with open('files/Current_Round.txt', 'w') as file:
+                            file.write(filedata)
 
                     # store all the previous scores
                     previous_scores = []
