@@ -177,20 +177,36 @@
                                 to be of equal importance.</p>
 
         {% elif action == "SDAA" %}
-        <p>We recommended this movie for this round taking into account the past satisfaction of the group members.<br>
-            Group satisfaction: {{'%0.3f'|format(cur_round[0]|float)}} </p> 
+        <p>We recommended this movie for this round taking into account the past satisfaction of the group members taking into account
+            {% set member_prev_scores = [items[0].m1_score, items[0].m2_score, items[0].m3_score, items[0].m4_score, items[0].m5_score] %}
+            {% set min_score = [items[0].m1_score, items[0].m2_score, items[0].m3_score, items[0].m4_score, items[0].m5_score] | min %}
+            {% set x = member_prev_scores.index(min_score) %}
+            
+            {% if x == 0 %}
+            Member 1 who was the least satisfied with score {{ items[0].m1_score }}.
+            {% elif x == 1 %}
+            Member 2 who was the least satisfied with score {{ items[0].m2_score }}.
+            {% elif x == 2 %}
+            Member 3 who was the least satisfied with score {{ items[0].m3_score }}.
+            {% elif x == 3 %}
+            Member 4 who was the least satisfied with score {{ items[0].m4_score }}.
+            {% elif x == 4 %}
+            Member 5 who was the least satisfied with score {{ items[0].m5_score }}.
+            {% endif %}
+
+            <br>
+            Group's past satisfaction: {{ '%0.3f'|format(ov_sat[-1]|float) }} </p> 
         <p class="action_expl">The Sequential Dynamic Adaptation Aggregation method takes into account the past satisfaction of
                                 the group members to calculate a weight. This weight balances the average
                                 predicted score of an item for the group and the least satisfied member's
-                                predicted score for that item.</p>
+                                score for that item.</p>
 
         {% elif action == "SIAA" %}
-        <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by the member who was the least satisfied in the previous round. <br>
+        <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by  
             {% set member_prev_scores = [previous_scores[-1].m1_score, previous_scores[-1].m2_score, previous_scores[-1].m3_score, previous_scores[-1].m4_score, previous_scores[-1].m5_score] %}
             {% set min_score = [previous_scores[-1].m1_score, previous_scores[-1].m2_score, previous_scores[-1].m3_score, previous_scores[-1].m4_score, previous_scores[-1].m5_score] | min %}
             {% set x = member_prev_scores.index(min_score) %}
             
-            Least satisfied member in previous round: 
             {% if x == 0 %}
             Member 1 
             {% elif x == 1 %}
@@ -202,6 +218,7 @@
             {% elif x == 4 %}
             Member 5
             {% endif %}
+            who was the least satisfied in the previous round.
         </p>
         <p class="action_expl">The Sequential Individual Adaptation
                                 Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
@@ -219,9 +236,10 @@
 
         {% elif action == "Pareto" %}
         <p>We recommended this movie for this round, since it is the most fair result for all group members. <br>
-            Fairness score: {{'%0.3f'|format(cur_round[4]|float)}}</p>
+            Fairness score: {{'%0.3f'|format(cur_round[4]|float)}} <br>
+            Social Welfare: {{'%0.3f'|format(cur_round[0]|float)}}</p>
         <p class="action_expl">This method generates a group recommendation list by incrementally adding to it 
-                                items that have the best combination of Social Welfare
+                                items that have the best combination of Social Welfare (average satisfaction of all members for that item)
                                 and Fairness scores. It takes into account
                                 the average satisfaction that an item produces for the group members and
                                 balances it with the variance of the group members' satisfaction for that
@@ -229,7 +247,8 @@
 
         {% elif action == "RP80" %}
         <p>We recommended this movie for this round, based on the group relevance and the disagreement scores.<br>
-            Relevance score: {{'%0.3f'|format(cur_round[3]|float)}}</p> 
+            Relevance score: {{'%0.3f'|format(cur_round[3]|float)}} <br>
+            Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}</p> 
 
         <p class="action_expl">This method combines group relevance and group disagreement scores. All the group 
                                 members' predicted scores about an item
@@ -239,8 +258,20 @@
 
         <br>
 
+        <!-- other recs for current round -->
+        <form method="post" action="/watch_next">
+            <label>Not satisfied? Get another recommendation: </label>
+            <input type="hidden" name="group_id" value={{items[0].id}} />
+            <input type="hidden" name="round_id" value={{items[0].round}} />
+            <input type="hidden" name="movie" value={{items[0].movie}} />
+            <input class="button" type="submit" name="Other Options" value="Other Options">
+        </form>
+
+        <br>
+
         <!-- next round -->
         <form method="post" action="/watch_next">
+            <label>Or proceed to next round: </label>
             <input type="hidden" name="group_id" value={{items[0].id}} />
             <input class="button" type="submit" name="Next Round" value="Next Round">
         </form>
