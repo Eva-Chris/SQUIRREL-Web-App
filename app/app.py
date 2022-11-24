@@ -57,7 +57,7 @@ def find_movie(file, movies):
             if count <= 5:
                 groupRec[id] = rec
                 if groupRec[id].get(movies[iter]) == None:
-                    mov_scores.append("No data available")
+                    mov_scores.append("Score < 1")
 
                 else:
                     mov_scores.append(groupRec[id][movies[iter]])
@@ -141,7 +141,7 @@ def find_why_not_movie(file, movie_id, round):
                 if count <= 5:
                     groupRec[id] = rec
                     if groupRec[id].get(movie_id) == None:
-                        mov_scores.append("No data available")
+                        mov_scores.append("Score < 1")
 
                     else:
                         mov_scores.append(groupRec[id][movie_id])
@@ -245,7 +245,6 @@ def index():
 
 # watch_next page
 
-i = 1
 
 @app.route('/watch_next', methods=['GET', 'POST'])
 def watch_next():
@@ -300,7 +299,7 @@ def watch_next():
                     )
 
 
-            return render_template('watch_next.html', movie_id = movie_id, movie_scores = list(movie_scores),items=cur_round_scores)
+            return render_template('watch_next.html', movie_id = movie_id, movie_scores = list(movie_scores),cur_not=cur_round_scores)
 
         # check if another rec for current round was requested
 
