@@ -139,7 +139,7 @@
         {% endif %}
 
         <br>
-        
+
         {% if cur_round is defined %}
         <!-- next round -->
         <form method="post" action="/watch_next">
@@ -199,8 +199,7 @@
                 {% for item in cur_not %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td><img id="poster_cur"
-                            src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
+                    <td><img id="poster_cur" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
                     </td>
                     <td>{{item.m1_score}}</td>
                     <td>{{item.m2_score}}</td>
@@ -286,11 +285,6 @@
                 all
                 group members. <br>
                 Average satisfaction: {{'%0.3f'|format(cur_round[0]|float)}}</p>
-            <p class="action_expl">It is the classic Average Aggregation method,
-                where the group predicted score for an item is the average across
-                all predicted scores for that item across all group members. In this case,
-                all the predicted scores of an item for the group members are considered
-                to be of equal importance.</p>
 
             {% elif action == "SDAA" %}
             <p>We recommended this movie for this round taking into account the past satisfaction of the group members
@@ -316,11 +310,6 @@
                 <br>
                 Group's past satisfaction: {{ '%0.3f'|format(ov_sat[-1]|float) }}
             </p>
-            <p class="action_expl">The Sequential Dynamic Adaptation Aggregation method takes into account the past
-                satisfaction of
-                the group members to calculate a weight. This weight balances the average
-                predicted score of an item for the group and the least satisfied member's
-                score for that item.</p>
 
             {% elif action == "SIAA" %}
             <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by
@@ -343,53 +332,73 @@
                 {% endif %}
                 who was the least satisfied in the previous round.
             </p>
-            <p class="action_expl">The Sequential Individual Adaptation
-                Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
-                member individually. For each member, it calculates a weight based on
-                their overall satisfaction and the user disagreement of the previous iteration.</p>
 
             {% elif action == "Average Plus" %}
             <p>We recommended this movie for this round, since it is the movie that has the minimum disagreement score.
                 <br>
                 Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}
             </p>
-            <p class="action_expl">Avg+ aggregation
-                method consists of two phases. In the first phase, we employ an average
-                aggregation. Then, in the second phase, we iteratively populate the group
-                recommendation list, with items that generate the minimum possible group
-                disagreement score.</p>
 
             {% elif action == "Pareto" %}
             <p>We recommended this movie for this round, since it is the most fair result for all group members. <br>
                 Fairness score: {{'%0.3f'|format(cur_round[4]|float)}} <br>
                 Social Welfare: {{'%0.3f'|format(cur_round[0]|float)}}</p>
-            <p class="action_expl">This method generates a group recommendation list by incrementally adding to it
-                items that have the best combination of Social Welfare (average satisfaction of all members for that
-                item)
-                and Fairness scores. It takes into account
-                the average satisfaction that an item produces for the group members and
-                balances it with the variance of the group members' satisfaction for that
-                item.</p>
 
             {% elif action == "RP80" %}
             <p>We recommended this movie for this round, based on the group relevance and the disagreement scores.<br>
                 Relevance score: {{'%0.3f'|format(cur_round[2]|float)}} <br>
                 Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}</p>
-
-            <p class="action_expl">This method combines group relevance and group disagreement scores. All the group
-                members' predicted scores about an item
-                are considered of equal importance and additionally, the method takes into
-                account the group's disagreement about that item.</p>
             {% endif %}
 
             <b>Method used to calculate the result:</b> {{ action }}
+            <input class="question-mark" type="button" name="question-mark" value="?" onclick="show_expl()" />
+
+            <div id="action_def" style="display:none;">
+                {% if action == "Average" %}
+                <p class="action_expl">It is the classic Average Aggregation method,
+                    where the group predicted score for an item is the average across
+                    all predicted scores for that item across all group members. In this case,
+                    all the predicted scores of an item for the group members are considered
+                    to be of equal importance.</p>
+                {% elif action == "SDAA" %}
+                <p class="action_expl">The Sequential Dynamic Adaptation Aggregation method takes into account the past
+                    satisfaction of
+                    the group members to calculate a weight. This weight balances the average
+                    predicted score of an item for the group and the least satisfied member's
+                    score for that item.</p>
+                {% elif action == "SIAA" %}
+                <p class="action_expl">The Sequential Individual Adaptation
+                    Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
+                    member individually. For each member, it calculates a weight based on
+                    their overall satisfaction and the user disagreement of the previous iteration.</p>
+                {% elif action == "Average Plus" %}
+                <p class="action_expl">Avg+ aggregation
+                    method consists of two phases. In the first phase, we employ an average
+                    aggregation. Then, in the second phase, we iteratively populate the group
+                    recommendation list, with items that generate the minimum possible group
+                    disagreement score.</p>
+                {% elif action == "Pareto" %}
+                <p class="action_expl">This method generates a group recommendation list by incrementally adding to it
+                    items that have the best combination of Social Welfare (average satisfaction of all members for that
+                    item)
+                    and Fairness scores. It takes into account
+                    the average satisfaction that an item produces for the group members and
+                    balances it with the variance of the group members' satisfaction for that
+                    item.</p>
+                {% elif action == "RP80" %}
+                <p class="action_expl">This method combines group relevance and group disagreement scores. All the group
+                    members' predicted scores about an item
+                    are considered of equal importance and additionally, the method takes into
+                    account the group's disagreement about that item.</p>
+                {% endif %}
+            </div>
 
             <br>
             <br>
             <br>
 
             <!-- table with recommended movies and individual scores for previous rounds -->
-            {% if previous_scores %}   
+            {% if previous_scores %}
             <b>Below are the individual scores calculated by the single recommender for each member (M) for the previous
                 rounds</b>
             <!-- don't show the line chart if the table contains only one item -->
@@ -399,7 +408,7 @@
             <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
                 data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1"
                 data-graph-xaxis-title-text="Scores/Round">
-                {% endif %}
+            {% endif %}
                 <thead>
                     <th>Round</th>
                     <th data-graph-skip="1">Recommended Movie</th>
@@ -410,7 +419,7 @@
                     <th>M5 Score</th>
                 </thead>
                 <tbody>
-                    
+
                     {% for item in previous_scores[::-1] %}
                     <tr>
                         <td>{{item.round}}</td>
@@ -535,8 +544,6 @@
 
     </div>
 
-
-
     <!-- create charts from tables using highcharts -->
     <script>
         $('table.highchart').highchartTable();
@@ -547,6 +554,10 @@
 
         function showDiv() {
             document.getElementById('explanations').style.display = "block";
+        }
+
+        function show_expl() {
+            document.getElementById('action_def').style.display = "block";
         }
     </script>
 
