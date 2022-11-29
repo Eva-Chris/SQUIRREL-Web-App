@@ -28,12 +28,6 @@
         <div class="nav_bar">
             <ul class="nav_content">
                 <li>
-                    <a href="{{url_for('index')}}">
-                        <i class='bx bxs-home'></i>
-                        <span class="nav_page">Home</span>
-                    </a>
-                </li>
-                <li>
                     <a class="active" href="{{url_for('watch_next')}}">
                         <i class='bx bxs-movie-play'></i>
                         <span class="nav_page">Watch Next</span>
@@ -106,6 +100,14 @@
         </div>
         {% endif %}
 
+        {% if message is defined %}
+        {{ message }}
+        {% endif %}
+
+
+        <br>
+
+
         <!-- table with recommended movies group satisfaction for current round -->
         {% if items %}
         <b>Group: </b> {{items[0].id}}
@@ -116,22 +118,52 @@
                 <th>Round</th>
                 <th>Recommended Movie</th>
                 <th>Group Satisfaction</th>
-                <th>Get another recommendation</th>
             </thead>
             <tbody>
 
-                {% for item in items %}
+                {% for item in items[0:1] %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td><img id="poster_cur" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
+                    <td> 
+                        <div class="slideshow-container">
+                            <div class="mySlides fade">
+                                <img src="{{ url_for('static', filename = 'posters/'+ items[0].movie +'.jpg') }}"
+                                    style="width:15%">
+                            </div>
+
+                            <div class="mySlides fade">
+                                <img src="{{ url_for('static', filename = 'posters/'+ items[1].movie +'.jpg') }}"
+                                    style="width:15%">
+                            </div>
+
+                            <div class="mySlides fade">
+                                <img src="{{ url_for('static', filename = 'posters/'+ items[2].movie +'.jpg') }}"
+                                    style="width:15%">
+                            </div>
+
+                            <div class="mySlides fade">
+                                <img src="{{ url_for('static', filename = 'posters/'+ items[3].movie +'.jpg') }}"
+                                    style="width:15%">
+                            </div>
+
+                            <div class="mySlides fade">
+                                <img src="{{ url_for('static', filename = 'posters/'+ items[4].movie +'.jpg') }}"
+                                    style="width:15%">
+                            </div>
+
+                            <div style="text-align:center">
+                                <span class="dot" onclick="currentSlide(1)"></span>
+                                <span class="dot" onclick="currentSlide(2)"></span>
+                                <span class="dot" onclick="currentSlide(3)"></span>
+                                <span class="dot" onclick="currentSlide(4)"></span>
+                                <span class="dot" onclick="currentSlide(5)"></span>
+                            </div>
+
+                            <a class="prev" onclick="plusSlides(-1)">❮</a>
+                            <a class="next" onclick="plusSlides(1)">❯</a>
+                        </div>
                     </td>
                     <td>{{'%0.3f'|format(cur_round[0]|float)}}</td>
-                    <form method="post" action="/watch_next">
-                        <input type="hidden" name="group_id" value={{items[0].id}} />
-                        <input type="hidden" name="round_id" value={{items[0].round}} />
-                        <input type="hidden" name="movie" value={{items[0].movie}} />
-                        <td><input class="button" type="submit" name="Other Options" value="Other Options"></td>
-                    </form>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -240,14 +272,14 @@
         </table>
         {% endif %}
 
-        {% if movie_id is not defined %}
+        {% if movie_id is not defined and items is defined %}
         <input class="button" type="button" name="why" value="Why am I seeing this?" onclick="showDiv()" />
         <br>
         {% endif %}
         <div id="explanations" style="display:none;">
 
             <!-- table with recommended movies and individual scores for current round -->
-
+            {% if message is not defined %}
             <br>
             <b>Below are the individual scores calculated by the single recommender for each member (M) for the current
                 round</b>
@@ -393,6 +425,8 @@
                 {% endif %}
             </div>
 
+            {% endif %}
+
             <br>
             <br>
             <br>
@@ -404,134 +438,126 @@
             <!-- don't show the line chart if the table contains only one item -->
             {% if previous_scores | length == 1 %}
             <table>
-            {% else %}
-            <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
-                data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1"
-                data-graph-xaxis-title-text="Scores/Round">
-            {% endif %}
-                <thead>
-                    <th>Round</th>
-                    <th data-graph-skip="1">Recommended Movie</th>
-                    <th>M1 Score</th>
-                    <th>M2 Score</th>
-                    <th>M3 Score</th>
-                    <th>M4 Score</th>
-                    <th>M5 Score</th>
-                </thead>
-                <tbody>
+                {% else %}
+                <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
+                    data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1"
+                    data-graph-xaxis-title-text="Scores/Round">
+                    {% endif %}
+                    <thead>
+                        <th>Round</th>
+                        <th data-graph-skip="1">Recommended Movie</th>
+                        <th>M1 Score</th>
+                        <th>M2 Score</th>
+                        <th>M3 Score</th>
+                        <th>M4 Score</th>
+                        <th>M5 Score</th>
+                    </thead>
+                    <tbody>
 
-                    {% for item in previous_scores[::-1] %}
-                    <tr>
-                        <td>{{item.round}}</td>
-                        <td><img id="poster"
-                                src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
-                        <td>{{item.m1_score}}</td>
-                        <td>{{item.m2_score}}</td>
-                        <td>{{item.m3_score}}</td>
-                        <td>{{item.m4_score}}</td>
-                        <td>{{item.m5_score}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <div id="graphcontainerprev"></div>
-            {% endif %}
+                        {% for item in previous_scores[::-1] %}
+                        <tr>
+                            <td>{{item.round}}</td>
+                            <td><img id="poster"
+                                    src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
+                            <td>{{item.m1_score}}</td>
+                            <td>{{item.m2_score}}</td>
+                            <td>{{item.m3_score}}</td>
+                            <td>{{item.m4_score}}</td>
+                            <td>{{item.m5_score}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div id="graphcontainerprev"></div>
+                {% endif %}
 
+                <br>
 
-            <br>
+                <!-- tables with scores and charts -->
+                {% if ov_sat is defined and ov_sat|length > 0 %}
 
-            {% if message is defined %}
-            {{ message }}
-            {% endif %}
+                <b>All Scores:</b>
 
-            <br>
-            <br>
+                <br>
 
-            <!-- tables with scores and charts -->
-            {% if ov_sat is defined and ov_sat|length > 0 %}
+                <div class="row">
+                    <div class="column">
+                        <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
+                            data-graph-color-1="#005EAD">
+                            <thead>
+                                <th>Round</th>
+                                <th>Group Satisfaction</th>
+                            </thead>
+                            <tbody>
+                                {% for item in ov_sat %}
+                                <tr>
+                                    <td>{{ loop.index0 }}</td>
+                                    <td>{{'%0.3f'|format(item|float)}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div id="graphcontainer"></div>
+                    </div>
 
-            <b>All Scores:</b>
+                    <div class="column">
+                        <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
+                            data-graph-color-1="#005EAD">
+                            <thead>
+                                <th>Round</th>
+                                <th>MaxMin</th>
+                            </thead>
+                            <tbody>
+                                {% for item in max_min %}
+                                <tr>
+                                    <td>{{ loop.index0 }}</td>
+                                    <td>{{'%0.3f'|format(item|float)}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div id="graphcontainer2"></div>
+                    </div>
 
-            <br>
+                    <div class="column">
+                        <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
+                            data-graph-color-1="#005EAD">
+                            <thead>
+                                <th>Round</th>
+                                <th>NDCG</th>
+                            </thead>
+                            <tbody>
+                                {% for item in ndcg %}
+                                <tr>
+                                    <td>{{ loop.index0 }}</td>
+                                    <td>{{'%0.3f'|format(item|float)}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div id="graphcontainer3"></div>
+                    </div>
 
-            <div class="row">
-                <div class="column">
-                    <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
-                        data-graph-color-1="#005EAD">
-                        <thead>
-                            <th>Round</th>
-                            <th>Group Satisfaction</th>
-                        </thead>
-                        <tbody>
-                            {% for item in ov_sat %}
-                            <tr>
-                                <td>{{ loop.index0 }}</td>
-                                <td>{{'%0.3f'|format(item|float)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <div id="graphcontainer"></div>
+                    <div class="column">
+                        <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
+                            data-graph-color-1="#005EAD">
+                            <thead>
+                                <th>Round</th>
+                                <th>FScore</th>
+                            </thead>
+                            <tbody>plusSlides
+                                {% for item in f_score %}
+                                <tr>
+                                    <td>{{ loop.index0 }}</td>
+                                    <td>{{'%0.3f'|format(item|float)}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div id="graphcontainer4"></div>
+                    </div>
                 </div>
-
-                <div class="column">
-                    <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
-                        data-graph-color-1="#005EAD">
-                        <thead>
-                            <th>Round</th>
-                            <th>MaxMin</th>
-                        </thead>
-                        <tbody>
-                            {% for item in max_min %}
-                            <tr>
-                                <td>{{ loop.index0 }}</td>
-                                <td>{{'%0.3f'|format(item|float)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <div id="graphcontainer2"></div>
-                </div>
-
-                <div class="column">
-                    <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
-                        data-graph-color-1="#005EAD">
-                        <thead>
-                            <th>Round</th>
-                            <th>NDCG</th>
-                        </thead>
-                        <tbody>
-                            {% for item in ndcg %}
-                            <tr>
-                                <td>{{ loop.index0 }}</td>
-                                <td>{{'%0.3f'|format(item|float)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <div id="graphcontainer3"></div>
-                </div>
-
-                <div class="column">
-                    <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
-                        data-graph-color-1="#005EAD">
-                        <thead>
-                            <th>Round</th>
-                            <th>FScore</th>
-                        </thead>
-                        <tbody>
-                            {% for item in f_score %}
-                            <tr>
-                                <td>{{ loop.index0 }}</td>
-                                <td>{{'%0.3f'|format(item|float)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <div id="graphcontainer4"></div>
-                </div>
-            </div>
-            {% endif %}
+                {% endif %}
 
         </div>
 
@@ -558,6 +584,33 @@
 
         function show_expl() {
             document.getElementById('action_def').style.display = "block";
+        }
+
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
         }
     </script>
 
