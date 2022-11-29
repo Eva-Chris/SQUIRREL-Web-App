@@ -199,7 +199,6 @@ def watch_next():
                            test[i].split("\t", 1)[0], items)
                 )                
                 
-                
                 # read file to get the current round
                 with open('files/Current_Round.txt', 'r') as fp:
                     lines = fp.readlines()
@@ -223,6 +222,8 @@ def watch_next():
                     for entry in recs_scores:
                         if(int(entry['round'])<= int(round)-1):
                             previous_scores.append(entry)
+
+                    previous_scores.reverse()
 
                     # show only the recommendation of the current round
                     cur_round_scores = list(
