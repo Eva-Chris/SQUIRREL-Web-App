@@ -57,11 +57,11 @@
                 <table>
                     <thead>
                         <th>Group</th>
-                        <th>Show Results</th>
+                        <th>Show Movie</th>
                     </thead>
                     <tbody>
 
-                        {% for test in test[:10] %}
+                        {% for test in test %}
                         <tr>
                             <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
                             <form method="post" action="/watch_next">
@@ -73,29 +73,6 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-
-            <div class="column">
-                {% if test[10:] %}
-                <table>
-                    <thead>
-                        <th>Group</th>
-                        <th>Show Results</th>
-                    </thead>
-                    <tbody>
-                        {% for test in test[10:] %}
-                        <tr>
-                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
-                            <form method="post" action="/watch_next">
-                                <td><input class="button" type="submit" value="{{test.split('\t', 1)[0]}}"
-                                        name="{{test.split('\t', 1)[0]}}" />
-                                </td>
-                            </form>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% endif %}
             </div>
         </div>
         {% endif %}
@@ -104,9 +81,7 @@
         {{ message }}
         {% endif %}
 
-
         <br>
-
 
         <!-- table with recommended movies group satisfaction for current round -->
         {% if items %}
@@ -124,7 +99,7 @@
                 {% for item in items[0:1] %}
                 <tr>
                     <td>{{item.round}}</td>
-                    <td> 
+                    <td>
                         <div class="slideshow-container">
                             <div class="mySlides fade">
                                 <img src="{{ url_for('static', filename = 'posters/'+ items[0].movie +'.jpg') }}"
@@ -259,7 +234,7 @@
             </thead>
             <tbody>
 
-                {% for item in previous_scores[::-1] %}
+                {% for item in previous_scores[::5] %}
                 <tr>
                     <td>{{item.round}}</td>
                     <td><img id="poster" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
@@ -313,8 +288,7 @@
 
             <!-- action explanations -->
             {% if action == "Average" %}
-            <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by the
-                all
+            <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by all
                 group members. <br>
                 Average satisfaction: {{'%0.3f'|format(cur_round[0]|float)}}</p>
 
@@ -438,126 +412,124 @@
             <!-- don't show the line chart if the table contains only one item -->
             {% if previous_scores | length == 1 %}
             <table>
-                {% else %}
-                <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
-                    data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1"
-                    data-graph-xaxis-title-text="Scores/Round">
-                    {% endif %}
-                    <thead>
-                        <th>Round</th>
-                        <th data-graph-skip="1">Recommended Movie</th>
-                        <th>M1 Score</th>
-                        <th>M2 Score</th>
-                        <th>M3 Score</th>
-                        <th>M4 Score</th>
-                        <th>M5 Score</th>
-                    </thead>
-                    <tbody>
+            {% else %}
+            <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
+                data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1"
+                data-graph-xaxis-title-text="Scores/Round">
+                {% endif %}
+                <thead>
+                    <th>Round</th>
+                    <th data-graph-skip="1">Recommended Movie</th>
+                    <th>M1 Score</th>
+                    <th>M2 Score</th>
+                    <th>M3 Score</th>
+                    <th>M4 Score</th>
+                    <th>M5 Score</th>
+                </thead>
+                <tbody>
 
-                        {% for item in previous_scores[::-1] %}
+                    {% for item in previous_scores[::5] %}
+                    <tr>
+                        <td>{{item.round}}</td>
+                        <td><img id="poster"
+                                src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
+                        <td>{{item.m1_score}}</td>
+                        <td>{{item.m2_score}}</td>
+                        <td>{{item.m3_score}}</td>
+                        <td>{{item.m4_score}}</td>
+                        <td>{{item.m5_score}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div id="graphcontainerprev"></div>
+            {% endif %}
+
+            <br>
+
+            <!-- tables with scores and charts -->
+            {% if ov_sat is defined and ov_sat|length > 0 %}
+
+            <b>All Scores:</b>
+
+            <br>
+
+            <div class="row">
+                <div class="column">
+                    <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
+                        data-graph-color-1="#005EAD">
+                        <thead>
+                            <th>Round</th>
+                            <th>Group Satisfaction</th>
+                        </thead>
+                        <tbody>
+                            {% for item in ov_sat %}
+                            <tr>
+                                <td>{{ loop.index0 }}</td>
+                                <td>{{'%0.3f'|format(item|float)}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div id="graphcontainer"></div>
+                </div>
+
+                <div class="column">
+                    <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
+                        data-graph-color-1="#005EAD">
+                        <thead>
+                            <th>Round</th>
+                            <th>MaxMin</th>
+                        </thead>
+                        <tbody>
+                            {% for item in max_min %}
+                            <tr>
+                                <td>{{ loop.index0 }}</td>
+                                <td>{{'%0.3f'|format(item|float)}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div id="graphcontainer2"></div>
+                </div>
+
+                <div class="column">
+                    <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
+                        data-graph-color-1="#005EAD">
+                        <thead>
+                            <th>Round</th>
+                            <th>NDCG</th>
+                        </thead>
+                        <tbody>
+                            {% for item in ndcg %}
+                            <tr>
+                                <td>{{ loop.index0 }}</td>
+                                <td>{{'%0.3f'|format(item|float)}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div id="graphcontainer3"></div>
+                </div>
+
+                <div class="column">
+                    <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
+                        data-graph-color-1="#005EAD">
+                        <thead>
+                            <th>Round</th>
+                            <th>FScore</th>
+                        </thead>
+                        {% for item in f_score %}
                         <tr>
-                            <td>{{item.round}}</td>
-                            <td><img id="poster"
-                                    src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
-                            <td>{{item.m1_score}}</td>
-                            <td>{{item.m2_score}}</td>
-                            <td>{{item.m3_score}}</td>
-                            <td>{{item.m4_score}}</td>
-                            <td>{{item.m5_score}}</td>
+                            <td>{{ loop.index0 }}</td>
+                            <td>{{'%0.3f'|format(item|float)}}</td>
                         </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
-                <div id="graphcontainerprev"></div>
-                {% endif %}
-
-                <br>
-
-                <!-- tables with scores and charts -->
-                {% if ov_sat is defined and ov_sat|length > 0 %}
-
-                <b>All Scores:</b>
-
-                <br>
-
-                <div class="row">
-                    <div class="column">
-                        <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
-                            data-graph-color-1="#005EAD">
-                            <thead>
-                                <th>Round</th>
-                                <th>Group Satisfaction</th>
-                            </thead>
-                            <tbody>
-                                {% for item in ov_sat %}
-                                <tr>
-                                    <td>{{ loop.index0 }}</td>
-                                    <td>{{'%0.3f'|format(item|float)}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div id="graphcontainer"></div>
-                    </div>
-
-                    <div class="column">
-                        <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
-                            data-graph-color-1="#005EAD">
-                            <thead>
-                                <th>Round</th>
-                                <th>MaxMin</th>
-                            </thead>
-                            <tbody>
-                                {% for item in max_min %}
-                                <tr>
-                                    <td>{{ loop.index0 }}</td>
-                                    <td>{{'%0.3f'|format(item|float)}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div id="graphcontainer2"></div>
-                    </div>
-
-                    <div class="column">
-                        <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
-                            data-graph-color-1="#005EAD">
-                            <thead>
-                                <th>Round</th>
-                                <th>NDCG</th>
-                            </thead>
-                            <tbody>
-                                {% for item in ndcg %}
-                                <tr>
-                                    <td>{{ loop.index0 }}</td>
-                                    <td>{{'%0.3f'|format(item|float)}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div id="graphcontainer3"></div>
-                    </div>
-
-                    <div class="column">
-                        <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
-                            data-graph-color-1="#005EAD">
-                            <thead>
-                                <th>Round</th>
-                                <th>FScore</th>
-                            </thead>
-                            <tbody>plusSlides
-                                {% for item in f_score %}
-                                <tr>
-                                    <td>{{ loop.index0 }}</td>
-                                    <td>{{'%0.3f'|format(item|float)}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div id="graphcontainer4"></div>
-                    </div>
+                    </table>
+                    <div id="graphcontainer4"></div>
                 </div>
-                {% endif %}
+            </div>
+            {% endif %}
 
         </div>
 
