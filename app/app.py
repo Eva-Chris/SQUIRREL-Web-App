@@ -180,7 +180,6 @@ def watch_next():
                         filter(lambda index: index.get('round') == str("{0:0=1d}".format(int(round))), recs_scores)
                     )
 
-
             return render_template('watch_next.html', movie_id = movie_id, movie_scores = list(movie_scores),cur_not=cur_round_scores)
 
         for i in range(0, len(test)):
@@ -196,7 +195,7 @@ def watch_next():
                 # of that specific group
                 recs_scores = list(
                     filter(lambda id: id.get('id') ==
-                           test[i].split("\t", 1)[0], items)
+                           group, items)
                 )                
                 
                 # read file to get the current round
@@ -204,7 +203,7 @@ def watch_next():
                     lines = fp.readlines()
                     for line in lines:
                         if line.find(str(group)) != -1:
-                            round = (line[-3:-1])
+                            round = (line[-2:])
 
                 if int(round) != 15:                      
                     # replace previous round with current round
