@@ -447,89 +447,93 @@
 
             <br>
 
-            <!-- tables with scores and charts -->
-            {% if ov_sat is defined and ov_sat|length > 0 %}
+            <input class="button" type="button" name="why" value="Show more" onclick="showMore()" />
 
-            <b>All Scores:</b>
+            <div id="all_scores" style="display:none;">
+                <!-- tables with scores and charts -->
+                {% if ov_sat is defined and ov_sat|length > 0 %}
 
-            <br>
+                <b>All Scores:</b>
 
-            <div class="row">
-                <div class="column">
-                    <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
-                        data-graph-color-1="#005EAD">
-                        <thead>
-                            <th>Round</th>
-                            <th>Group Satisfaction</th>
-                        </thead>
-                        <tbody>
-                            {% for item in ov_sat %}
+                <br>
+
+                <div class="row">
+                    <div class="column">
+                        <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
+                            data-graph-color-1="#005EAD">
+                            <thead>
+                                <th>Round</th>
+                                <th>Group Satisfaction</th>
+                            </thead>
+                            <tbody>
+                                {% for item in ov_sat %}
+                                <tr>
+                                    <td>{{ loop.index0 }}</td>
+                                    <td>{{'%0.3f'|format(item|float)}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div id="graphcontainer"></div>
+                    </div>
+
+                    <div class="column">
+                        <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
+                            data-graph-color-1="#005EAD">
+                            <thead>
+                                <th>Round</th>
+                                <th>MaxMin</th>
+                            </thead>
+                            <tbody>
+                                {% for item in max_min %}
+                                <tr>
+                                    <td>{{ loop.index0 }}</td>
+                                    <td>{{'%0.3f'|format(item|float)}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div id="graphcontainer2"></div>
+                    </div>
+
+                    <div class="column">
+                        <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
+                            data-graph-color-1="#005EAD">
+                            <thead>
+                                <th>Round</th>
+                                <th>NDCG</th>
+                            </thead>
+                            <tbody>
+                                {% for item in ndcg %}
+                                <tr>
+                                    <td>{{ loop.index0 }}</td>
+                                    <td>{{'%0.3f'|format(item|float)}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div id="graphcontainer3"></div>
+                    </div>
+
+                    <div class="column">
+                        <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
+                            data-graph-color-1="#005EAD">
+                            <thead>
+                                <th>Round</th>
+                                <th>FScore</th>
+                            </thead>
+                            {% for item in f_score %}
                             <tr>
                                 <td>{{ loop.index0 }}</td>
                                 <td>{{'%0.3f'|format(item|float)}}</td>
                             </tr>
                             {% endfor %}
-                        </tbody>
-                    </table>
-                    <div id="graphcontainer"></div>
+                        </table>
+                        <div id="graphcontainer4"></div>
+                    </div>
                 </div>
-
-                <div class="column">
-                    <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
-                        data-graph-color-1="#005EAD">
-                        <thead>
-                            <th>Round</th>
-                            <th>MaxMin</th>
-                        </thead>
-                        <tbody>
-                            {% for item in max_min %}
-                            <tr>
-                                <td>{{ loop.index0 }}</td>
-                                <td>{{'%0.3f'|format(item|float)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <div id="graphcontainer2"></div>
-                </div>
-
-                <div class="column">
-                    <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
-                        data-graph-color-1="#005EAD">
-                        <thead>
-                            <th>Round</th>
-                            <th>NDCG</th>
-                        </thead>
-                        <tbody>
-                            {% for item in ndcg %}
-                            <tr>
-                                <td>{{ loop.index0 }}</td>
-                                <td>{{'%0.3f'|format(item|float)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <div id="graphcontainer3"></div>
-                </div>
-
-                <div class="column">
-                    <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
-                        data-graph-color-1="#005EAD">
-                        <thead>
-                            <th>Round</th>
-                            <th>FScore</th>
-                        </thead>
-                        {% for item in f_score %}
-                        <tr>
-                            <td>{{ loop.index0 }}</td>
-                            <td>{{'%0.3f'|format(item|float)}}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                    <div id="graphcontainer4"></div>
-                </div>
+                {% endif %}
             </div>
-            {% endif %}
 
         </div>
 
@@ -556,6 +560,10 @@
 
         function show_expl() {
             document.getElementById('action_def').style.display = "block";
+        }
+
+        function showMore() {
+            document.getElementById('all_scores').style.display = "block";
         }
 
         let slideIndex = 1;
