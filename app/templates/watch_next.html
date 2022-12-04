@@ -234,7 +234,7 @@
             </thead>
             <tbody>
 
-                {% for item in previous_scores[::5] %}
+                {% for item in previous_scores[::-1] %}
                 <tr>
                     <td>{{item.round}}</td>
                     <td><img id="poster" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
@@ -428,7 +428,7 @@
                 </thead>
                 <tbody>
 
-                    {% for item in previous_scores[::5] %}
+                    {% for item in previous_scores[::-1] %}
                     <tr>
                         <td>{{item.round}}</td>
                         <td><img id="poster"
