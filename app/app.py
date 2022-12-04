@@ -29,22 +29,22 @@ def individual_scores(test, recs):
     items = []
 
     t = 0  # index for group file
+    m = 0 # index for movie
     
     
     for t in range(0, len(test)):
 
         # create a dictionary to store invividual scores and recommended movies
         s = 0
-        m = 0
+        
         for i in range(0, 15):
             s = 0
             for j in range (0,5):
                 i = str(i)
-                if m >= len(recs):
-                    break
+
                 # find invividual scores for the recommended movies
                 mov_scores = find_movie(
-                    "4_1/"+test[t].split("\t", 1)[0], recs[m],i)
+                    "groups/"+test[t].split("\t", 1)[0], recs[m],i)
 
                 an_item = dict(id=test[t].split("\t", 1)[0], movie=recs[m], round=i, m1_score=mov_scores[s], m2_score=mov_scores[s+1],
                             m3_score=mov_scores[s+2], m4_score=mov_scores[s+3], m5_score=mov_scores[s+4])
@@ -107,7 +107,7 @@ def find_movie(file, movie_id, round):
 
 def why_not_movie(group, movie_id, round_id):
     mov_scores = find_movie(
-            "4_1/"+group, movie_id, round_id)
+            "groups/"+group, movie_id, round_id)
 
     return mov_scores
 
@@ -129,9 +129,18 @@ def parse(d):
 @app.route('/index', methods=['GET', 'POST'])
 @app.route('/watch_next', methods=['GET', 'POST'])
 def watch_next():
+
+    """ make necessary changes to transform file to json format
+    with open('files/Recommended_Movies.txt', 'r') as file:
+        data = file.read()
+        data = data.replace('"', "")
+        data = data.replace("'", '"')
+  
+    with open('files/Recommended_Movies.txt', 'w') as file:
+        file.write(data)"""
     
     # read groups for testing
-    test = open("files/4_1GroupsTest.txt", 'r').read().splitlines()
+    test = open("files/GroupsTest.txt", 'r').read().splitlines()
 
     # read recommended movies for these groups
     rec_mov_json = []
@@ -190,7 +199,6 @@ def watch_next():
             
             # check if that file is the one which button was pressed
             if group == test[i].split("\t", 1)[0]:
-
                 # create new list with the movie recommendations and individual scores
                 # of that specific group
                 recs_scores = list(
@@ -203,8 +211,9 @@ def watch_next():
                     lines = fp.readlines()
                     for line in lines:
                         if line.find(str(group)) != -1:
-                            round = (line[-2:])
+                            round = (line[-3:-1])
 
+                print(round)
                 if int(round) != 15:                      
                     # replace previous round with current round
                     with open('files/Current_Round.txt', 'r') as file :
@@ -218,11 +227,9 @@ def watch_next():
                     # store all the previous scores
                     previous_scores = []
                     
-                    for entry in recs_scores:
+                    for entry in recs_scores[::5]:
                         if(int(entry['round'])<= int(round)-1):
                             previous_scores.append(entry)
-
-                    previous_scores.reverse()
 
                     # show only the recommendation of the current round
                     cur_round_scores = list(
