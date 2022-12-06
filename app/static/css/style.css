@@ -192,41 +192,21 @@ input {
 }
 
 /* contact page */
-form label {
-  font-weight: bold;
-  display: block;
-  padding: 10px 0;
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-form input#name,
-form input#email,
-form input#subject {
-  width: 500px;
-  background-color: #fafafa;
-  border: 1px solid #cccccc;
-  padding: 10px;
+.container {
+  padding: 0 16px;
 }
 
-form textarea#message {
-  width: 500px;
-  height: 100px;
-  background-color: #fafafa;
-  border: 1px solid #cccccc;
-  padding: 10px;
+.title {
+  color: grey;
 }
 
-form input#submit {
-  margin-top: 10px;
-  display: block;
-  border: 1px solid #cccccc;
-  padding: 10px;
-  font-weight: bold;
-  background-color: #fafafa;
-}
-
-form input#submit:hover {
-  cursor: pointer;
-  background-color: #dbdbdb;
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
 /* watch next page */
