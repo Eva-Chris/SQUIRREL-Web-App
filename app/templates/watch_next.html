@@ -58,19 +58,39 @@
                     <thead>
                         <th>Group</th>
                         <th>Show Movie</th>
+                        <th>Description</th>
                     </thead>
                     <tbody>
-
-                        {% for test in test %}
                         <tr>
                             <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
                             <form method="post" action="/watch_next">
-                                <td><input class="button" type="submit" value="{{test.split('\t', 1)[0]}}"
-                                        name="{{test.split('\t', 1)[0]}}" />
+                                <td><input class="button" type="submit" value="4_1" name="4_1" />
                                 </td>
                             </form>
+                            <td>The four members of the group are similar
+                                to each other, while the single member is dissimilar to all the rest.</td>
                         </tr>
-                        {% endfor %}
+
+                        <tr>
+                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
+                            <form method="post" action="/watch_next">
+                                <td><input class="button" type="submit" value="3_2" name="3_2" />
+                                </td>
+                            </form>
+                            <td>The three members of the group are similar
+                                to each other, while the rest two members are dissimilar to the three.</td>
+                        </tr>
+
+                        <tr>
+                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
+                            <form method="post" action="/watch_next">
+                                <td><input class="button" type="submit" value="5_Dif" name="5_Dif" />
+                                </td>
+                            </form>
+                            <td>All members of the group are dissimilar with each
+                                other.</td>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -78,7 +98,17 @@
         {% endif %}
 
         {% if message is defined %}
-        {{ message }}
+        <b>Group: </b> {{group}}
+        <br>
+        {{ message }} 
+        <br>
+        <br>
+        <!-- start over -->
+        <form method="post" action="/watch_next">
+            <input type="hidden" name="start_over" value="start_over" />
+            <input type="hidden" name="group_id" value="{{group}}" />
+            <input class="button" type="submit" name="Start Over" value="Start Over">
+        </form>
         {% endif %}
 
         <br>
@@ -159,6 +189,7 @@
         <!-- why not query -->
         <form method="post" action="/watch_next">
             <label>Wondering why a certain movie wasn't recommended? Type its id here:</label>
+            <br>
             <input type="hidden" name="group_id" value={{items[0].id}} />
             <input type="hidden" name="round_id" value={{items[0].round}} />
             <input type="number" id="movie_id" name="movie_id" pattern="[0-9]{4}" size="4" required>
@@ -546,14 +577,16 @@
 
     </div>
 
-    <!-- create charts from tables using highcharts -->
+    
     <script>
+        /* create charts from tables using highcharts */
         $('table.highchart').highchartTable();
         $('table.highchart2').highchartTable();
         $('table.highchart3').highchartTable();
         $('table.highchart4').highchartTable();
         $('table.highchartprev').highchartTable();
 
+        /* show divs */
         function showDiv() {
             document.getElementById('explanations').style.display = "block";
         }
@@ -566,6 +599,7 @@
             document.getElementById('all_scores').style.display = "block";
         }
 
+        /* slideshow functions */
         let slideIndex = 1;
         showSlides(slideIndex);
 
