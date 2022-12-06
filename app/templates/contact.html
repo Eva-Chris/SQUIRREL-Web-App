@@ -4,7 +4,7 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-    
+
     <meta charset="UTF-8">
     <meta name="description" content="COntact page with contact form">
     <meta name="keywords" content="html, contact">
@@ -23,14 +23,8 @@
         <div class="nav_bar">
             <ul class="nav_content">
                 <li>
-                    <a href="{{url_for('index')}}">
-                        <i class='bx bxs-home'></i>
-                        <span class="nav_page">Home</span>
-                    </a>
-                </li>
-                <li>
                     <a href="{{url_for('watch_next')}}">
-                        <i class='bx bxs-movie-play' ></i>
+                        <i class='bx bxs-movie-play'></i>
                         <span class="nav_page">Watch Next</span>
                     </a>
                 </li>
@@ -49,25 +43,51 @@
             </ul>
         </div>
 
-        {% block content %}
-        <h2>Contact</h2>
-        <form action="{{ url_for('contact') }}" method=post>
+        <div class="row">
+            <div class="column">
+                <div class="card">
+                    <div class="container">
+                        <h2>Eva Chrysostomaki</h2>
+                        <p class="title">UI Designer</p>
+                        <p>University of Crete</p>
+                        <p>chrisostomaki.eva@gmail.com</p>
+                    </div>
+                </div>
+            </div>
 
-            {{ form.name.label }}
-            {{ form.name }}
+            <div class="column">
+                <div class="card">
+                    <div class="container">
+                        <h2>Vasilis Efthymiou</h2>
+                        <p class="title">Overseer</p>
+                        <p>FORTH-ICS</p>
+                        <p>vefthym@ics.forth.gr</p>
+                    </div>
+                </div>
+            </div>
 
-            {{ form.email.label }}
-            {{ form.email }}
+            <div class="column">
+                <div class="card">
+                    <div class="container">
+                        <h2>Maria Stratigi</h2>
+                        <p class="title">SQUIRREL Framework Designer</p>
+                        <p>Tampere University</p>
+                        <p>maria.stratigi@tuni.fi</p>
+                    </div>
+                </div>
+            </div>
 
-            {{ form.subject.label }}
-            {{ form.subject }}
-
-            {{ form.message.label }}
-            {{ form.message }}
-
-            {{ form.submit }}
-        </form>
-        {% endblock %}
+            <div class="column">
+                <div class="card">
+                    <div class="container">
+                        <h2>Kostas Stefanidis</h2>
+                        <p class="title">SQUIRREL Framework Designer</p>
+                        <p>Tampere University</p>
+                        <p>konstantinos.stefanidis@tuni.fi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </body>
