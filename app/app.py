@@ -1,24 +1,10 @@
 # necessary imports
 from flask import Flask, request, render_template
-from forms import ContactForm
-from flask_mail import Message, Mail
 import pandas as pd
 import os
 import json
 
-mail = Mail()
-app = Flask(__name__, static_folder='static')
-    
-# MAIL
-SECRET_KEY = os.urandom(32)
-app.config['SECRET_KEY'] = SECRET_KEY
-
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_PORT"] = 465
-app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USERNAME"] = 'chrisostomaki.eva@gmail.com'
-#app.config["MAIL_PASSWORD"] = os.environ['MAIL_PASSWORD']
-mail.init_app(app)
+app = Flask(__name__, static_folder='static')   
 
 # function to get individual scores
 # and create a dictionary to store them
@@ -140,7 +126,7 @@ def watch_next():
         file.write(data)"""
     
     # read groups for testing
-    test = open("files/GroupsTest.txt", 'r').read().splitlines()
+    test = ["4_1","3_2","5_Dif"]
 
     # read recommended movies for these groups
     rec_mov_json = []
@@ -191,6 +177,22 @@ def watch_next():
 
             return render_template('watch_next.html', movie_id = movie_id, movie_scores = list(movie_scores),cur_not=cur_round_scores)
 
+        start_over = request.form.get('start_over')
+
+        # check if the user wants to start over
+        if(start_over != None):
+            group = request.form.get("group_id")
+             # replace previous round with current round
+            with open('files/Current_Round.txt', 'r') as file :
+                filedata = file.read()
+
+            filedata = filedata.replace(str(group) + " " + str(15), str(group) + " " + str("{0:0=2d}".format(int(00))))
+
+            with open('files/Current_Round.txt', 'w') as file:
+                file.write(filedata)
+            return render_template('watch_next.html', test=test)
+
+
         for i in range(0, len(test)):
             if(request.form.get("group_id") != None):
                 group = request.form.get("group_id")
@@ -213,7 +215,6 @@ def watch_next():
                         if line.find(str(group)) != -1:
                             round = (line[-3:-1])
 
-                print(round)
                 if int(round) != 15:                      
                     # replace previous round with current round
                     with open('files/Current_Round.txt', 'r') as file :
@@ -288,9 +289,15 @@ def watch_next():
                                 ndcg.append(dictionary['ndcg'])
                                 dfh.append(dictionary['dfh'])
                                 f_score.append(dictionary['f_score'])
+                    
+                    # store all the previous scores
+                    previous_scores = []
 
-                    return render_template('watch_next.html', previous_scores=recs_scores, 
-                                            message="Maximum number of rounds has been reached. See all previous rounds here: ",
+                    for entry in recs_scores[::5]:
+                            previous_scores.append(entry)
+
+                    return render_template('watch_next.html', previous_scores=previous_scores, group = group, 
+                                            message="Maximum number of rounds has been reached. Below are the scores for the previous rounds. ",
                                             ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score)
 
 
@@ -310,16 +317,8 @@ def about():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    form = ContactForm()
-    if request.method == 'POST':
-        msg = Message(request.form.get('subject'), sender=request.form.get('email'),
-                      recipients=['chrisostomaki.eva@gmail.com'],
-                      body=request.form.get('message')
-                      )
-        mail.send(msg)
-        return 'Form sent.'
-    elif request.method == 'GET':
-        return render_template('contact.html', form=form)
+    
+    return render_template('contact.html')
 
 
 if __name__ == "__main__":
