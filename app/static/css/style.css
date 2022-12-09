@@ -209,6 +209,26 @@ input {
   box-sizing: inherit;
 }
 
+.web {
+  flex: 1;
+  text-decoration: none;
+  outline: none;
+  text-align: center;
+  line-height: 3;
+  color: black;
+}
+
+.web:link,
+.web:visited,
+.web:focus {
+  background: rgba(186, 186, 186, 0.2);
+  color: black;
+}
+
+.web:hover {
+  background: rgba(113, 187, 239, 0.2);
+}
+
 /* watch next page */
 #poster_cur{
   width: 15%;
