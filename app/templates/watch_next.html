@@ -189,6 +189,18 @@
         </form>
 
         <br>
+        <br>
+
+        <form method="post" action="/watch_next">
+        <input type="hidden" name="group_id" value={{items[0].id}} />
+        <select name="reward" id="reward" style="width:200px; height:50px;">
+            <option value="average">Average</option>
+            <option value="variance">Variance</option>
+        </select>
+        <input class="button" type="submit" name="Change Reward" value="Change Reward">
+        </form>
+
+        <br>
 
         <br>
 
@@ -579,7 +591,6 @@
         {% endif %}
 
     </div>
-
 
     <script>
         /* function to open movie lens link */
