@@ -130,8 +130,18 @@ def watch_next():
 
     # read recommended movies for these groups
     rec_mov_json = []
-    for line in open('files/Recommended_Movies.txt', 'r'):
-        rec_mov_json.append(json.loads(line))
+
+    reward = request.form.get('reward')
+
+    if reward == 'average':
+        for line in open('files/Recommended_Movies_Average.txt', 'r'):
+            rec_mov_json.append(json.loads(line))
+    elif reward == 'variance':
+        for line in open('files/Recommended_Movies_Variance.txt', 'r'):
+            rec_mov_json.append(json.loads(line))
+    else:
+        for line in open('files/Recommended_Movies_Fscore.txt', 'r'):
+            rec_mov_json.append(json.loads(line))
     
     recs = []
     for x in rec_mov_json:
@@ -145,7 +155,13 @@ def watch_next():
     open("files/Current_Round.txt", "a")
 
     # get scores per round
-    iter_scores = open('files/Scores_Per_Round.txt', 'rt')
+    if reward == 'average':
+        iter_scores = open('files/Scores_Per_Round_Average.txt', 'rt')
+    elif reward == 'variance':
+        iter_scores = open('files/Scores_Per_Round_Variance.txt', 'rt')
+    else:
+        iter_scores = open('files/Scores_Per_Round_Fscore.txt', 'rt')
+    
     score_lines = iter_scores.read().split('\n')
 
     # send results based on button clicked
@@ -166,7 +182,6 @@ def watch_next():
             group = request.form.get("group_id")
             round = request.form.get("round_id")
             movie_scores = why_not_movie(group, movie_id, round)
-            
 
             recs_scores = list(
                     filter(lambda id: id.get('id') == group, items)   
@@ -215,15 +230,17 @@ def watch_next():
                         if line.find(str(group)) != -1:
                             round = (line[-3:-1])
 
-                if int(round) != 15:                      
-                    # replace previous round with current round
-                    with open('files/Current_Round.txt', 'r') as file :
-                        filedata = file.read()
+                if int(round) != 15:    
 
-                    filedata = filedata.replace(str(group) + " " + str(round), str(group) + " " + str("{0:0=2d}".format(int(round)+1)))
+                    if reward == None:                  
+                        # replace previous round with current round
+                        with open('files/Current_Round.txt', 'r') as file :
+                            filedata = file.read()
 
-                    with open('files/Current_Round.txt', 'w') as file:
-                        file.write(filedata)
+                        filedata = filedata.replace(str(group) + " " + str(round), str(group) + " " + str("{0:0=2d}".format(int(round)+1)))
+
+                        with open('files/Current_Round.txt', 'w') as file:
+                            file.write(filedata)
 
                     # store all the previous scores
                     previous_scores = []
