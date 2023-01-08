@@ -230,21 +230,22 @@ def watch_next():
                         if line.find(str(group)) != -1:
                             round = (line[-3:-1])
 
+                if reward != None:
+                    round = int(round) - 1
+
                 if int(round) != 15:    
+                                      
+                    # replace previous round with next round
+                    with open('files/Current_Round.txt', 'r') as file :
+                        filedata = file.read()
 
-                    if reward == None:                  
-                        # replace previous round with current round
-                        with open('files/Current_Round.txt', 'r') as file :
-                            filedata = file.read()
+                    filedata = filedata.replace(str(group) + " " + str(round), str(group) + " " + str("{0:0=2d}".format(int(round)+1)))
 
-                        filedata = filedata.replace(str(group) + " " + str(round), str(group) + " " + str("{0:0=2d}".format(int(round)+1)))
-
-                        with open('files/Current_Round.txt', 'w') as file:
-                            file.write(filedata)
+                    with open('files/Current_Round.txt', 'w') as file:
+                        file.write(filedata)
 
                     # store all the previous scores
                     previous_scores = []
-                    
                     for entry in recs_scores[::5]:
                         if(int(entry['round'])<= int(round)-1):
                             previous_scores.append(entry)
