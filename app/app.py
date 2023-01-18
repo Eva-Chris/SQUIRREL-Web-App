@@ -175,23 +175,6 @@ def watch_next():
         f_score = []
         cur_round = []
 
-        movie_id = request.form.get('movie_id')
-
-        # check if why not query was requested
-        if(movie_id != None):
-            group = request.form.get("group_id")
-            round = request.form.get("round_id")
-            movie_scores = why_not_movie(group, movie_id, round)
-
-            recs_scores = list(
-                    filter(lambda id: id.get('id') == group, items)   
-                ) 
-            cur_round_scores = list(
-                        filter(lambda index: index.get('round') == str("{0:0=1d}".format(int(round))), recs_scores)
-                    )
-
-            return render_template('watch_next.html', movie_id = movie_id, movie_scores = list(movie_scores),cur_not=cur_round_scores)
-
         start_over = request.form.get('start_over')
 
         # check if the user wants to start over
@@ -229,10 +212,10 @@ def watch_next():
                     for line in lines:
                         if line.find(str(group)) != -1:
                             round = (line[-3:-1])
-
+                
                 if reward != None:
-                    round = int(round) - 1
-
+                    round = "{:02d}".format(int(round) - 1)
+            
                 if int(round) != 15:    
                                       
                     # replace previous round with next round
