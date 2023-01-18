@@ -49,555 +49,504 @@
         </div>
 
         {% if test %}
-        <b>Select a group: </b>
+                <b>Select a group: </b>
 
-        <!-- tables with groups -->
-        <div class="row">
-            <div class="column">
-                <table>
-                    <thead>
-                        <th></th>
-                        <th>Get Reccomendations for Group</th>
-                        <th>Description</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
-                            <form method="post" action="/watch_next">
-                                <td><input class="button" type="submit" value="4_1" name="4_1" />
-                                </td>
-                            </form>
-                            <td>The four members of the group are similar
-                                to each other, while the single member is dissimilar to all the rest.</td>
-                        </tr>
+                <!-- tables with groups -->
+                <div class="row">
+                    <div class="column">
+                        <table>
+                            <thead>
+                                <th></th>
+                                <th>Get Reccomendations for Group</th>
+                                <th>Description</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
+                                    <form method="post" action="/watch_next">
+                                        <td><input class="button" type="submit" value="4_1" name="4_1" />
+                                        </td>
+                                    </form>
+                                    <td>The four members of the group are similar
+                                        to each other, while the single member is dissimilar to all the rest.</td>
+                                </tr>
 
-                        <tr>
-                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
-                            <form method="post" action="/watch_next">
-                                <td><input class="button" type="submit" value="3_2" name="3_2" />
-                                </td>
-                            </form>
-                            <td>The three members of the group are similar
-                                to each other, while the rest two members are dissimilar to the three.</td>
-                        </tr>
+                                <tr>
+                                    <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
+                                    <form method="post" action="/watch_next">
+                                        <td><input class="button" type="submit" value="3_2" name="3_2" />
+                                        </td>
+                                    </form>
+                                    <td>The three members of the group are similar
+                                        to each other, while the rest two members are dissimilar to the three.</td>
+                                </tr>
 
-                        <tr>
-                            <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
-                            <form method="post" action="/watch_next">
-                                <td><input class="button" type="submit" value="5_Dif" name="5_Dif" />
-                                </td>
-                            </form>
-                            <td>All members of the group are dissimilar with each
-                                other.</td>
-                        </tr>
+                                <tr>
+                                    <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
+                                    <form method="post" action="/watch_next">
+                                        <td><input class="button" type="submit" value="5_Dif" name="5_Dif" />
+                                        </td>
+                                    </form>
+                                    <td>All members of the group are dissimilar with each
+                                        other.</td>
+                                </tr>
 
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
         {% endif %}
 
         {% if message is defined %}
-        <b>Group: </b> {{group}}
-        <br>
-        {{ message }}
-        <br>
-        <br>
-        <!-- start over -->
-        <form method="post" action="/watch_next">
-            <input type="hidden" name="start_over" value="start_over" />
-            <input type="hidden" name="group_id" value="{{group}}" />
-            <input class="button" type="submit" name="Start Over" value="Start Over">
-        </form>
+                <b>Group: </b> {{group}}
+                <br>
+                {{ message }}
+                <br>
+                <br>
+                <!-- start over -->
+                <form method="post" action="/watch_next">
+                    <input type="hidden" name="start_over" value="start_over" />
+                    <input type="hidden" name="group_id" value="{{group}}" />
+                    <input class="button" type="submit" name="Start Over" value="Start Over">
+                </form>
         {% endif %}
-
+        
         <br>
 
         <!-- table with recommended movies group satisfaction for current round -->
         {% if items %}
-        <b>Group: </b> {{items[0].id}}
-        <br>
-        <table>
-            <thead>
-                <th>Round</th>
-                <th>Recommended Movie</th>
-                <th>Group Satisfaction</th>
-            </thead>
-            <tbody>
+                <b>Group: </b> {{items[0].id}}
+                <br>
+                <table>
+                    <thead>
+                        <th>Round</th>
+                        <th>Recommended Movie</th>
+                        <th>Group Satisfaction</th>
+                    </thead>
+                    <tbody>
 
-                {% for item in items[0:1] %}
-                <tr>   
-                    <td>{{item.round}}</td>
-                    <td>
-                        <div class="slideshow-container">
-                            <div class="mySlides fade">
-                                <button onclick='link_function({{items[0].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                    <img src="{{ url_for('static', filename = 'posters/'+ items[0].movie +'.jpg') }}" style="width:70%"  />
-                                  </button>
-                            </div>
+                        {% for item in items[0:1] %}
+                        <tr>   
+                            <td>{{item.round}}</td>
+                            <td>
+                                <div class="slideshow-container">
+                                    <div class="mySlides fade">
+                                        <button onclick='link_function({{items[0].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                            <img src="{{ url_for('static', filename = 'posters/'+ items[0].movie +'.jpg') }}" style="width:70%"  />
+                                        </button>
+                                    </div>
 
-                            <div class="mySlides fade">
-                                <button onclick='link_function({{items[1].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                    <img src="{{ url_for('static', filename = 'posters/'+ items[1].movie +'.jpg') }}" style="width:70%" />
-                                  </button>
-                            </div>
+                                    <div class="mySlides fade">
+                                        <button onclick='link_function({{items[1].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                            <img src="{{ url_for('static', filename = 'posters/'+ items[1].movie +'.jpg') }}" style="width:70%" />
+                                        </button>
+                                    </div>
 
-                            <div class="mySlides fade">
-                                <button onclick='link_function({{items[2].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                    <img src="{{ url_for('static', filename = 'posters/'+ items[2].movie +'.jpg') }}" style="width:70%" />
-                                  </button>
-                            </div>
+                                    <div class="mySlides fade">
+                                        <button onclick='link_function({{items[2].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                            <img src="{{ url_for('static', filename = 'posters/'+ items[2].movie +'.jpg') }}" style="width:70%" />
+                                        </button>
+                                    </div>
 
-                            <div class="mySlides fade">
-                                <button onclick='link_function({{items[3].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                    <img src="{{ url_for('static', filename = 'posters/'+ items[3].movie +'.jpg') }}" style="width:70%" />
-                                  </button>
-                            </div>
+                                    <div class="mySlides fade">
+                                        <button onclick='link_function({{items[3].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                            <img src="{{ url_for('static', filename = 'posters/'+ items[3].movie +'.jpg') }}" style="width:70%" />
+                                        </button>
+                                    </div>
 
-                            <div class="mySlides fade">
-                                <button onclick='link_function({{items[4].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                    <img src="{{ url_for('static', filename = 'posters/'+ items[4].movie +'.jpg') }}" style="width:70%" />
-                                  </button>
-                            </div>
+                                    <div class="mySlides fade">
+                                        <button onclick='link_function({{items[4].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                            <img src="{{ url_for('static', filename = 'posters/'+ items[4].movie +'.jpg') }}" style="width:70%" />
+                                        </button>
+                                    </div>
 
-                            <div style="text-align:center">
-                                <span class="dot" onclick="currentSlide(1)"></span>
-                                <span class="dot" onclick="currentSlide(2)"></span>
-                                <span class="dot" onclick="currentSlide(3)"></span>
-                                <span class="dot" onclick="currentSlide(4)"></span>
-                                <span class="dot" onclick="currentSlide(5)"></span>
-                            </div>
+                                    <div style="text-align:center">
+                                        <span class="dot" onclick="currentSlide(1)"></span>
+                                        <span class="dot" onclick="currentSlide(2)"></span>
+                                        <span class="dot" onclick="currentSlide(3)"></span>
+                                        <span class="dot" onclick="currentSlide(4)"></span>
+                                        <span class="dot" onclick="currentSlide(5)"></span>
+                                    </div>
 
-                            <a class="prev" onclick="plusSlides(-1)">❮</a>
-                            <a class="next" onclick="plusSlides(1)">❯</a>
-                        </div>
-                    </td>
-                    <td>{{'%0.3f'|format(cur_round[0]|float)}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                                    <a class="prev" onclick="plusSlides(-1)">❮</a>
+                                    <a class="next" onclick="plusSlides(1)">❯</a>
+                                </div>
+                            </td>
+                            <td>{{'%0.3f'|format(cur_round[0]|float)}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
         {% endif %}
 
         <br>
 
         {% if cur_round is defined %}
-        <!-- next round -->
-        <form method="post" action="/watch_next">
-            <input type="hidden" name="group_id" value={{items[0].id}} />
-            <input class="button" type="submit" name="Next Round" value="Next Round">
-        </form>
+                <!-- next round -->
+                <form method="post" action="/watch_next">
+                    <input type="hidden" name="group_id" value={{items[0].id}} />
+                    <input class="button" type="submit" name="Next Round" value="Next Round">
+                </form>
+
+                <br>
+                <br>
+
+                <form method="post" action="/watch_next">
+                <input type="hidden" name="group_id" value={{items[0].id}} />
+                <select name="reward" id="reward" style="width:200px; height:50px;">
+                    <option value="fscore">FScore (Default)</option>
+                    <option value="average">Average</option>
+                    <option value="variance">Variance</option>
+                </select>
+                <input class="button" type="submit" name="Change Reward" value="Change Reward">
+                </form>
+        {% endif %}
 
         <br>
-        <br>
-
-        <form method="post" action="/watch_next">
-        <input type="hidden" name="group_id" value={{items[0].id}} />
-        <select name="reward" id="reward" style="width:200px; height:50px;">
-            <option value="average">Average</option>
-            <option value="variance">Variance</option>
-        </select>
-        <input class="button" type="submit" name="Change Reward" value="Change Reward">
-        </form>
-
-        <br>
-
         <br>
 
         <!-- table with recommended movies and individual scores for previous rounds -->
         {% if previous_scores %}
-        <b><u> Previous Rounds</u></b>
+                <b><u> Previous Rounds</u></b>
 
-        <table id="table_previous">
-            <thead>
-                <th>Round</th>
-                <th>Recommended Movie</th>
-                <th>Group satisfaction</th>
-            </thead>
-            <tbody>
-
-                {% for item in previous_scores[::-1] %}
-                <tr>
-                    <td>{{item.round}}</td>
-                    <td><img id="poster" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
-                    </td>
-                    {% set index = item.round | int %}
-                    <td>{{'%0.3f'|format(ov_sat[index]|float)}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
-
-        {% if movie_id is not defined and items is defined %}
-        <input class="button" type="button" name="why" value="Why am I seeing this?" onclick="showDiv()" />
-        <br>
-        {% endif %}
-        <div id="explanations" style="display:none;">
-
-            <!-- table with recommended movies and individual scores for current round -->
-            {% if message is not defined %}
-            <br>
-            <b>Below are the individual scores calculated by the single recommender for each member (M) for the current
-                round</b>
-            <table>
-                <thead>
-                    <th>Recommended Movie</th>
-                    <th>M1 Score</th>
-                    <th>M2 Score</th>
-                    <th>M3 Score</th>
-                    <th>M4 Score</th>
-                    <th>M5 Score</th>
-                </thead>
-                <tbody>
-
-                    {% for item in items %}
-                    <tr>
-                        <td><img id="poster_cur"
-                                src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
-                        </td>
-                        <td>{{item.m1_score}}</td>
-                        <td>{{item.m2_score}}</td>
-                        <td>{{item.m3_score}}</td>
-                        <td>{{item.m4_score}}</td>
-                        <td>{{item.m5_score}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <!-- action explanations -->
-            {% if action == "Average" %}
-            <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by all
-                group members. <br>
-                Average satisfaction: {{'%0.3f'|format(cur_round[0]|float)}}</p>
-
-            {% elif action == "SDAA" %}
-            <p>We recommended this movie for this round taking into account the past satisfaction of the group members
-                consdirering
-                {% set member_prev_scores = [items[0].m1_score, items[0].m2_score, items[0].m3_score, items[0].m4_score,
-                items[0].m5_score] %}
-                {% set min_score = [items[0].m1_score, items[0].m2_score, items[0].m3_score, items[0].m4_score,
-                items[0].m5_score] | min %}
-                {% set x = member_prev_scores.index(min_score) %}
-
-                {% if x == 0 %}
-                Member 1 who was the least satisfied with score {{ items[0].m1_score }}.
-                {% elif x == 1 %}
-                Member 2 who was the least satisfied with score {{ items[0].m2_score }}.
-                {% elif x == 2 %}
-                Member 3 who was the least satisfied with score {{ items[0].m3_score }}.
-                {% elif x == 3 %}
-                Member 4 who was the least satisfied with score {{ items[0].m4_score }}.
-                {% elif x == 4 %}
-                Member 5 who was the least satisfied with score {{ items[0].m5_score }}.
-                {% endif %}
-
-                <br>
-                Group's past satisfaction: {{ '%0.3f'|format(ov_sat[-1]|float) }}
-            </p>
-
-            {% elif action == "SIAA" %}
-            <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by
-                {% set member_prev_scores = [previous_scores[-1].m1_score, previous_scores[-1].m2_score,
-                previous_scores[-1].m3_score, previous_scores[-1].m4_score, previous_scores[-1].m5_score] %}
-                {% set min_score = [previous_scores[-1].m1_score, previous_scores[-1].m2_score,
-                previous_scores[-1].m3_score, previous_scores[-1].m4_score, previous_scores[-1].m5_score] | min %}
-                {% set x = member_prev_scores.index(min_score) %}
-
-                {% if x == 0 %}
-                Member 1
-                {% elif x == 1 %}
-                Member 2
-                {% elif x == 2 %}
-                Member 3
-                {% elif x == 3 %}
-                Member 4
-                {% elif x == 4 %}
-                Member 5
-                {% endif %}
-                who was the least satisfied in the previous round.
-            </p>
-
-            {% elif action == "Average Plus" %}
-            <p>We recommended this movie for this round, since it is the movie that has the minimum disagreement score.
-                <br>
-                Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}
-            </p>
-
-            {% elif action == "Pareto" %}
-            <p>We recommended this movie for this round, since it is the most fair result for all group members. <br>
-                Fairness score: {{'%0.3f'|format(cur_round[4]|float)}} <br>
-                Social Welfare: {{'%0.3f'|format(cur_round[0]|float)}}</p>
-
-            {% elif action == "RP80" %}
-            <p>We recommended this movie for this round, based on the group relevance and the disagreement scores.<br>
-                Relevance score: {{'%0.3f'|format(cur_round[2]|float)}} <br>
-                Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}</p>
-            {% endif %}
-
-            <b>Method used to calculate the result:</b> {{ action }}
-            <input class="question-mark" type="button" name="question-mark" value="?" onclick="show_expl()" />
-
-            <div id="action_def" style="display:none;">
-                {% if action == "Average" %}
-                <p class="action_expl">It is the classic Average Aggregation method,
-                    where the group predicted score for an item is the average across
-                    all predicted scores for that item across all group members. In this case,
-                    all the predicted scores of an item for the group members are considered
-                    to be of equal importance.</p>
-                {% elif action == "SDAA" %}
-                <p class="action_expl">The Sequential Dynamic Adaptation Aggregation method takes into account the past
-                    satisfaction of
-                    the group members to calculate a weight. This weight balances the average
-                    predicted score of an item for the group and the least satisfied member's
-                    score for that item.</p>
-                {% elif action == "SIAA" %}
-                <p class="action_expl">The Sequential Individual Adaptation
-                    Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
-                    member individually. For each member, it calculates a weight based on
-                    their overall satisfaction and the user disagreement of the previous iteration.</p>
-                {% elif action == "Average Plus" %}
-                <p class="action_expl">Avg+ aggregation
-                    method consists of two phases. In the first phase, we employ an average
-                    aggregation. Then, in the second phase, we iteratively populate the group
-                    recommendation list, with items that generate the minimum possible group
-                    disagreement score.</p>
-                {% elif action == "Pareto" %}
-                <p class="action_expl">This method generates a group recommendation list by incrementally adding to it
-                    items that have the best combination of Social Welfare (average satisfaction of all members for that
-                    item)
-                    and Fairness scores. It takes into account
-                    the average satisfaction that an item produces for the group members and
-                    balances it with the variance of the group members' satisfaction for that
-                    item.</p>
-                {% elif action == "RP80" %}
-                <p class="action_expl">This method combines group relevance and group disagreement scores. All the group
-                    members' predicted scores about an item
-                    are considered of equal importance and additionally, the method takes into
-                    account the group's disagreement about that item.</p>
-                {% endif %}
-            </div>
-
-            {% endif %}
-
-            <br>
-            <br>
-            <br>
-
-            <!-- table with recommended movies and individual scores for previous rounds -->
-            {% if previous_scores %}
-            <b>Below are the individual scores calculated by the single recommender for each member (M) for the previous
-                rounds</b>
-            <!-- don't show the line chart if the table contains only one item -->
-            {% if previous_scores | length == 1 %}
-            <table>
-            {% else %}
-            <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
-                data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1"
-                data-graph-xaxis-title-text="Scores (y-axis) / Round (x-axis)" >
-                {% endif %}
-                <thead>
-                    <th>Round</th>
-                    <th data-graph-skip="1">Recommended Movie</th>
-                    <th>M1 Score</th>
-                    <th>M2 Score</th>
-                    <th>M3 Score</th>
-                    <th>M4 Score</th>
-                    <th>M5 Score</th>
-                </thead>
-                <tbody>
-
-                    {% for item in previous_scores[::-1] %}
-                    <tr>
-                        <td>{{item.round}}</td>
-                        <td><img id="poster"
-                                src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
-                        <td>{{item.m1_score}}</td>
-                        <td>{{item.m2_score}}</td>
-                        <td>{{item.m3_score}}</td>
-                        <td>{{item.m4_score}}</td>
-                        <td>{{item.m5_score}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <div id="graphcontainerprev"></div>
-            {% endif %}
-
-            <br>
-
-            <input class="button" type="button" name="why" value="Show more" onclick="showMore()" />
-
-            <div id="all_scores" style="display:none;">
-                <!-- tables with scores and charts -->
-                {% if ov_sat is defined and ov_sat|length > 0 %}
-
-                <b>All Scores:</b>
-
-                <br>
-
-                <div class="row">
-                    <div class="column">
-                        <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
-                            data-graph-color-1="#005EAD">
-                            <thead>
-                                <th>Round</th>
-                                <th>Group Satisfaction</th>
-                            </thead>
-                            <tbody>
-                                {% for item in ov_sat %}
-                                <tr>
-                                    <td>{{ loop.index0 }}</td>
-                                    <td>{{'%0.3f'|format(item|float)}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div id="graphcontainer"></div>
-                    </div>
-
-                    <div class="column">
-                        <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
-                            data-graph-color-1="#005EAD">
-                            <thead>
-                                <th>Round</th>
-                                <th>MaxMin</th>
-                            </thead>
-                            <tbody>
-                                {% for item in max_min %}
-                                <tr>
-                                    <td>{{ loop.index0 }}</td>
-                                    <td>{{'%0.3f'|format(item|float)}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div id="graphcontainer2"></div>
-                    </div>
-
-                    <div class="column">
-                        <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
-                            data-graph-color-1="#005EAD">
-                            <thead>
-                                <th>Round</th>
-                                <th>NDCG</th>
-                            </thead>
-                            <tbody>
-                                {% for item in ndcg %}
-                                <tr>
-                                    <td>{{ loop.index0 }}</td>
-                                    <td>{{'%0.3f'|format(item|float)}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div id="graphcontainer3"></div>
-                    </div>
-
-                    <div class="column">
-                        <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
-                            data-graph-color-1="#005EAD">
-                            <thead>
-                                <th>Round</th>
-                                <th>FScore</th>
-                            </thead>
-                            {% for item in f_score %}
-                            <tr>
-                                <td>{{ loop.index0 }}</td>
-                                <td>{{'%0.3f'|format(item|float)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-                        <div id="graphcontainer4"></div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- why not query -->
-                <form method="post" action="/watch_next">
-                    <label>Wondering why a certain movie wasn't recommended? Type its id here:</label>
-                    <br>
-                    <input type="hidden" name="group_id" value={{items[0].id}} />
-                    <input type="hidden" name="round_id" value={{items[0].round}} />
-                    <input type="number" id="movie_id" name="movie_id" pattern="[0-9]{4}" size="4" required>
-                    <input class="button" type="submit" name="Show me" value="Show me">
-                </form>
-                {% endif %}
-
-                <!-- why not results -->
-                {% if movie_id is defined %}
-                <b>Scores for movie: </b> {{movie_id}}
-                <br>
-                <table>
-                    <thead>
-                        <th>M1 Score</th>
-                        <th>M2 Score</th>
-                        <th>M3 Score</th>
-                        <th>M4 Score</th>
-                        <th>M5 Score</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{movie_scores[0]}}</td>
-                            <td>{{movie_scores[1]}}</td>
-                            <td>{{movie_scores[2]}}</td>
-                            <td>{{movie_scores[3]}}</td>
-                            <td>{{movie_scores[4]}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <b>Below are the individual scores calculated by the single recommender for each member (M) for the
-                    current
-                    round</b>
-                <table>
+                <table id="table_previous">
                     <thead>
                         <th>Round</th>
                         <th>Recommended Movie</th>
-                        <th>M1 Score</th>
-                        <th>M2 Score</th>
-                        <th>M3 Score</th>
-                        <th>M4 Score</th>
-                        <th>M5 Score</th>
+                        <th>Group satisfaction</th>
                     </thead>
                     <tbody>
 
-                        {% for item in cur_not %}
+                        {% for item in previous_scores[::-1] %}
                         <tr>
                             <td>{{item.round}}</td>
-                            <td><img id="poster_cur"
-                                    src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
+                            <td><img id="poster" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
                             </td>
-                            <td>{{item.m1_score}}</td>
-                            <td>{{item.m2_score}}</td>
-                            <td>{{item.m3_score}}</td>
-                            <td>{{item.m4_score}}</td>
-                            <td>{{item.m5_score}}</td>
+                            {% set index = item.round | int %}
+                            <td>{{'%0.3f'|format(ov_sat[index]|float)}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+        {% endif %}
+
+        {% if items is defined %}
+                <input class="button" type="button" name="why" value="Why am I seeing this?" onclick="showDiv()" />
+                <br>
+        {% endif %}
+        
+        <div id="explanations" style="display:none;">
+
+            <!-- table with recommended movies and individual scores for current round -->
+            {% if message is not defined %}
+                        <br>
+                        <b>Below are the individual scores calculated by the single recommender for each member (M) for the current
+                            round</b>
+                        <table>
+                            <thead>
+                                <th>Recommended Movie</th>
+                                <th>M1 Score</th>
+                                <th>M2 Score</th>
+                                <th>M3 Score</th>
+                                <th>M4 Score</th>
+                                <th>M5 Score</th>
+                            </thead>
+                            <tbody>
+
+                                {% for item in items %}
+                                <tr>
+                                    <td><img id="poster_cur"
+                                            src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
+                                    </td>
+                                    <td>{{item.m1_score}}</td>
+                                    <td>{{item.m2_score}}</td>
+                                    <td>{{item.m3_score}}</td>
+                                    <td>{{item.m4_score}}</td>
+                                    <td>{{item.m5_score}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <!-- action explanations -->
+                        {% if action == "Average" %}
+                                <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by all
+                                group members. <br>
+                                Average satisfaction: {{'%0.3f'|format(cur_round[0]|float)}}</p>
+
+                        {% elif action == "SDAA" %}
+                                <p>We recommended this movie for this round taking into account the past satisfaction of the group members
+                                    consdirering
+                                    {% set member_prev_scores = [items[0].m1_score, items[0].m2_score, items[0].m3_score, items[0].m4_score,
+                                    items[0].m5_score] %}
+                                    {% set min_score = [items[0].m1_score, items[0].m2_score, items[0].m3_score, items[0].m4_score,
+                                    items[0].m5_score] | min %}
+                                    {% set x = member_prev_scores.index(min_score) %}
+
+                                    {% if x == 0 %}
+                                    Member 1 who was the least satisfied with score {{ items[0].m1_score }}.
+                                    {% elif x == 1 %}
+                                    Member 2 who was the least satisfied with score {{ items[0].m2_score }}.
+                                    {% elif x == 2 %}
+                                    Member 3 who was the least satisfied with score {{ items[0].m3_score }}.
+                                    {% elif x == 3 %}
+                                    Member 4 who was the least satisfied with score {{ items[0].m4_score }}.
+                                    {% elif x == 4 %}
+                                    Member 5 who was the least satisfied with score {{ items[0].m5_score }}.
+                                    {% endif %}
+
+                                    <br>
+                                    Group's past satisfaction: {{ '%0.3f'|format(ov_sat[-1]|float) }}
+                                </p>
+
+                        {% elif action == "SIAA" %}
+                                <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by
+                                    {% set member_prev_scores = [previous_scores[-1].m1_score, previous_scores[-1].m2_score,
+                                    previous_scores[-1].m3_score, previous_scores[-1].m4_score, previous_scores[-1].m5_score] %}
+                                    {% set min_score = [previous_scores[-1].m1_score, previous_scores[-1].m2_score,
+                                    previous_scores[-1].m3_score, previous_scores[-1].m4_score, previous_scores[-1].m5_score] | min %}
+                                    {% set x = member_prev_scores.index(min_score) %}
+
+                                    {% if x == 0 %}
+                                    Member 1
+                                    {% elif x == 1 %}
+                                    Member 2
+                                    {% elif x == 2 %}
+                                    Member 3
+                                    {% elif x == 3 %}
+                                    Member 4
+                                    {% elif x == 4 %}
+                                    Member 5
+                                    {% endif %}
+                                    who was the least satisfied in the previous round.
+                                </p>
+
+                        {% elif action == "Average Plus" %}
+                                <p>We recommended this movie for this round, since it is the movie that has the minimum disagreement score.
+                                    <br>
+                                    Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}
+                                </p>
+
+                        {% elif action == "Pareto" %}
+                                <p>We recommended this movie for this round, since it is the most fair result for all group members. <br>
+                                    Fairness score: {{'%0.3f'|format(cur_round[4]|float)}} <br>
+                                    Social Welfare: {{'%0.3f'|format(cur_round[0]|float)}}</p>
+
+                        {% elif action == "RP80" %}
+                                <p>We recommended this movie for this round, based on the group relevance and the disagreement scores.<br>
+                                    Relevance score: {{'%0.3f'|format(cur_round[2]|float)}} <br>
+                                    Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}</p>
+                        {% endif %}
+
+                        <b>Method used to calculate the result:</b> {{ action }}
+                        <input class="question-mark" type="button" name="question-mark" value="?" onclick="show_expl()" />
+
+                        <div id="action_def" style="display:none;">
+                            {% if action == "Average" %}
+                                    <p class="action_expl">It is the classic Average Aggregation method,
+                                        where the group predicted score for an item is the average across
+                                        all predicted scores for that item across all group members. In this case,
+                                        all the predicted scores of an item for the group members are considered
+                                        to be of equal importance.</p>
+                            {% elif action == "SDAA" %}
+                                    <p class="action_expl">The Sequential Dynamic Adaptation Aggregation method takes into account the past
+                                        satisfaction of
+                                        the group members to calculate a weight. This weight balances the average
+                                        predicted score of an item for the group and the least satisfied member's
+                                        score for that item.</p>
+                            {% elif action == "SIAA" %}
+                                    <p class="action_expl">The Sequential Individual Adaptation
+                                        Aggregation method utilizes a weight for aggregations. SIAA focuses on each group
+                                        member individually. For each member, it calculates a weight based on
+                                        their overall satisfaction and the user disagreement of the previous iteration.</p>
+                            {% elif action == "Average Plus" %}
+                                    <p class="action_expl">Avg+ aggregation
+                                        method consists of two phases. In the first phase, we employ an average
+                                        aggregation. Then, in the second phase, we iteratively populate the group
+                                        recommendation list, with items that generate the minimum possible group
+                                        disagreement score.</p>
+                            {% elif action == "Pareto" %}
+                                    <p class="action_expl">This method generates a group recommendation list by incrementally adding to it
+                                        items that have the best combination of Social Welfare (average satisfaction of all members for that
+                                        item)
+                                        and Fairness scores. It takes into account
+                                        the average satisfaction that an item produces for the group members and
+                                        balances it with the variance of the group members' satisfaction for that
+                                        item.</p>
+                            {% elif action == "RP80" %}
+                                    <p class="action_expl">This method combines group relevance and group disagreement scores. All the group
+                                        members' predicted scores about an item
+                                        are considered of equal importance and additionally, the method takes into
+                                        account the group's disagreement about that item.</p>
+                            {% endif %}
+                        </div>
+
+                        <br>
+                        <br>
+                        <br>
+
+                        <!-- table with recommended movies and individual scores for previous rounds -->
+                        {% if previous_scores %}
+                                <b>Below are the individual scores calculated by the single recommender for each member (M) for the previous
+                                    rounds</b>
+                                <!-- don't show the line chart if the table contains only one item -->
+                                {% if previous_scores | length == 1 %}
+                                        <table>
+                                {% else %}
+                                        <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
+                                            data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1"
+                                            data-graph-xaxis-title-text="Scores (y-axis) / Round (x-axis)" >
+                                {% endif %}
+                                <thead>
+                                    <th>Round</th>
+                                    <th data-graph-skip="1">Recommended Movie</th>
+                                    <th>M1 Score</th>
+                                    <th>M2 Score</th>
+                                    <th>M3 Score</th>
+                                    <th>M4 Score</th>
+                                    <th>M5 Score</th>
+                                </thead>
+                                <tbody>
+
+                                {% for item in previous_scores[::-1] %}
+                                <tr>
+                                    <td>{{item.round}}</td>
+                                    <td><img id="poster"
+                                            src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}"></td>
+                                    <td>{{item.m1_score}}</td>
+                                    <td>{{item.m2_score}}</td>
+                                    <td>{{item.m3_score}}</td>
+                                    <td>{{item.m4_score}}</td>
+                                    <td>{{item.m5_score}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                                </table>
+                                <div id="graphcontainerprev"></div>
+
+                                <input class="button" type="button" name="why" value="Show more" onclick="showMore()" />
+                        {% endif %}
+
+                        <div id="all_scores" style="display:none;">
+                            <!-- tables with scores and charts -->
+                            {% if ov_sat is defined and ov_sat|length > 0 %}
+
+                                    <b>All Scores:</b>
+
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="column">
+                                            <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
+                                                data-graph-color-1="#005EAD">
+                                                <thead>
+                                                    <th>Round</th>
+                                                    <th>Group Satisfaction</th>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item in ov_sat %}
+                                                    <tr>
+                                                        <td>{{ loop.index0 }}</td>
+                                                        <td>{{'%0.3f'|format(item|float)}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <div id="graphcontainer"></div>
+                                        </div>
+
+                                        <div class="column">
+                                            <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
+                                                data-graph-color-1="#005EAD">
+                                                <thead>
+                                                    <th>Round</th>
+                                                    <th>MaxMin</th>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item in max_min %}
+                                                    <tr>
+                                                        <td>{{ loop.index0 }}</td>
+                                                        <td>{{'%0.3f'|format(item|float)}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <div id="graphcontainer2"></div>
+                                        </div>
+
+                                        <div class="column">
+                                            <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
+                                                data-graph-color-1="#005EAD">
+                                                <thead>
+                                                    <th>Round</th>
+                                                    <th>NDCG</th>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item in ndcg %}
+                                                    <tr>
+                                                        <td>{{ loop.index0 }}</td>
+                                                        <td>{{'%0.3f'|format(item|float)}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <div id="graphcontainer3"></div>
+                                        </div>
+
+                                        <div class="column">
+                                            <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
+                                                data-graph-color-1="#005EAD">
+                                                <thead>
+                                                    <th>Round</th>
+                                                    <th>FScore</th>
+                                                </thead>
+                                                {% for item in f_score %}
+                                                <tr>
+                                                    <td>{{ loop.index0 }}</td>
+                                                    <td>{{'%0.3f'|format(item|float)}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </table>
+                                            <div id="graphcontainer4"></div>
+                                        </div>
+                                    </div>
+                            {% endif %}
                 {% endif %}
+                
             </div>
 
         </div>
 
-        {% if movie_id is defined %}
-        <input type="button" class="button" value="Go back" onclick="history.back()">
-        {% elif cur_round is defined or previous_scores is defined %}
-        <a href="watch_next" type="button" class="button" style="text-decoration: none">Go back to group
-            list</a>
+        {% if cur_round is defined  %}
+                <a href="watch_next" type="button" class="button" style="text-decoration: none">Go back to group
+                    list</a>
         {% endif %}
+        
 
     </div>
+
 
     <script>
         /* function to open movie lens link */
         function link_function(value){
+            getDivFromWebsite();
             url = 'https://movielens.org/movies/' + value;
             window.open(url, '_blank');
         }
+
+
+        async function getDivFromWebsite() {
+            const response = await fetch('https://cors-proxy.example.com/?url=https://movielens.org/movies/318');
+            const html = await response.text();
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            const divElement = doc.querySelector('.movie-details-heading');
+
+            console.log(divElement);
+        }
+
 
         /* create charts from tables using highcharts */
         $('table.highchart').highchartTable();
