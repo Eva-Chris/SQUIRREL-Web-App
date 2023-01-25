@@ -22,7 +22,7 @@
 
 <body>
     <div class="content">
-        <h1 id="title">SQUIRREL</h1>
+        <h1 id="title">SQUIRREL Movies</h1>
 
         <!-- navigation bar -->
         <div class="nav_bar">
@@ -121,7 +121,7 @@
                     <thead>
                         <th>Round</th>
                         <th>Recommended Movie</th>
-                        <th>Group Satisfaction</th>
+                        <th>SQUIRREL predicts for the group</th>
                     </thead>
                     <tbody>
 
@@ -129,50 +129,47 @@
                         <tr>   
                             <td>{{item.round}}</td>
                             <td>
-                                <div class="slideshow-container">
-                                    <div class="mySlides fade">
-                                        <button onclick='link_function({{items[0].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                            <img src="{{ url_for('static', filename = 'posters/'+ items[0].movie +'.jpg') }}" style="width:70%"  />
-                                        </button>
-                                    </div>
 
-                                    <div class="mySlides fade">
-                                        <button onclick='link_function({{items[1].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                            <img src="{{ url_for('static', filename = 'posters/'+ items[1].movie +'.jpg') }}" style="width:70%" />
-                                        </button>
-                                    </div>
+                                <div class="movie-slide">
 
-                                    <div class="mySlides fade">
-                                        <button onclick='link_function({{items[2].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                            <img src="{{ url_for('static', filename = 'posters/'+ items[2].movie +'.jpg') }}" style="width:70%" />
-                                        </button>
-                                    </div>
+                                    <div class= "movie-box">
 
-                                    <div class="mySlides fade">
-                                        <button onclick='link_function({{items[3].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                            <img src="{{ url_for('static', filename = 'posters/'+ items[3].movie +'.jpg') }}" style="width:70%" />
-                                        </button>
-                                    </div>
+                                        <div class= "movie-info">
+                                            <button onclick='link_function({{items[0].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                                <img src="{{ url_for('static', filename = 'posters/'+ items[0].movie +'.jpg') }}" style="width:150px;" />
+                                            </button>
+                                        </div>
 
-                                    <div class="mySlides fade">
-                                        <button onclick='link_function({{items[4].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
-                                            <img src="{{ url_for('static', filename = 'posters/'+ items[4].movie +'.jpg') }}" style="width:70%" />
-                                        </button>
-                                    </div>
+                                        <div class= "movie-info">
+                                            <button onclick='link_function({{items[1].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                                <img src="{{ url_for('static', filename = 'posters/'+ items[1].movie +'.jpg') }}" style="width:150px;" />
+                                            </button>
+                                        </div>
 
-                                    <div style="text-align:center">
-                                        <span class="dot" onclick="currentSlide(1)"></span>
-                                        <span class="dot" onclick="currentSlide(2)"></span>
-                                        <span class="dot" onclick="currentSlide(3)"></span>
-                                        <span class="dot" onclick="currentSlide(4)"></span>
-                                        <span class="dot" onclick="currentSlide(5)"></span>
-                                    </div>
+                                        <div class= "movie-info">
+                                            <button onclick='link_function({{items[2].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                                <img src="{{ url_for('static', filename = 'posters/'+ items[2].movie +'.jpg') }}" style="width:150px;" />
+                                            </button>
+                                        </div>
 
-                                    <a class="prev" onclick="plusSlides(-1)">❮</a>
-                                    <a class="next" onclick="plusSlides(1)">❯</a>
-                                </div>
+                                        <div class= "movie-info">
+                                            <button onclick='link_function({{items[3].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                                <img src="{{ url_for('static', filename = 'posters/'+ items[3].movie +'.jpg') }}" style="width:150px;" />
+                                            </button>
+                                        </div>
+
+                                        <div class= "movie-info">
+                                            <button onclick='link_function({{items[4].movie | tojson}})' style="border:0; background: none; cursor:pointer;">
+                                                <img src="{{ url_for('static', filename = 'posters/'+ items[4].movie +'.jpg') }}" style="width:150px;" />
+                                            </button>
+                                        </div>
+    
+                                     </div>
+                                </div>      
+                              
                             </td>
-                            <td>{{'%0.3f'|format(cur_round[0]|float)}}</td>
+                            <td>{{'%0.2f'|format((cur_round[0]|float)*5)}}<br>
+                            <span class="stars">{{'%0.2f'|format((cur_round[0]|float)*5)}}</span></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -196,7 +193,6 @@
                 <select name="reward" id="reward" style="width:200px; height:50px;">
                     <option value="fscore">FScore (Default)</option>
                     <option value="average">Average</option>
-                    <option value="variance">Variance</option>
                 </select>
                 <input class="button" type="submit" name="Change Reward" value="Change Reward">
                 </form>
@@ -213,17 +209,18 @@
                     <thead>
                         <th>Round</th>
                         <th>Recommended Movie</th>
-                        <th>Group satisfaction</th>
+                        <th>SQUIRREL predicts for the group</th>
                     </thead>
                     <tbody>
 
                         {% for item in previous_scores[::-1] %}
                         <tr>
                             <td>{{item.round}}</td>
-                            <td><img id="poster" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}">
+                            <td><img id="poster" src="{{ url_for('static', filename = 'posters/'+ item.movie +'.jpg') }}" style="width:100px;">
                             </td>
                             {% set index = item.round | int %}
-                            <td>{{'%0.3f'|format(ov_sat[index]|float)}}</td>
+                            <td>{{'%0.2f'|format((ov_sat[index]|float)*5)}}<br>
+                            <span class="stars">{{'%0.2f'|format((ov_sat[index]|float)*5)}}</span></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -531,9 +528,8 @@
         function link_function(value){
             getDivFromWebsite();
             url = 'https://movielens.org/movies/' + value;
-            window.open(url, '_blank');
+            window.open(url, 'popup','width=700,height=700');
         }
-
 
         async function getDivFromWebsite() {
             const response = await fetch('https://cors-proxy.example.com/?url=https://movielens.org/movies/318');
@@ -568,33 +564,12 @@
             document.getElementById('all_scores').style.display = "block";
         }
 
-        /* slideshow functions */
-        let slideIndex = 1;
-        showSlides(slideIndex);
+        $.fn.stars = function() {
+            return this.each(function(i,e){$(e).html($('<span/>').width($(e).text()*16));});
+        };
 
-        function plusSlides(n) {
-            showSlides(slideIndex += n);
-        }
-
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
-        }
-
-        function showSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            let dots = document.getElementsByClassName("dot");
-            if (n > slides.length) { slideIndex = 1 }
-            if (n < 1) { slideIndex = slides.length }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
-        }
+        $('.stars').stars();
+        
     </script>
 
 </body>
