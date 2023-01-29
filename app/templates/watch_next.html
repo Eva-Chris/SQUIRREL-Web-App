@@ -64,7 +64,7 @@
                                 <tr>
                                     <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
                                     <form method="post" action="/watch_next">
-                                        <td><input class="button" type="submit" value="4_1" name="4_1" />
+                                        <td><button class="button-2" value="4_1" name="4_1">4 similar 1 different</button>
                                         </td>
                                     </form>
                                     <td>The four members of the group are similar
@@ -74,7 +74,7 @@
                                 <tr>
                                     <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
                                     <form method="post" action="/watch_next">
-                                        <td><input class="button" type="submit" value="3_2" name="3_2" />
+                                        <td><button class="button-2" value="3_2" name="3_2">3 similar 2 different</button>
                                         </td>
                                     </form>
                                     <td>The three members of the group are similar
@@ -84,7 +84,7 @@
                                 <tr>
                                     <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
                                     <form method="post" action="/watch_next">
-                                        <td><input class="button" type="submit" value="5_Dif" name="5_Dif" />
+                                        <td><button class="button-2" value="5_Dif" name="5_Dif">5 different</button>
                                         </td>
                                     </form>
                                     <td>All members of the group are dissimilar with each
@@ -107,7 +107,7 @@
                 <form method="post" action="/watch_next">
                     <input type="hidden" name="start_over" value="start_over" />
                     <input type="hidden" name="group_id" value="{{group}}" />
-                    <input class="button" type="submit" name="Start Over" value="Start Over">
+                    <button class="button" value="Start Over" name="Start Over">Start Over</button>
                 </form>
         {% endif %}
         
@@ -176,25 +176,24 @@
                 </table>
         {% endif %}
 
-        <br>
-
         {% if cur_round is defined %}
                 <!-- next round -->
                 <form method="post" action="/watch_next">
                     <input type="hidden" name="group_id" value={{items[0].id}} />
-                    <input class="button" type="submit" name="Next Round" value="Next Round">
+                    <button class="button" value="Next Round" name="Next Round" style="float: right;">Next Round</button>
                 </form>
-
-                <br>
-                <br>
 
                 <form method="post" action="/watch_next">
                 <input type="hidden" name="group_id" value={{items[0].id}} />
-                <select name="reward" id="reward" style="width:200px; height:50px;">
-                    <option value="fscore">FScore (Default)</option>
-                    <option value="average">Average</option>
-                </select>
-                <input class="button" type="submit" name="Change Reward" value="Change Reward">
+
+                <div class="select">
+                    <select name="reward" id="reward">
+                        <option value="fscore">FScore (Default)</option>
+                        <option value="average">Average</option>
+                    </select>
+                </div>
+                <br>
+                <button class="button" value="Change Reward" name="Change Reward">Change Reward</button>
                 </form>
         {% endif %}
 
@@ -228,7 +227,7 @@
         {% endif %}
 
         {% if items is defined %}
-                <input class="button" type="button" name="why" value="Why am I seeing this?" onclick="showDiv()" />
+                <button class="button" value="why" name="why" onclick="showDiv()">Why am I seeing this?</button>
                 <br>
         {% endif %}
         
@@ -420,8 +419,9 @@
                                 </tbody>
                                 </table>
                                 <div id="graphcontainerprev"></div>
-
-                                <input class="button" type="button" name="why" value="Show more" onclick="showMore()" />
+                                
+                                <button class="button" value="Show more" name="Show more" onclick="showMore()">Show more</button>
+                                <br>
                         {% endif %}
 
                         <div id="all_scores" style="display:none;">
@@ -513,10 +513,10 @@
             </div>
 
         </div>
-
+        
+        <br>
         {% if cur_round is defined  %}
-                <a href="watch_next" type="button" class="button" style="text-decoration: none">Go back to group
-                    list</a>
+        <button class="button" onclick="location.href='watch_next';">Go back to group list</button>
         {% endif %}
         
 
