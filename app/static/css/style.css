@@ -112,20 +112,8 @@ tr:hover {
 }
 
 /* table buttons customization */
-.button {
-  display: inline-block;
-  padding: 10px;
-  border: 1px solid #000000;
-  border-radius: 8px;
-  font-family: sans-serif;
-  font-weight: 500;
-  color: #000000;
-  width: 300px;
-  text-align: center;
-  background-color: rgba(186, 186, 186, 0.2)
-}
 
-.button:hover,.question-mark:hover {
+.question-mark:hover {
   color: #000000;
   background-color: #FFFFFF;
   cursor: pointer;
@@ -286,4 +274,153 @@ span.stars>*{
   .text {
     font-size: 20px;
   }
+}
+
+.button {
+  padding: 0.6em 2em;
+  border: none;
+  outline: none;
+  color: rgb(0, 0, 0);
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  z-index: 0;
+  border-radius: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button 20s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+@keyframes glowing-button {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.button:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgb(255, 255, 255);
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+.button-2{
+  --b: 3px;   /* border thickness */
+  --s: .45em; /* size of the corner */
+  --color: #373B44;
+  width: 300px;
+  text-align: center;
+  
+  padding: calc(.5em + var(--s)) calc(.9em + var(--s));
+  color: var(--color);
+  --_p: var(--s);
+  background:
+    conic-gradient(from 90deg at var(--b) var(--b),#0000 90deg,var(--color) 0)
+    var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+  transition: .3s linear, color 0s, background-color 0s;
+  outline: var(--b) solid #0000;
+  outline-offset: .6em;
+  font-size: 16px;
+
+  border: 0;
+
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-2:hover,
+.button-2:focus-visible{
+  --_p: 0px;
+  outline-color: var(--color);
+  outline-offset: .05em;
+}
+
+.button-2:active {
+  background: var(--color);
+  color: #fff;
+}
+
+select {
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  -ms-appearance:none;
+  appearance:none;
+  outline:0;
+  box-shadow:none;
+  border-color: #000000;
+  background: rgb(255, 255, 255);
+  background-image: none;
+  flex: 1;
+  padding: 0 .5em;
+  color:rgb(0, 0, 0);
+  cursor:pointer;
+}
+select::-ms-expand {
+  display: none;
+}
+.select {
+  position: relative;
+  display: flex;
+  width: 250px;
+  height: 3em;
+  line-height: 3;
+  background: #222;
+  overflow: hidden;
+  border-radius: .25em;
+  border-color: #000000;
+}
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #222;
+  cursor:pointer;
+  pointer-events:none;
+  transition:.25s all ease;
+}
+.select:hover::after {
+  color: #23b499;
 }
