@@ -1,4 +1,4 @@
-# SQUIRREL Movie Web App
+# SQUIRREL Movies Web App
 
 /app  <br>
 &emsp;&emsp;   /static <br>
@@ -17,4 +17,5 @@
 &emsp;&emsp; /Recommended_Movies_Average.txt --- Reccomended movie and actions for each group using Average method <br>
 &emsp;&emsp; /Recommended_Movies_Fscore.txt --- Reccomended movie and actions for each group using FScore method <br>
 &emsp;&emsp; /Scores_Per_Round_Average.txt --- All scores for each group using Average method <br>
-&emsp;&emsp; /Scores_Per_Round_Fscore.txt --- All scoresfor each group using Fscore method
+&emsp;&emsp; /Scores_Per_Round_Fscore.txt --- All scoresfor each group using Fscore method <br>
+/REQUIREMENTS.txt --- Installation instructions and requirements
