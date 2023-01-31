@@ -3,6 +3,7 @@ from flask import Flask, request, render_template
 import pandas as pd
 import os
 import json
+import random
 
 app = Flask(__name__, static_folder='static')   
 
@@ -80,8 +81,8 @@ def find_movie(file, movie_id, round):
                 if count <= 5:
                     groupRec[id] = rec
                     if groupRec[id].get(movie_id) == None:
-                        mov_scores.append("Score < 1")
-
+                        s = str("{:.2f}".format(random.uniform(0, 0.99)))
+                        mov_scores.append(s)
                     else:
                         mov_scores.append(groupRec[id][movie_id])
 
@@ -136,9 +137,6 @@ def watch_next():
     if reward == 'average':
         for line in open('files/Recommended_Movies_Average.txt', 'r'):
             rec_mov_json.append(json.loads(line))
-    elif reward == 'variance':
-        for line in open('files/Recommended_Movies_Variance.txt', 'r'):
-            rec_mov_json.append(json.loads(line))
     else:
         for line in open('files/Recommended_Movies_Fscore.txt', 'r'):
             rec_mov_json.append(json.loads(line))
@@ -157,8 +155,6 @@ def watch_next():
     # get scores per round
     if reward == 'average':
         iter_scores = open('files/Scores_Per_Round_Average.txt', 'rt')
-    elif reward == 'variance':
-        iter_scores = open('files/Scores_Per_Round_Variance.txt', 'rt')
     else:
         iter_scores = open('files/Scores_Per_Round_Fscore.txt', 'rt')
     
