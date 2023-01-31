@@ -1,9 +1,9 @@
 ---VERSIONS---
-Python Version: 3.8.10
+Python Version: 3.10.6
 NumPy Version: 1.19.5
 Tensorforce Version: 0.6.5
 gym Version: 0.26.0
-Ubuntu Version: 20.04.5
+Ubuntu Version: 22.04.1
 IDE: Visual Studio Code
 Flask Version: 2.2.2
 
@@ -12,9 +12,7 @@ If env folder is not available type: python3 -m venv env
 
 To activate the virtual environment type: source env/bin/activate
 
-If flask is not installed type: pip install flask-sqlalchemy
-If flask-wtf is not installed type: pip install flask-wtf
-If flask-mail is not installed type: pip install flask-mail
+If flask is not installed type: pip install flask
 
 ---CHANGING ENVIRONMENT---
 In Visual Studio Code press Ctrl+Shift+P and select venv as Python Intepreter
