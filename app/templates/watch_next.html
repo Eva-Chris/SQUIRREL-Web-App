@@ -57,7 +57,7 @@
                         <table>
                             <thead>
                                 <th></th>
-                                <th>Get Reccomendations for Group</th>
+                                <th>Get Reccomendations</th>
                                 <th>Description</th>
                             </thead>
                             <tbody>
@@ -184,16 +184,13 @@
                 </form>
 
                 <form method="post" action="/watch_next">
-                <input type="hidden" name="group_id" value={{items[0].id}} />
-
-                <div class="select">
+                    <input type="hidden" name="group_id" value={{items[0].id}} />
+                    
                     <select name="reward" id="reward">
                         <option value="fscore">FScore (Default)</option>
                         <option value="average">Average</option>
                     </select>
-                </div>
-                <br>
-                <button class="button" value="Change Reward" name="Change Reward">Change Reward</button>
+                    <button class="button" value="Change Reward" name="Change Reward">Change Reward</button>
                 </form>
         {% endif %}
 
@@ -335,7 +332,7 @@
                         {% endif %}
 
                         <b>Method used to calculate the result:</b> {{ action }}
-                        <input class="question-mark" type="button" name="question-mark" value="?" onclick="show_expl()" />
+                        <button class="button" value="question-mark" name="question-mark" onclick="show_expl()">?</button>
 
                         <div id="action_def" style="display:none;">
                             {% if action == "Average" %}
@@ -421,7 +418,7 @@
                                 <div id="graphcontainerprev"></div>
                                 
                                 <button class="button" value="Show more" name="Show more" onclick="showMore()">Show more</button>
-                                <br>
+                                <br><br>
                         {% endif %}
 
                         <div id="all_scores" style="display:none;">
@@ -516,7 +513,7 @@
         
         <br>
         {% if cur_round is defined  %}
-        <button class="button" onclick="location.href='watch_next';">Go back to group list</button>
+        <button class="button" onclick="location.href='watch_next';" style="float: right;">Go back to group list</button>
         {% endif %}
         
 
@@ -526,23 +523,9 @@
     <script>
         /* function to open movie lens link */
         function link_function(value){
-            getDivFromWebsite();
             url = 'https://movielens.org/movies/' + value;
             window.open(url, 'popup','width=700,height=700');
         }
-
-        async function getDivFromWebsite() {
-            const response = await fetch('https://cors-proxy.example.com/?url=https://movielens.org/movies/318');
-            const html = await response.text();
-
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-
-            const divElement = doc.querySelector('.movie-details-heading');
-
-            console.log(divElement);
-        }
-
 
         /* create charts from tables using highcharts */
         $('table.highchart').highchartTable();
@@ -564,6 +547,7 @@
             document.getElementById('all_scores').style.display = "block";
         }
 
+        /* star rating */
         $.fn.stars = function() {
             return this.each(function(i,e){$(e).html($('<span/>').width($(e).text()*16));});
         };
