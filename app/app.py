@@ -33,6 +33,21 @@ def individual_scores(test, recs):
                 mov_scores = find_movie(
                     "groups/"+test[t].split("\t", 1)[0], recs[m],i)
 
+                if float(mov_scores[s]) >= 5:
+                    mov_scores[s] = '5.0'
+                
+                if float(mov_scores[s+1]) >= 5:
+                    mov_scores[s+1] = '5.0'
+                
+                if float(mov_scores[s+2]) >= 5:
+                    mov_scores[s+2] = '5.0'
+                
+                if float(mov_scores[s+3]) >= 5:
+                    mov_scores[s+3] = '5.0'
+
+                if float(mov_scores[s+4]) >= 5:
+                    mov_scores[s+4] = '5.0'
+                    
                 an_item = dict(id=test[t].split("\t", 1)[0], movie=recs[m], round=i, m1_score=mov_scores[s], m2_score=mov_scores[s+1],
                             m3_score=mov_scores[s+2], m4_score=mov_scores[s+3], m5_score=mov_scores[s+4])
                 items.append(an_item)
@@ -134,11 +149,11 @@ def watch_next():
 
     reward = request.form.get('reward')
 
-    if reward == 'average':
-        for line in open('files/Recommended_Movies_Average.txt', 'r'):
+    if reward == 'fscore':
+        for line in open('files/Recommended_Movies_Fscore.txt', 'r'):
             rec_mov_json.append(json.loads(line))
     else:
-        for line in open('files/Recommended_Movies_Fscore.txt', 'r'):
+        for line in open('files/Recommended_Movies_Average.txt', 'r'):
             rec_mov_json.append(json.loads(line))
     
     recs = []
@@ -153,10 +168,10 @@ def watch_next():
     open("files/Current_Round.txt", "a")
 
     # get scores per round
-    if reward == 'average':
-        iter_scores = open('files/Scores_Per_Round_Average.txt', 'rt')
-    else:
+    if reward == 'fscore':
         iter_scores = open('files/Scores_Per_Round_Fscore.txt', 'rt')
+    else:
+        iter_scores = open('files/Scores_Per_Round_Average.txt', 'rt')
     
     score_lines = iter_scores.read().split('\n')
 
