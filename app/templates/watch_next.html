@@ -64,7 +64,7 @@
                                 <tr>
                                     <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
                                     <form method="post" action="/watch_next">
-                                        <td><button class="button-2" value="4_1" name="4_1">4 similar 1 different</button>
+                                        <td><button class="button" value="4_1" name="4_1">4 similar 1 different</button>
                                         </td>
                                     </form>
                                     <td>The four members of the group are similar
@@ -74,7 +74,7 @@
                                 <tr>
                                     <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
                                     <form method="post" action="/watch_next">
-                                        <td><button class="button-2" value="3_2" name="3_2">3 similar 2 different</button>
+                                        <td><button class="button" value="3_2" name="3_2">3 similar 2 different</button>
                                         </td>
                                     </form>
                                     <td>The three members of the group are similar
@@ -84,7 +84,7 @@
                                 <tr>
                                     <td><img src="{{ url_for('static', filename = 'images/avatar.png') }}"></td>
                                     <form method="post" action="/watch_next">
-                                        <td><button class="button-2" value="5_Dif" name="5_Dif">5 different</button>
+                                        <td><button class="button" value="5_Dif" name="5_Dif">5 different</button>
                                         </td>
                                     </form>
                                     <td>All members of the group are dissimilar with each
@@ -187,8 +187,8 @@
                     <input type="hidden" name="group_id" value={{items[0].id}} />
                     
                     <select name="reward" id="reward">
-                        <option value="fscore">FScore (Default)</option>
                         <option value="average">Average</option>
+                        <option value="fscore">FScore</option>
                     </select>
                     <button class="button" value="Change Reward" name="Change Reward">Change Reward</button>
                 </form>
@@ -205,7 +205,7 @@
                     <thead>
                         <th>Round</th>
                         <th>Recommended Movie</th>
-                        <th>SQUIRREL predicts for the group</th>
+                        <th>SQUIRREL predicted for the group</th>
                     </thead>
                     <tbody>
 
@@ -263,12 +263,12 @@
 
                         <!-- action explanations -->
                         {% if action == "Average" %}
-                                <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by all
+                                <p>We recommended these movies for this round, since they are the movies that are most likely to be enjoyed by all
                                 group members. <br>
                                 Average satisfaction: {{'%0.3f'|format(cur_round[0]|float)}}</p>
 
                         {% elif action == "SDAA" %}
-                                <p>We recommended this movie for this round taking into account the past satisfaction of the group members
+                                <p>We recommended these movies for this round taking into account the past satisfaction of the group members
                                     consdirering
                                     {% set member_prev_scores = [items[0].m1_score, items[0].m2_score, items[0].m3_score, items[0].m4_score,
                                     items[0].m5_score] %}
@@ -293,7 +293,7 @@
                                 </p>
 
                         {% elif action == "SIAA" %}
-                                <p>We recommended this movie for this round, since it is the movie that is most likely to be enjoyed by
+                                <p>We recommended these movies for this round, since they are the movies that are most likely to be enjoyed by
                                     {% set member_prev_scores = [previous_scores[-1].m1_score, previous_scores[-1].m2_score,
                                     previous_scores[-1].m3_score, previous_scores[-1].m4_score, previous_scores[-1].m5_score] %}
                                     {% set min_score = [previous_scores[-1].m1_score, previous_scores[-1].m2_score,
@@ -315,24 +315,24 @@
                                 </p>
 
                         {% elif action == "Average Plus" %}
-                                <p>We recommended this movie for this round, since it is the movie that has the minimum disagreement score.
+                                <p>We recommended these movies for this round, since they are the movies that have the minimum disagreement score.
                                     <br>
                                     Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}
                                 </p>
 
                         {% elif action == "Pareto" %}
-                                <p>We recommended this movie for this round, since it is the most fair result for all group members. <br>
+                                <p>We recommended these movies for this round, since it is the most fair result for all group members. <br>
                                     Fairness score: {{'%0.3f'|format(cur_round[4]|float)}} <br>
                                     Social Welfare: {{'%0.3f'|format(cur_round[0]|float)}}</p>
 
                         {% elif action == "RP80" %}
-                                <p>We recommended this movie for this round, based on the group relevance and the disagreement scores.<br>
+                                <p>We recommended these movies for this round, based on the group relevance and the disagreement scores.<br>
                                     Relevance score: {{'%0.3f'|format(cur_round[2]|float)}} <br>
                                     Disagreement: {{'%0.3f'|format(cur_round[1]|float)}}</p>
                         {% endif %}
 
                         <b>Method used to calculate the result:</b> {{ action }}
-                        <button class="button" value="question-mark" name="question-mark" onclick="show_expl()">?</button>
+                        <button class="question-mark" value="question-mark" name="question-mark" onclick="show_expl()">?</button>
 
                         <div id="action_def" style="display:none;">
                             {% if action == "Average" %}
@@ -417,6 +417,7 @@
                                 </table>
                                 <div id="graphcontainerprev"></div>
                                 
+                                <br>
                                 <button class="button" value="Show more" name="Show more" onclick="showMore()">Show more</button>
                                 <br><br>
                         {% endif %}
@@ -431,8 +432,8 @@
 
                                     <div class="row">
                                         <div class="column">
-                                            <table class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
-                                                data-graph-color-1="#005EAD">
+                                            <table hidden class="highchart" data-graph-container="#graphcontainer" data-graph-type="column"
+                                                data-graph-color-1="#005EAD" data-graph-xaxis-title-text="Satisfaction (y-axis) / Round (x-axis)">
                                                 <thead>
                                                     <th>Round</th>
                                                     <th>Group Satisfaction</th>
@@ -450,11 +451,11 @@
                                         </div>
 
                                         <div class="column">
-                                            <table class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
-                                                data-graph-color-1="#005EAD">
+                                            <table hidden class="highchart2" data-graph-container="#graphcontainer2" data-graph-type="column"
+                                                data-graph-color-1="#005EAD" data-graph-xaxis-title-text="Disagreement (y-axis) / Round (x-axis)">
                                                 <thead>
                                                     <th>Round</th>
-                                                    <th>MaxMin</th>
+                                                    <th>Disagreement</th>
                                                 </thead>
                                                 <tbody>
                                                     {% for item in max_min %}
@@ -469,27 +470,8 @@
                                         </div>
 
                                         <div class="column">
-                                            <table class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
-                                                data-graph-color-1="#005EAD">
-                                                <thead>
-                                                    <th>Round</th>
-                                                    <th>NDCG</th>
-                                                </thead>
-                                                <tbody>
-                                                    {% for item in ndcg %}
-                                                    <tr>
-                                                        <td>{{ loop.index0 }}</td>
-                                                        <td>{{'%0.3f'|format(item|float)}}</td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                            <div id="graphcontainer3"></div>
-                                        </div>
-
-                                        <div class="column">
-                                            <table class="highchart4" data-graph-container="#graphcontainer4" data-graph-type="column"
-                                                data-graph-color-1="#005EAD">
+                                            <table hidden class="highchart3" data-graph-container="#graphcontainer3" data-graph-type="column"
+                                                data-graph-color-1="#005EAD" data-graph-xaxis-title-text="FScore (y-axis) / Round (x-axis)">
                                                 <thead>
                                                     <th>Round</th>
                                                     <th>FScore</th>
@@ -501,7 +483,7 @@
                                                 </tr>
                                                 {% endfor %}
                                             </table>
-                                            <div id="graphcontainer4"></div>
+                                            <div id="graphcontainer3"></div>
                                         </div>
                                     </div>
                             {% endif %}
@@ -531,7 +513,6 @@
         $('table.highchart').highchartTable();
         $('table.highchart2').highchartTable();
         $('table.highchart3').highchartTable();
-        $('table.highchart4').highchartTable();
         $('table.highchartprev').highchartTable();
 
         /* show divs */
