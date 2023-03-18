@@ -186,10 +186,17 @@
                 <form method="post" action="/watch_next">
                     <input type="hidden" name="group_id" value={{items[0].id}} />
                     
-                    <select name="reward" id="reward">
-                        <option value="average">Average</option>
-                        <option value="fscore">FScore</option>
-                    </select>
+                    {% if reward == "None" or  reward == "average" %}
+                        <select name="reward" id="reward">
+                            <option value="average">Average</option>
+                            <option value="fscore">FScore</option>
+                        </select>
+                    {% else %}
+                        <select name="reward" id="reward">
+                            <option value="fscore">FScore</option>
+                            <option value="average">Average</option>
+                        </select>
+                    {% endif %}
                     <button class="button" value="Change Reward" name="Change Reward">Change Reward</button>
                 </form>
         {% endif %}
@@ -384,9 +391,9 @@
                                     rounds</b>
                                 <!-- don't show the line chart if the table contains only one item -->
                                 {% if previous_scores | length == 1 %}
-                                        <table>
+                                        <table hidden>
                                 {% else %}
-                                        <table class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
+                                        <table hidden class="highchartprev" data-graph-container="#graphcontainerprev" data-graph-type="line"
                                             data-graph-color-1="#005EAD" data-graph-xaxis-1-reversed="1"
                                             data-graph-xaxis-title-text="Scores (y-axis) / Round (x-axis)" >
                                 {% endif %}
