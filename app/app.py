@@ -131,15 +131,6 @@ def parse(d):
 @app.route('/index', methods=['GET', 'POST'])
 @app.route('/watch_next', methods=['GET', 'POST'])
 def watch_next():
-
-    """ make necessary changes to transform file to json format
-    with open('files/Recommended_Movies.txt', 'r') as file:
-        data = file.read()
-        data = data.replace('"', "")
-        data = data.replace("'", '"')
-  
-    with open('files/Recommended_Movies.txt', 'w') as file:
-        file.write(data)"""
     
     # read groups for testing
     test = ["4_1","3_2","5_Dif"]
@@ -215,8 +206,8 @@ def watch_next():
                 recs_scores = list(
                     filter(lambda id: id.get('id') ==
                            group, items)
-                )                
-                
+                )   
+
                 # read file to get the current round
                 with open('files/Current_Round.txt', 'r') as fp:
                     lines = fp.readlines()
@@ -282,11 +273,11 @@ def watch_next():
                     elif action == 5:
                         action = "RP80"
                     else:
-                        print("ERROR---ERROR")         
+                        print("ERROR---ERROR")     
                                 
-
                     return render_template('watch_next.html', items=cur_round_scores, previous_scores=previous_scores,
-                                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score, cur_round = cur_round, action = action)
+                                            ov_sat=ov_sat, max_min=max_min, ndcg=ndcg, dfh=dfh, f_score=f_score, 
+                                            cur_round = cur_round, action = action, reward = reward)
 
                 # show all recommendations
                 elif int(round) == 15:
