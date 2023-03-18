@@ -13,9 +13,24 @@
 &emsp;&emsp;&emsp;&emsp;&emsp;   /watch_next.html --- Group selection to view movie recommendations <br>
 &emsp;&emsp;   /app.py --- Main python file <br>
 /files   
-&emsp;&emsp; /Current_Round.txt --- Saves current round for each groups <br>
+&emsp;&emsp; /Current_Round.txt --- Saves current round for each group <br>
 &emsp;&emsp; /Recommended_Movies_Average.txt --- Reccomended movie and actions for each group using Average method <br>
 &emsp;&emsp; /Recommended_Movies_Fscore.txt --- Reccomended movie and actions for each group using FScore method <br>
 &emsp;&emsp; /Scores_Per_Round_Average.txt --- All scores for each group using Average method <br>
 &emsp;&emsp; /Scores_Per_Round_Fscore.txt --- All scoresfor each group using Fscore method <br>
-/REQUIREMENTS.txt --- Installation instructions and requirements
+/REQUIREMENTS.txt --- Installation instructions and requirements <br>
+
+---ACTIVATING VIRTUAL ENVIRONMENT--- <br>
+If env folder is not available type: python3 -m venv env
+
+To activate the virtual environment type: source env/bin/activate
+
+If flask is not installed type: pip install flask
+
+---CHANGING ENVIRONMENT---<br>
+In Visual Studio Code press Ctrl+Shift+P and select venv as Python Intepreter
+
+---OPENING THE WEBSITE---<br>
+Type: python3 app/app.py
+
+The server starts on: http://127.0.0.1:5000 or localhost:5000
