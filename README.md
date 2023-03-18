@@ -18,7 +18,7 @@
 &emsp;&emsp; /Recommended_Movies_Fscore.txt --- Reccomended movie and actions for each group using FScore method <br>
 &emsp;&emsp; /Scores_Per_Round_Average.txt --- All scores for each group using Average method <br>
 &emsp;&emsp; /Scores_Per_Round_Fscore.txt --- All scoresfor each group using Fscore method <br>
-/REQUIREMENTS.txt --- Installation instructions and requirements <br>
+/requirements.py --- Python script to install the required libraries <br>
 
 ---ACTIVATING VIRTUAL ENVIRONMENT--- <br>
 If env folder is not available type: python3 -m venv env
