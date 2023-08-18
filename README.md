@@ -1,5 +1,13 @@
 # SQUIRREL Movies Web App
 
+The source code for the paper:
+
+Eva Chrysostomaki, Maria Stratigi, Vasilis Efthymiou, Kostas Stefanidis and Dimitris Plexousakis. Fair Sequential Group Recommendations in SQUIRREL Movies (poster). [Tabular Data Analysis Workshop (TaDA)@VLDB 2023](https://tabular-data-analysis.github.io/tada2023/) [[pdf](https://drive.google.com/file/d/1M0sHJ6vjq6nPHWG8nQlOMZLrDtH0A_Ls/view)]
+
+which is part of the project <a href="https://isl.ics.forth.gr/ResponsibleER/">ResponsibleER: Responsible by Design Entity Resolution</a>, 
+funded by the <a href="https://www.elidek.gr/en/homepage/">Hellenic Foundation for Research and Innovation</a>.
+
+
 /app  <br>
 &emsp;&emsp;   /static <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;   /css/style.css --- The css file with the page styling <br>
